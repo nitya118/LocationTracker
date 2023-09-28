@@ -1,0 +1,11 @@
+.devcontainer/
+globals/
+.vscode/
+terraform/.terraform/
+terraform/terraform.lock.hcl
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+back-end/bin/
+back-end/obj/
+back-end/.vs/
+front-end/node_modules/
