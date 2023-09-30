@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IList<LocationTracker.Models.LocationReport>
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -20,4 +21,14 @@
         }
 
     }
+
+    @{
+        foreach(var item in Model)
+        {
+            {
+                <p>@item.Id</p>
+            }
+        }
+    }
+
 </div>

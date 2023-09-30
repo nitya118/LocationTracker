@@ -21,34 +21,39 @@ resource "aws_s3_bucket" "content_bucket" {
 
 module "ecr_repo" {
   source             = "./ecr"
-  aws_region             =  var.aws_region
+  aws_region         = var.aws_region
   ecr_repo_name      = "location-tracker"
   backend_image_name = "location-tracker"
 }
 
-output "test"{
-  value=module.ecr_repo.ecr_instance
+
+
+
+module "dynamodb" {
+  source = "./dynamodb"
+}
+
+output "test" {
+  value = module.dynamodb.instance
 }
 
 
-resource "aws_dynamodb_table" "location" {
-  name           = "LocationReports"
-  billing_mode   = "PROVISIONED"
-  read_capacity  = 5
-  write_capacity = 5
-  hash_key       = "Id"
-  range_key      = "DateTimeUTC"
-
-  attribute {
-    name = "Id"
-    type = "S"
-  }
-
-  attribute {
-    name = "DateTimeUTC"
-    type = "N"
-  }
-
+module "apprunner" {
+  source  = "./apprunner"
+  ddb_arn = module.dynamodb.instance.arn
 }
+
+
+module "front-end" {
+  source      = "./front-end"
+  website_root="./front-end"
+  domain_name = "location-tracker.com"
+  bucket_name = "location-tracker.com"
+}
+
+output "website-url"{
+  value=module.front-end.website_endpoint
+}
+
 
 

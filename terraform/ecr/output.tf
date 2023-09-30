@@ -1,3 +1,3 @@
-output "ecr_instance"{
+output "instance"{
     value=aws_ecr_repository.location-tracker
 }

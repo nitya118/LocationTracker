@@ -1,9 +1,9 @@
 import { getUsersGeoLocation } from './geolocation.js';
 
-const identityPoolId = 'IDENTITY_POOL_ID';
-const mapName = 'MAP_NAME';
-const placesName = 'PLACE_NAME';
-const region = 'eu-west-2';
+const identityPoolId = 'eu-west-1:32ca00da-ec4a-491f-ab34-0f8bcbe5a4d1';
+const mapName = 'location-tracker';
+const placesName = 'IG50HN';
+const region = 'eu-west-1';
 
 const loader = document.getElementById('loader-container');
 export let userLocation;
