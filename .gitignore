@@ -9,3 +9,7 @@ back-end/bin/
 back-end/obj/
 back-end/.vs/
 front-end/node_modules/
+api/publish/
+api/bin/
+api/obj/
+api/.vs/

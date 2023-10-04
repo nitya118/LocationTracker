@@ -18,13 +18,13 @@ resource "aws_iam_policy" "ddb-table-policy" {
 })
 }
 
-data "aws_iam_policy" "ddb-fullaccess-policy" {
-  name = "AmazonDynamoDBFullAccess"
-}
+# data "aws_iam_policy" "ddb-fullaccess-policy" {
+#   name = "AmazonDynamoDBFullAccess"
+# }
 
-data "aws_iam_policy" "apprunner-fullaccess-policy" {
-  name = "AWSAppRunnerFullAccess"
-}
+# data "aws_iam_policy" "apprunner-fullaccess-policy" {
+#   name = "AWSAppRunnerFullAccess"
+# }
 
 
 resource "aws_iam_role" "apprunner-instance-role" {
@@ -53,14 +53,14 @@ resource "aws_iam_role_policy_attachment" "attach-ddb-table" {
   policy_arn = aws_iam_policy.ddb-table-policy.arn
 }
 
+/*Don't need full access*/
+# resource "aws_iam_role_policy_attachment" "attach-ddb-fullaccess" {
+#   role       = aws_iam_role.apprunner-instance-role.name
+#   policy_arn = data.aws_iam_policy.ddb-fullaccess-policy.arn
+# }
 
-resource "aws_iam_role_policy_attachment" "attach-ddb-fullaccess" {
-  role       = aws_iam_role.apprunner-instance-role.name
-  policy_arn = data.aws_iam_policy.ddb-fullaccess-policy.arn
-}
-
-resource "aws_iam_role_policy_attachment" "attach-apprunner-fullaccess" {
-  role       = aws_iam_role.apprunner-instance-role.name
-  policy_arn = data.aws_iam_policy.apprunner-fullaccess-policy.arn
-}
+# resource "aws_iam_role_policy_attachment" "attach-apprunner-fullaccess" {
+#   role       = aws_iam_role.apprunner-instance-role.name
+#   policy_arn = data.aws_iam_policy.apprunner-fullaccess-policy.arn
+# }
 

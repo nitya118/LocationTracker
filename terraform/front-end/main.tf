@@ -164,8 +164,8 @@ resource "aws_cloudfront_distribution" "cloud-front-s3" {
   enabled = true
   
   origin {
-    origin_id                = "S3-www.${var.bucket_name}"
-    domain_name              = aws_s3_bucket.location-tracker-front-end.bucket_regional_domain_name
+    origin_id                = "${var.bucket_name}-origin"
+    domain_name              =  aws_s3_bucket.location-tracker-front-end.website_endpoint
     custom_origin_config {
       http_port              = 80
       https_port             = 443
@@ -205,5 +205,5 @@ resource "aws_cloudfront_distribution" "cloud-front-s3" {
   }
 
   price_class = "PriceClass_200"
-  
+  depends_on =[aws_s3_bucket.location-tracker-front-end]
 }

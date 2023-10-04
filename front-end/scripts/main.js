@@ -1,6 +1,6 @@
 import { getUsersGeoLocation } from './geolocation.js';
 
-const identityPoolId = 'eu-west-1:32ca00da-ec4a-491f-ab34-0f8bcbe5a4d1';
+const identityPoolId = 'eu-west-1:8f48143b-721f-4fd4-a0d7-e038f08d32cc';
 const mapName = 'location-tracker';
 const placesName = 'IG50HN';
 const region = 'eu-west-1';

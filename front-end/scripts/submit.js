@@ -14,8 +14,14 @@ submitButton.onclick = function () {
 	modal.style.display = 'flex';
 };
 
-modalAllowButton.onclick = function () {
+modalAllowButton.onclick =async function () {
 	console.log(userLocation);
+	let url="https://u4hdqm5uvkvdthwk54elxlkpbi0wpdef.lambda-url.eu-west-1.on.aws/?id=5";
+	const response = await fetch(url,{
+		method:"GET",
+		mode:"cors"
+	});
+	alert('test async' + response);
 };
 
 // When the user clicks 'cancel' close the modal
