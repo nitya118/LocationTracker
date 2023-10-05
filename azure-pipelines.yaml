@@ -4,12 +4,12 @@ trigger:
       - infra
   paths:
     include:
-      - terraform/*
+      -  '*'
   
 # infra pipleine
 steps:
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(System.DefaultWorkingDirectory)/terraform'
+    targetPath: '$(System.DefaultWorkingDirectory)/'
     artifact: 'infra'
     publishLocation: 'pipeline'
