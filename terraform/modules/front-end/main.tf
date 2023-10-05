@@ -11,7 +11,7 @@ resource "aws_s3_bucket" "bucket_front_end" {
 resource "aws_s3_bucket_acl" "bucket_front_end_acl" {
   bucket = aws_s3_bucket.bucket_front_end.id
   acl    = "public-read"
-  depends_on = [aws_s3_bucket_ownership_controls.s3_bucket_acl_ownership]
+  depends_on = [aws_s3_bucket_ownership_controls.bucket_front_end_acl_ownership]
 
 
 }
@@ -22,7 +22,7 @@ resource "aws_s3_bucket_ownership_controls" "bucket_front_end_acl_ownership" {
   rule {
     object_ownership = "BucketOwnerPreferred"
   }
-  depends_on = [aws_s3_bucket_public_access_block.example]
+  depends_on = [aws_s3_bucket_public_access_block.bucket_front_end_public_access_block]
 
   
 }
