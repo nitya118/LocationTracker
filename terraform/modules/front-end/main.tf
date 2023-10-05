@@ -102,18 +102,18 @@ resource "aws_s3_bucket_website_configuration" "website-config" {
 resource "aws_s3_object" "object-index_html" {
     bucket          = aws_s3_bucket.bucket_front_end.id
     key             = "index.html"
-    source          = "../../${var.website_root}/index.html"
+    source          = "../../../${var.website_root}/index.html"
     content_type    = "text/html"
-    etag            = filemd5("../../${var.website_root}/index.html")
+    etag            = filemd5("../../../${var.website_root}/index.html")
   
 }
 
 resource "aws_s3_object" "object-not-found" {
     bucket          = aws_s3_bucket.bucket_front_end.id
     key             = "pages/not-found.html"
-    source          = "../../${var.website_root}/pages/not-found.html"
+    source          = "../../../${var.website_root}/pages/not-found.html"
     content_type    = "text/html"
-    etag            = filemd5("../../${var.website_root}/pages/not-found.html")
+    etag            = filemd5("../../../${var.website_root}/pages/not-found.html")
   
 }
 
@@ -121,9 +121,9 @@ resource "aws_s3_object" "object-not-found" {
 resource "aws_s3_object" "object-submitted" {
     bucket          = aws_s3_bucket.bucket_front_end.id
     key             = "pages/submitted.html"
-    source          = "../../${var.website_root}/pages/submitted.html"
+    source          = "../../../${var.website_root}/pages/submitted.html"
     content_type    = "text/html"
-    etag            = filemd5("../../${var.website_root}/pages/submitted.html")
+    etag            = filemd5("../../../${var.website_root}/pages/submitted.html")
   
 }
 
@@ -133,9 +133,9 @@ resource "aws_s3_object" "object-submitted" {
 resource "aws_s3_object" "object-index_css" {
     bucket          = aws_s3_bucket.bucket_front_end.id
     key             = "index.css"
-    source          = "../../${var.website_root}/index.css"
+    source          = "../../../${var.website_root}/index.css"
     content_type    = "text/css"
-    etag            = filemd5("../../${var.website_root}/index.css")
+    etag            = filemd5("../../../${var.website_root}/index.css")
   
 }
 
@@ -144,9 +144,9 @@ resource "aws_s3_object" "object-index_css" {
 resource "aws_s3_object" "scripts_geolocation" {
     bucket          = aws_s3_bucket.bucket_front_end.id
     key             = "scripts/geolocation.js"
-    source          = "../../${var.website_root}/scripts/geolocation.js"
+    source          = "../../../${var.website_root}/scripts/geolocation.js"
     content_type    = "text/javascript"
-    etag            = filemd5("../../${var.website_root}/scripts/geolocation.js")
+    etag            = filemd5("../../../${var.website_root}/scripts/geolocation.js")
   
 }
 
@@ -154,9 +154,9 @@ resource "aws_s3_object" "scripts_geolocation" {
 resource "aws_s3_object" "scripts_main" {
     bucket          = aws_s3_bucket.bucket_front_end.id
     key             = "scripts/main.js"
-    source          = "../../${var.website_root}/scripts/main.js"
+    source          = "../../../${var.website_root}/scripts/main.js"
     content_type    = "text/javascript"
-    etag            = filemd5("../../${var.website_root}/scripts/main.js")
+    etag            = filemd5("../../../${var.website_root}/scripts/main.js")
   
 }
 
@@ -164,9 +164,9 @@ resource "aws_s3_object" "scripts_main" {
 resource "aws_s3_object" "scripts_submit" {
     bucket          = aws_s3_bucket.bucket_front_end.id
     key             = "scripts/submit.js"
-    source          = "../../${var.website_root}/scripts/submit.js"
+    source          = "../../../${var.website_root}/scripts/submit.js"
     content_type    = "text/javascript"
-    etag            = filemd5("../../${var.website_root}/scripts/submit.js")
+    etag            = filemd5("../../../${var.website_root}/scripts/submit.js")
   
 }
 
