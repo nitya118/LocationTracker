@@ -35,7 +35,7 @@ locals {
 }
 
 module "ecr_repo" {
-  source             = "../modules/ecr"
+  source             = "../../modules/ecr"
   aws_region         = var.aws_region
   ecr_repo_name      = "eu01-dev01-ecr01"
   //backend_image_name = "location-tracker"
@@ -44,23 +44,23 @@ module "ecr_repo" {
 
 
 module "dynamodb_loc_report" {
-  source = "../modules/dynamodb"
-  ddb_loc_report_name = "eu01-dev01-ddb01"
+  source = "../../modules/dynamodb"
+  ddb_name = "eu01-dev01-ddb01"
   tags = local.tags
 }
 
 module "dynamodb_access_management" {
   source = "../modules/dynamodb"
-  ddb_access_management_name = "eu01-dev01-ddb02"
+  ddb_name = "eu01-dev01-ddb02"
   tags = local.tags
 }
 
 output "dynamodb_instance" {
-  value = module.dynamodb.instance
+  value = module.dynamodb_loc_report.instance
 }
 
 output "dynamodb_instance2"{
-    value=module.dynamodb.instance2
+    value=module.dynamodb_access_management.instance
 }
 
 /*
@@ -74,11 +74,10 @@ module "apprunner" {
 
 */
 
-
 module "front-end" {
-  source      = "../../front-end"
-  website_root="../../front-end"
-  domain_name = "dev01.location-tracker.com"
+  source      = "../../../front-end"
+  website_root = "../../../front-end"
+  domain_name  = "dev01.location-tracker.com"
   bucket_name_front_end = "dev01.location-tracker.com"
 
   tags = local.tags
