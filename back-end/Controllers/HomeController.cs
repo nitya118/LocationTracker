@@ -26,6 +26,8 @@ namespace LocationTracker.Controllers
 
             Table table = Table.LoadTable(client, "LocationReports");
 
+            
+
 
             var scanConfig = new ScanOperationConfig()
             {
@@ -53,7 +55,8 @@ namespace LocationTracker.Controllers
             return View(locationReports);
         }
 
-        public IActionResult Privacy()
+        [HtppPost]
+        public IActionResult Privacy(LocationTracker i)
         {
             return View();
         }

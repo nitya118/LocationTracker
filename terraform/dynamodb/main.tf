@@ -6,7 +6,7 @@ resource "aws_dynamodb_table" "location_report" {
   read_capacity  = 5
   write_capacity = 5
   hash_key       = "Id"
-  range_key      = "DateTimeUTC"
+  range_key      = "CreatedDateTimeUTC"
 
   attribute {
     name = "Id"
@@ -14,7 +14,8 @@ resource "aws_dynamodb_table" "location_report" {
   }
 
   attribute {
-    name = "DateTimeUTC"
+    name = "CreatedDateTimeUTC"
     type = "S"
   }
+
 }
