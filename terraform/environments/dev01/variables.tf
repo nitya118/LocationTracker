@@ -20,5 +20,5 @@ variable "service_name" {
 }
 
 variable "tags" {
-  type = map(list)
+  type = map(string)
 }
