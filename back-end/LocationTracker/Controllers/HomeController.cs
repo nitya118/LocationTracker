@@ -55,8 +55,8 @@ namespace LocationTracker.Controllers
             return View(locationReports);
         }
 
-        [HtppPost]
-        public IActionResult Privacy(LocationTracker i)
+      
+        public IActionResult Privacy()
         {
             return View();
         }

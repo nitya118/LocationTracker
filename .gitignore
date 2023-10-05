@@ -6,15 +6,31 @@ terraform/terraform.lock.hcl
 terraform/terraform.tfstate
 terraform/terraform.tfstate.backup
 
-back-end/bin/
-back-end/obj/
-back-end/.vs/
 
 front-end/node_modules/
-api/LocationTrackerAPIpublish/
+
+
+back-end/LocationTracker/bin/
+back-end/LocationTracker/obj/
+back-end/LocationTracker/.vs/
+back-end/LocationTracker/publish/
+
+back-end/LocationTracker.Tests/bin/
+back-end/LocationTracker.Tests/obj/
+back-end/LocationTracker.Tests/.vs/
+back-end/LocationTracker.Tests/publish/
+
+
+api/LocationTrackerAPI/publish/
 api/LocationTrackerAPI/bin/
 api/LocationTrackerAPI/obj/
 api/LocationTrackerAPI/.vs/
+
+api/LocationTrackerAPI.Tests/publish/
+api/LocationTrackerAPI.Tests/bin/
+api/LocationTrackerAPI.Tests/obj/
+api/LocationTrackerAPI.Tests/.vs/
+
 
 
 lib/LocationTrackerLib/publish/

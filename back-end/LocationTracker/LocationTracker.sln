@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocationTracker", "LocationTracker.csproj", "{7C6D96B3-65F3-48B2-AF4F-D14FF626687D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocationTracker", "LocationTracker.csproj", "{7C6D96B3-65F3-48B2-AF4F-D14FF626687D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocationTracker.Tests", "..\LocationTracker.Tests\LocationTracker.Tests.csproj", "{658191B0-1AE7-4DDA-AF1F-E9DDF9C36E30}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{7C6D96B3-65F3-48B2-AF4F-D14FF626687D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C6D96B3-65F3-48B2-AF4F-D14FF626687D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C6D96B3-65F3-48B2-AF4F-D14FF626687D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{658191B0-1AE7-4DDA-AF1F-E9DDF9C36E30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{658191B0-1AE7-4DDA-AF1F-E9DDF9C36E30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{658191B0-1AE7-4DDA-AF1F-E9DDF9C36E30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{658191B0-1AE7-4DDA-AF1F-E9DDF9C36E30}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
