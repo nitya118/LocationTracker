@@ -10,3 +10,15 @@ variable "bucket_name" {
   default     = "locationservice-content"
 }
 
+
+variable "ecr_image_address" {
+  description = "URL of your container image"
+}
+
+variable "service_name" {
+  description = "Name of your App Runner service"
+}
+
+variable "tags" {
+  type = map(list)
+}

@@ -1,29 +1,36 @@
 
-resource "aws_s3_bucket" "location-tracker-front-end" {
-  bucket = "www.${var.bucket_name}"
+resource "aws_s3_bucket" "bucket_front_end" {
+  bucket = "www.${var.bucket_name_front_end}"
   force_destroy=true
+  
+
+  tags = var.tags
 }
 
 
-resource "aws_s3_bucket_acl" "bucket-acl" {
-  bucket = aws_s3_bucket.location-tracker-front-end.id
+resource "aws_s3_bucket_acl" "bucket_front_end_acl" {
+  bucket = aws_s3_bucket.bucket_front_end.id
   acl    = "public-read"
   depends_on = [aws_s3_bucket_ownership_controls.s3_bucket_acl_ownership]
+
+
 }
 
 
-resource "aws_s3_bucket_ownership_controls" "s3_bucket_acl_ownership" {
-  bucket = aws_s3_bucket.location-tracker-front-end.id
+resource "aws_s3_bucket_ownership_controls" "bucket_front_end_acl_ownership" {
+  bucket = aws_s3_bucket.bucket_front_end.id
   rule {
     object_ownership = "BucketOwnerPreferred"
   }
   depends_on = [aws_s3_bucket_public_access_block.example]
+
+  
 }
 
 
 
-resource "aws_s3_bucket_public_access_block" "example" {
-  bucket = aws_s3_bucket.location-tracker-front-end.id
+resource "aws_s3_bucket_public_access_block" "bucket_front_end_public_access_block" {
+  bucket = aws_s3_bucket.bucket_front_end.id
 
   block_public_acls       = false
   block_public_policy     = false
@@ -34,9 +41,10 @@ resource "aws_s3_bucket_public_access_block" "example" {
 
 
 
-resource "aws_s3_bucket_cors_configuration" "example" {
-  bucket = aws_s3_bucket.location-tracker-front-end.bucket
-cors_rule {
+resource "aws_s3_bucket_cors_configuration" "bucket_front_end_cors_configuration" {
+  bucket = aws_s3_bucket.bucket_front_end.bucket
+  
+  cors_rule {
     allowed_headers = ["Authorization", "Content-Length"]
     allowed_methods = ["GET", "POST"]
     allowed_origins = ["https://www.${var.domain_name}"]
@@ -44,36 +52,43 @@ cors_rule {
   }
 }
 
-resource "aws_s3_bucket_policy" "bucket-policy" {
-  bucket = aws_s3_bucket.location-tracker-front-end.id
+resource "aws_s3_bucket_policy" "bucket_front_end_policy" {
+  bucket = aws_s3_bucket.bucket_front_end.id
   policy = data.aws_iam_policy_document.iam-policy-1.json
 }
+
 data "aws_iam_policy_document" "iam-policy-1" {
   statement {
     sid    = "AllowPublicRead"
     effect = "Allow"
-resources = [
+    resources = [
       "arn:aws:s3:::www.${var.domain_name}",
       "arn:aws:s3:::www.${var.domain_name}/*",
     ]
-actions = ["S3:GetObject"]
-principals {
+    
+    actions = ["S3:GetObject"]
+    
+    principals {
       type        = "*"
       identifiers = ["*"]
     }
   }
 
-  depends_on = [aws_s3_bucket_public_access_block.example]
+  depends_on = [aws_s3_bucket_public_access_block.bucket_front_end_public_access_block]
+
+  
 }
 
 
 
 resource "aws_s3_bucket_website_configuration" "website-config" {
-  bucket = aws_s3_bucket.location-tracker-front-end.id
-index_document {
+  bucket = aws_s3_bucket.bucket_front_end.id
+
+  index_document {
     suffix = "index.html"
   }
-error_document {
+  
+  error_document {
     key = "404.jpeg"
   }
 
@@ -85,7 +100,7 @@ error_document {
 
 
 resource "aws_s3_object" "object-index_html" {
-    bucket          = aws_s3_bucket.location-tracker-front-end.id
+    bucket          = aws_s3_bucket.bucket_front_end.id
     key             = "index.html"
     source          = "../${var.website_root}/index.html"
     content_type    = "text/html"
@@ -94,7 +109,7 @@ resource "aws_s3_object" "object-index_html" {
 }
 
 resource "aws_s3_object" "object-not-found" {
-    bucket          = aws_s3_bucket.location-tracker-front-end.id
+    bucket          = aws_s3_bucket.bucket_front_end.id
     key             = "pages/not-found.html"
     source          = "../${var.website_root}/pages/not-found.html"
     content_type    = "text/html"
@@ -104,7 +119,7 @@ resource "aws_s3_object" "object-not-found" {
 
 
 resource "aws_s3_object" "object-submitted" {
-    bucket          = aws_s3_bucket.location-tracker-front-end.id
+    bucket          = aws_s3_bucket.bucket_front_end.id
     key             = "pages/submitted.html"
     source          = "../${var.website_root}/pages/submitted.html"
     content_type    = "text/html"
@@ -116,7 +131,7 @@ resource "aws_s3_object" "object-submitted" {
 
 
 resource "aws_s3_object" "object-index_css" {
-    bucket          = aws_s3_bucket.location-tracker-front-end.id
+    bucket          = aws_s3_bucket.bucket_front_end.id
     key             = "index.css"
     source          = "../${var.website_root}/index.css"
     content_type    = "text/css"
@@ -127,7 +142,7 @@ resource "aws_s3_object" "object-index_css" {
 
 
 resource "aws_s3_object" "scripts_geolocation" {
-    bucket          = aws_s3_bucket.location-tracker-front-end.id
+    bucket          = aws_s3_bucket.bucket_front_end.id
     key             = "scripts/geolocation.js"
     source          = "../${var.website_root}/scripts/geolocation.js"
     content_type    = "text/javascript"
@@ -137,7 +152,7 @@ resource "aws_s3_object" "scripts_geolocation" {
 
 
 resource "aws_s3_object" "scripts_main" {
-    bucket          = aws_s3_bucket.location-tracker-front-end.id
+    bucket          = aws_s3_bucket.bucket_front_end.id
     key             = "scripts/main.js"
     source          = "../${var.website_root}/scripts/main.js"
     content_type    = "text/javascript"
@@ -147,7 +162,7 @@ resource "aws_s3_object" "scripts_main" {
 
 
 resource "aws_s3_object" "scripts_submit" {
-    bucket          = aws_s3_bucket.location-tracker-front-end.id
+    bucket          = aws_s3_bucket.bucket_front_end.id
     key             = "scripts/submit.js"
     source          = "../${var.website_root}/scripts/submit.js"
     content_type    = "text/javascript"
@@ -158,7 +173,7 @@ resource "aws_s3_object" "scripts_submit" {
 
 //cloudfront
 
-
+/*
 resource "aws_cloudfront_distribution" "cloud-front-s3" {
   
   enabled = true
@@ -207,3 +222,5 @@ resource "aws_cloudfront_distribution" "cloud-front-s3" {
   price_class = "PriceClass_200"
   depends_on =[aws_s3_bucket.location-tracker-front-end]
 }
+
+*/

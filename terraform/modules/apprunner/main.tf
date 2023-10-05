@@ -1,3 +1,52 @@
+
+
+resource "aws_apprunner_service" "apprunner_backend" {
+  service_name    = var.service_name
+
+  instance_configuration {
+    cpu     = 256
+    memory  = 1024
+  }
+
+  source_configuration {
+    authentication_configuration {
+      access_role_arn = aws_iam_role.apprunner_role.arn
+    }
+
+    image_repository {
+      image_configuration {
+        port = "8000"
+      }
+      image_identifier      = var.ecr_image_address
+      image_repository_type = "ECR"
+    }
+    auto_deployments_enabled = true
+
+  }
+
+  tags = var.tags
+}
+
+resource "aws_iam_role" "apprunner_role" {
+  name = "${var.service_name}-role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+    "Action": "sts:AssumeRole",
+    "Effect": "Allow",
+    "Principal": {
+      "Service": "build.apprunner.amazonaws.com"
+    }
+  }]
+}
+EOF
+}
+
+
+
+
 resource "aws_iam_policy" "ddb-table-policy" {
   name        = "ddb-location-reports"
   path        = "/"

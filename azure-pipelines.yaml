@@ -1,0 +1,15 @@
+trigger:
+  branches:
+    include:
+      - infra
+  paths:
+    include:
+      - terraform/*
+  
+# infra pipleine
+steps:
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(System.DefaultWorkingDirectory)/terraform'
+    artifact: 'infra'
+    publishLocation: 'pipeline'

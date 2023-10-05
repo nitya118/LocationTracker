@@ -1,12 +1,14 @@
-resource "aws_ecr_repository" "location-tracker" {
+resource "aws_ecr_repository" "repository_ecr" {
 	  name = var.ecr_repo_name
 	image_scanning_configuration {
 	    scan_on_push = false
 	  }
+
+	  tags = var.tags
 }
 
 resource "aws_ecr_lifecycle_policy" "default_policy" {
-  repository = aws_ecr_repository.location-tracker.name
+  repository = aws_ecr_repository.repository_ecr.name
 	
 
 	  policy = <<EOF
@@ -33,7 +35,7 @@ resource "aws_ecr_lifecycle_policy" "default_policy" {
 
 
 
-
+/*
 data "aws_caller_identity" "current" {}
 
 resource "null_resource" "docker_packaging" {
@@ -45,14 +47,14 @@ resource "null_resource" "docker_packaging" {
 	  }
 	
 	  provisioner "local-exec" {
-		working_dir="${path.module}/../../back-end/LocationTracker/"
+		working_dir="${path.module}/../../back-end/"
 		command = <<EOF
 		docker build -t ${aws_ecr_repository.location-tracker.repository_url}:latest .
 		EOF
 	  }
 	
 	provisioner "local-exec" {
-		working_dir="${path.module}/../../back-end/LocationTracker/"
+		working_dir="${path.module}/../../back-end/"
 		command = <<EOF
 		docker push ${aws_ecr_repository.location-tracker.repository_url}:latest
 		EOF
@@ -68,4 +70,5 @@ resource "null_resource" "docker_packaging" {
 	    aws_ecr_repository.location-tracker,
 	  ]
 }
+*/
 
