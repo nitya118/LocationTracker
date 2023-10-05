@@ -50,7 +50,7 @@ module "dynamodb_loc_report" {
 }
 
 module "dynamodb_access_management" {
-  source = "../modules/dynamodb"
+  source = "../../modules/dynamodb"
   ddb_name = "eu01-dev01-ddb02"
   tags = local.tags
 }
@@ -86,6 +86,8 @@ module "front-end" {
 output "website-url"{
   value=module.front-end.website_endpoint
 }
+
+
 
 
 
