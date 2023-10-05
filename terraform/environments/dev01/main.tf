@@ -76,7 +76,7 @@ module "apprunner" {
 
 module "front-end" {
   source      = "../../modules/front-end"
-  website_root = "../../front-end"
+  website_root = "./front-end"
   domain_name  = "dev01.location-tracker.com"
   bucket_name_front_end = "dev01.location-tracker.com"
 
