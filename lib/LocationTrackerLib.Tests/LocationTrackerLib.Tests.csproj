@@ -23,4 +23,8 @@
     <Folder Include="Integration\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LocationTrackerLib\LocationTrackerLib.csproj" />
+  </ItemGroup>
+
 </Project>
