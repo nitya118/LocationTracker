@@ -19,6 +19,7 @@ namespace LocationTrackerLib.Tests.Unit
 
          */
 
+        [Trait(TestUtils.TRAIT_TEST_CATEGORY, TestUtils.TRAIT_TEST_CATEGORY_UNIT)]
         [Theory]
         [InlineData("Slalom London: 2 London Bridge, London, SE1 9RA", 51.506630, -0.088616893, 532750.1, 180364.7)]
         [InlineData("The Shard, 32 London Bridge St, London SE1 9SG", 51.504341, -0.086551245, 532900.1, 180114)]
