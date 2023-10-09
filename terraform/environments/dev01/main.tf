@@ -7,7 +7,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket                  = "tf-state-storage-dev01"
+    bucket                  = "tf-state-storage-dev02"
     key                     = "dev01/terraform.tfstate"
     region                  = "eu-west-1"
     dynamodb_table          = "tf-ddb-dev01"
