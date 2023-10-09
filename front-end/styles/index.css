@@ -6,7 +6,7 @@ body {
 	--grey: #dedede;
 	--light-grey: #ebebeb;
 	--blue: #0c62fb;
-	--dark-blue: #0c61e4;
+	--dark-blue: #004dd6;
 	height: 100vh;
 	margin: 0 auto;
 	padding: 0;
@@ -68,15 +68,15 @@ main {
 	flex: 1;
 }
 
-footer {
-	height: auto;
-	border-top: 1px solid var(--grey);
-}
-
 h2 {
 	font-size: 1.3rem;
 	padding: 0 1.2rem;
 	font-weight: 500;
+}
+
+footer {
+	height: auto;
+	border-top: 1px solid var(--grey);
 }
 
 #footer-content {
@@ -126,7 +126,7 @@ h2 {
 	cursor: pointer;
 }
 
-#submit-button:hover {
+#share-button:hover {
 	background-color: var(--dark-blue);
 }
 

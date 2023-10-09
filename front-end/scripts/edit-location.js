@@ -1,4 +1,5 @@
 import { getUsersGeoLocation } from './geolocation.js';
+// import { userLocation } from './main.js';
 import {
 	identityPoolId,
 	mapName,
@@ -95,7 +96,7 @@ async function main() {
 			// Hide loader
 			loader.style.display = 'none';
 			// Allow user to search map
-			// searchMap(authHelper, map);
+			searchMap(authHelper, map);
 		})
 		.catch((error) => {
 			console.error('Error:', error);

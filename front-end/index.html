@@ -4,7 +4,8 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Location App</title>
-		<link href="index.css" rel="stylesheet" />
+		<link href="./styles/global.css" rel="stylesheet" />
+		<link href="./styles/index.css" rel="stylesheet" />
 
 		<!-- maplibre -->
 		<link
@@ -19,10 +20,12 @@
 				src="./assets/ng-icon-logo.jpg"
 				alt="National Gas Emergency Service icon"
 			/>
-			<h1>
-				National Gas <br />
-				Emergency Service
-			</h1>
+			<a href="index.html"
+				><h1>
+					National Gas <br />
+					Emergency Service
+				</h1></a
+			>
 		</header>
 		<main>
 			<div id="map">
@@ -37,9 +40,11 @@
 					Your location
 				</div>
 				<div id="footer-content__edit-location">
-					<a href="#">Edit Location</a>
+					<a href="./pages/edit-location.html">Edit Location</a>
 				</div>
-				<button id="share-button">Share my location</button>
+				<button id="share-button" onclick="handleButtonClick()">
+					Share my location
+				</button>
 			</div>
 		</footer>
 

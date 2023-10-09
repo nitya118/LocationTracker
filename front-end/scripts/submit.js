@@ -1,4 +1,4 @@
-import { userLocation } from './main.js';
+import { userLocation } from '../variables/global-variables.js';
 
 const shareButton = document.getElementById('share-button');
 const modal = document.getElementById('submit-modal');
