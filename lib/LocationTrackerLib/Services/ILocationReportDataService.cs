@@ -1,18 +1,15 @@
 ﻿using LocationTrackerLib.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LocationTrackerLib.Services
 {
-    public  interface ILocationReportDataService
+    public interface ILocationReportDataService
     {
-        public bool RecordExists(string id);
+        public Task<LocationReport> LoadRecordAsync(string id);
 
-        public void SaveRecord(LocationReport report);
+        public Task SaveRecordAsync(LocationReport report);
 
-        public void DeleteRecord(string id);
+        public Task DeleteAsyncRecord(string id);
+
+        public  Task<IEnumerable<LocationReport>> GetRecordsAsync(string user, DateTime from, DateTime to);
     }
 }

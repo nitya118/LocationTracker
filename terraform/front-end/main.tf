@@ -32,14 +32,14 @@ resource "aws_s3_bucket_public_access_block" "example" {
 }
 
 
-
-
+#check https://stackoverflow.com/questions/12358173/correct-s3-cloudfront-cors-configuration
 resource "aws_s3_bucket_cors_configuration" "example" {
   bucket = aws_s3_bucket.location-tracker-front-end.bucket
 cors_rule {
     allowed_headers = ["Authorization", "Content-Length"]
     allowed_methods = ["GET", "POST"]
-    allowed_origins = ["https://www.${var.domain_name}"]
+    #allowed_origins = ["https://www.${var.domain_name}"]
+    allowed_origins="*"
     max_age_seconds = 3000
   }
 }

@@ -20,11 +20,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Integration\" />
+    <ProjectReference Include="..\LocationTrackerLib\LocationTrackerLib.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LocationTrackerLib\LocationTrackerLib.csproj" />
+    <Folder Include="Tools\" />
   </ItemGroup>
 
 </Project>
