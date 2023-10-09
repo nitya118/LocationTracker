@@ -52,28 +52,30 @@ const searchMap = async (authHelper, map) => {
 			MaxResults: '5',
 		};
 
-		// Set up command to search for results around clicked point
-		const command = new amazonLocationClient.SearchPlaceIndexForPositionCommand(
-			params
-		);
+		userLocation.latitude=e.lngLat.lat;
+		userLocation.longitude= e.lngLat.lng;
+		// // Set up command to search for results around clicked point
+		// const command = new amazonLocationClient.SearchPlaceIndexForPositionCommand(
+		// 	params
+		// );
 
-		try {
-			// Make request to search for results around clicked point
-			const data = await client.send(command);
-			console.log(JSON.stringify(data));
+		// try {
+		// 	// Make request to search for results around clicked point
+		// 	const data = await client.send(command);
+		// 	console.log(JSON.stringify(data));
 
-			// Log location points
-			console.log('location', data.Results[0].Place.Geometry.Point);
+		// 	// Log location points
+		// 	console.log('location', data.Results[0].Place.Geometry.Point);
 
-			// Dispaly address in html
-			const address = JSON.stringify(data.Results[0].Place.Label);
-			document.querySelector('#address').textContent = address.replaceAll(
-				'"',
-				''
-			);
-		} catch (error) {
-			console.log('There was an error searching.');
-		}
+		// 	// Dispaly address in html
+		// 	const address = JSON.stringify(data.Results[0].Place.Label);
+		// 	document.querySelector('#address').textContent = address.replaceAll(
+		// 		'"',
+		// 		''
+		// 	);
+		// } catch (error) {
+		// 	console.log('There was an error searching.');
+		// }
 	});
 };
 
