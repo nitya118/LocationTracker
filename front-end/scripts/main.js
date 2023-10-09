@@ -66,11 +66,11 @@ const searchMap = async (authHelper, map) => {
 			console.log('location', data.Results[0].Place.Geometry.Point);
 
 			// Dispaly address in html
-			const address = JSON.stringify(data.Results[0].Place.Label);
-			document.querySelector('#address').textContent = address.replaceAll(
-				'"',
-				''
-			);
+			// const address = JSON.stringify(data.Results[0].Place.Label);
+			// document.querySelector('#address').textContent = address.replaceAll(
+			// 	'"',
+			// 	''
+			// );
 		} catch (error) {
 			console.log('There was an error searching.');
 		}
