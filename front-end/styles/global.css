@@ -64,3 +64,27 @@ header a {
 #map {
 	flex: 1;
 }
+
+button {
+	width: 100%;
+	background-color: var(--blue);
+	color: white;
+	padding: 12px 48px;
+	border: none;
+	margin: 1rem 0;
+	font-size: 1rem;
+	font-weight: 700;
+	transition: background-color 0.2s ease;
+	cursor: pointer;
+}
+
+button:hover {
+	background-color: var(--dark-blue);
+}
+
+button:disabled,
+button[disabled] {
+	border: none;
+	background-color: var(--grey);
+	color: var(--dark-grey);
+}

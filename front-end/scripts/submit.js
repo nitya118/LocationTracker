@@ -1,5 +1,3 @@
-import { userLocation } from '../variables/global-variables.js';
-
 const shareButton = document.getElementById('share-button');
 const modal = document.getElementById('submit-modal');
 const modalCancelButton = document.getElementById(
@@ -15,14 +13,20 @@ shareButton.onclick = function () {
 };
 
 modalAllowButton.onclick = async function () {
-	console.log(userLocation);
 	let url =
 		'https://u4hdqm5uvkvdthwk54elxlkpbi0wpdef.lambda-url.eu-west-1.on.aws/?id=5';
 	const response = await fetch(url, {
 		method: 'GET',
 		mode: 'cors',
 	});
-	alert('test async' + response);
+	alert(
+		'test async ' +
+			response +
+			' lat ' +
+			localStorage.getItem('userLatitude') +
+			' lon ' +
+			localStorage.getItem('userLongitude')
+	);
 };
 
 // When the user clicks 'cancel' close the modal

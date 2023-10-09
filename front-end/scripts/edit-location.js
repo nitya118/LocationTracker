@@ -1,5 +1,4 @@
 import { getUsersGeoLocation } from './geolocation.js';
-// import { userLocation } from './main.js';
 import {
 	identityPoolId,
 	mapName,
@@ -7,9 +6,8 @@ import {
 	region,
 } from '../variables/global-variables.js';
 
+const setButton = document.getElementById('set-location-button');
 const loader = document.getElementById('loader-container');
-
-export let userLocation;
 let marker;
 
 const initializeMap = async (authHelper, latitude, longitude) => {
@@ -76,6 +74,7 @@ const searchMap = async (authHelper, map) => {
 
 async function main() {
 	// Show loader
+	setButton.disabled = true;
 	loader.style.display = 'flex';
 
 	//  Authorise with Cognito credentials
@@ -84,17 +83,18 @@ async function main() {
 
 	getUsersGeoLocation()
 		.then(async (location) => {
+			// Get lat and long in global storage
+			const userLatitude = localStorage.getItem('userLatitude');
+			const userLongitude = localStorage.getItem('userLongitude');
+
 			// Initialise map with user's location
-			userLocation = location;
-			return await initializeMap(
-				authHelper,
-				location.latitude,
-				location.longitude
-			);
+			return await initializeMap(authHelper, userLatitude, userLongitude);
 		})
 		.then((map) => {
 			// Hide loader
 			loader.style.display = 'none';
+			setButton.disabled = false;
+
 			// Allow user to search map
 			searchMap(authHelper, map);
 		})
