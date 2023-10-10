@@ -86,7 +86,7 @@ resource "aws_iam_policy" "ddb-table-policy" {
 
 
 resource "aws_iam_role" "apprunner_instance_role" {
-  name = "apprunner-instance-role"
+  name = "apprunner-instance-role-v1"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
