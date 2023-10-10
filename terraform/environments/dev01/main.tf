@@ -66,8 +66,8 @@ output "dynamodb_instance2"{
 
 module "apprunner" {
   source  = "../../modules/apprunner"
-  ddb_loc_report_arn = module.dynamodb_loc_report.instance.ddb_arn
-  ddb_access_management_arn = module.dynamodb_access_management.instance.ddb_arn
+  ddb_loc_report_arn = module.dynamodb_loc_report.instance.arn
+  ddb_access_management_arn = module.dynamodb_access_management.instance.arn
   service_name = "eu01-dev01-app01"
   ecr_image_address = "007060634107.dkr.ecr.eu-west-1.amazonaws.com/eu01-dev01-ecr01:latest"
   tags = local.tags
