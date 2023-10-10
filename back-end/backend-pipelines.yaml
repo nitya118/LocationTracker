@@ -13,8 +13,8 @@ steps:
   displayName: Build an image
   inputs:
     command: build
-    dockerfile: '$(Build.SourcesDirectory)/nitya118/LocationTracker/back-end/LocationTracker/Dockerfile'
-    buildContext: '$(Build.SourcesDirectory)'
+    dockerfile: '$(Build.SourcesDirectory)/back-end/LocationTracker/Dockerfile'
+    buildContext: '$(Build.SourcesDirectory)/back-end/LocationTracker/'
     repository: $(DOCKER_REPOSITORY_NAME)
 
 - task: ECRPushImage@1
