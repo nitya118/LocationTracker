@@ -4,8 +4,8 @@ resource "aws_apprunner_service" "apprunner_backend" {
   service_name    = var.service_name
 
   instance_configuration {
-    cpu     = 256
-    memory  = 1024
+    cpu     = 1024
+    memory  = 2048
   }
 
   source_configuration {
