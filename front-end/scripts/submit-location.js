@@ -1,4 +1,4 @@
-const shareButton = document.getElementById('share-button');
+const submitButton = document.getElementById('submit-button');
 const modal = document.getElementById('submit-modal');
 const modalCancelButton = document.getElementById(
 	'modal_content__buttons--cancel'
@@ -8,7 +8,7 @@ const modalAllowButton = document.getElementById(
 );
 
 // Open modal
-shareButton.onclick = function () {
+submitButton.onclick = function () {
 	modal.style.display = 'flex';
 };
 
@@ -32,11 +32,17 @@ modalAllowButton.onclick = async function () {
 // When the user clicks 'cancel' close the modal
 modalCancelButton.onclick = function () {
 	modal.style.display = 'none';
+	// Local storage is a temporary solution
+	localStorage.clear();
+	console.log('Cleared storage');
 };
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function (event) {
 	if (event.target == modal) {
 		modal.style.display = 'none';
+		// Local storage is a temporary solution
+		localStorage.clear();
+		console.log('Cleared storage');
 	}
 };

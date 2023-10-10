@@ -68,29 +68,28 @@ footer {
 /* Modal Content/Box */
 #modal-content {
 	background-color: white;
-	padding: 24px;
-	border-radius: 12px;
+	padding: 1.5rem;
 	max-width: 60%;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 0 0.6rem rgba(0, 0, 0, 0.1);
 }
 
 #modal-content__text {
 	text-align: center;
-	margin-top: 16px;
+	margin-top: 1rem;
 }
 
 #modal-content__buttons {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	gap: 0 16px;
-	margin-top: 24px;
+	gap: 0 1rem;
+	margin-top: 1.5rem;
 }
 
 .modal-button {
 	border: none;
-	padding: 8px 16px;
-	border-radius: 4px;
+	padding: 0.5rem 1rem;
+	border-radius: 0;
 	font-weight: bold;
 	transition: background-color 0.2s ease;
 	cursor: pointer;
@@ -107,8 +106,10 @@ footer {
 
 #modal_content__buttons--cancel {
 	background: var(--grey);
+	color: var(--dark-grey);
 }
 
 #modal_content__buttons--cancel:hover {
 	background: var(--dark-grey);
+	color: white;
 }

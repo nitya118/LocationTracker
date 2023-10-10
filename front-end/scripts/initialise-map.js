@@ -2,14 +2,13 @@ import { getUsersGeoLocation } from './geolocation.js';
 import {
 	identityPoolId,
 	mapName,
-	placesName,
 	region,
 } from '../variables/global-variables.js';
 
 const loader = document.getElementById('loader-container');
-const shareButton = document.getElementById('share-button');
+const submitButton = document.getElementById('submit-button');
 
-const initializeMap = async (authHelper, latitude, longitude) => {
+const initialiseMap = async (authHelper, latitude, longitude) => {
 	const map = new maplibregl.Map({
 		container: 'map',
 		center: [longitude, latitude],
@@ -29,8 +28,8 @@ const initializeMap = async (authHelper, latitude, longitude) => {
 };
 
 async function main() {
-	// Show loader
-	shareButton.disabled = true;
+	// Show loader and disable submit button
+	submitButton.disabled = true;
 	loader.style.display = 'flex';
 
 	//  Authorise with Cognito credentials
@@ -39,17 +38,17 @@ async function main() {
 
 	getUsersGeoLocation()
 		.then(async () => {
-			// Get lat and long in global storage
+			// Get lat and long from local storage
 			const userLatitude = localStorage.getItem('userLatitude');
 			const userLongitude = localStorage.getItem('userLongitude');
 
 			// Initialise map with user's location
-			return await initializeMap(authHelper, userLatitude, userLongitude);
+			return await initialiseMap(authHelper, userLatitude, userLongitude);
 		})
 		.then(() => {
-			// Hide loader and enable button
+			// Hide loader and enable submit button
 			loader.style.display = 'none';
-			shareButton.disabled = false;
+			submitButton.disabled = false;
 		})
 		.catch((error) => {
 			console.error('Error:', error);

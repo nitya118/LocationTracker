@@ -19,6 +19,7 @@ header {
 	background-color: white;
 	display: flex;
 	align-items: center;
+	border-bottom: 1px solid var(--grey);
 }
 
 header img {
@@ -43,11 +44,11 @@ header a {
 }
 
 #loader {
-	width: 15px;
-	height: 15px;
+	width: 1rem;
+	height: 1rem;
 	margin: 0 auto;
-	border: 8px solid var(--light-grey);
-	border-top: 8px solid var(--dark-grey);
+	border: 0.5rem solid var(--light-grey);
+	border-top: 0.5rem solid var(--dark-grey);
 	border-radius: 50%;
 	animation: spin 2s linear infinite;
 }
@@ -69,7 +70,7 @@ button {
 	width: 100%;
 	background-color: var(--blue);
 	color: white;
-	padding: 12px 48px;
+	padding: 0.75rem 3rem;
 	border: none;
 	margin: 1rem 0;
 	font-size: 1rem;

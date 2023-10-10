@@ -42,20 +42,3 @@ footer {
 	text-decoration: none;
 	color: var(--blue);
 }
-
-#set-location-button {
-	width: 100%;
-	background-color: var(--blue);
-	color: white;
-	padding: 12px 48px;
-	border: none;
-	margin: 1rem 0;
-	font-size: 1rem;
-	font-weight: 700;
-	transition: background-color 0.2s ease;
-	cursor: pointer;
-}
-
-#set-location-button:hover {
-	background-color: var(--dark-blue);
-}

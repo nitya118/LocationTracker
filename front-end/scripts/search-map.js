@@ -22,7 +22,6 @@ const initializeMap = async (authHelper, latitude, longitude) => {
 	map.addControl(new maplibregl.NavigationControl(), 'top-left');
 	// Set place marker to users current location
 	marker = new maplibregl.Marker().setLngLat([longitude, latitude]).addTo(map);
-	console.log('longitude', longitude, 'latititude', latitude);
 
 	return map;
 };
@@ -64,10 +63,16 @@ const searchMap = async (authHelper, map) => {
 			const data = await client.send(command);
 			console.log(JSON.stringify(data));
 
-			// Log location points
-			console.log('location', data.Results[0].Place.Geometry.Point);
-			localStorage.setItem('userLongitude', data.Summary.Position[0]);
-			localStorage.setItem('userLatitude', data.Summary.Position[1]);
+			// Log location points and save them to local storage
+			console.log('New location', data.Results[0].Place.Geometry.Point);
+			localStorage.setItem(
+				'userLongitude',
+				data.Results[0].Place.Geometry.Point[0]
+			);
+			localStorage.setItem(
+				'userLatitude',
+				data.Results[0].Place.Geometry.Point[1]
+			);
 		} catch (error) {
 			console.log('There was an error searching.');
 		}
@@ -75,7 +80,7 @@ const searchMap = async (authHelper, map) => {
 };
 
 async function main() {
-	// Show loader
+	// Show loader and disable button
 	setButton.disabled = true;
 	loader.style.display = 'flex';
 

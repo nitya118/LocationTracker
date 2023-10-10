@@ -5,6 +5,8 @@ export const getUsersGeoLocation = () => {
 				(position) => {
 					const latitude = position.coords.latitude;
 					const longitude = position.coords.longitude;
+					// Temporary solution
+					// Save user's coords to local storage
 					localStorage.setItem('userLatitude', latitude);
 					localStorage.setItem('userLongitude', longitude);
 					resolve({ latitude, longitude });
