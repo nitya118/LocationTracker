@@ -4,7 +4,7 @@ trigger:
       - infra
   paths:
     include:
-      -  '*'
+      -  'terraform/*'
   
 # infra pipleine
 steps:

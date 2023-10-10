@@ -96,7 +96,7 @@ resource "aws_s3_bucket_website_configuration" "website-config" {
 
 
 
-
+/*
 
 
 resource "aws_s3_object" "object-index_html" {
@@ -170,7 +170,7 @@ resource "aws_s3_object" "scripts_submit" {
   
 }
 
-
+*/
 //cloudfront
 
 /*
