@@ -1,6 +1,9 @@
 
 
 resource "aws_apprunner_service" "apprunner_backend" {
+
+  depends_on = [time_sleep.waitrolecreate]
+
   service_name    = var.service_name
 
   instance_configuration {
@@ -86,7 +89,7 @@ resource "aws_iam_policy" "ddb-table-policy" {
 
 
 resource "aws_iam_role" "apprunner_instance_role" {
-  name = "apprunner-instance-role-v1"
+  name = "apprunner-instance-role-v2"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -110,6 +113,11 @@ resource "aws_iam_role" "apprunner_instance_role" {
 resource "aws_iam_role_policy_attachment" "attach-ddb-table" {
   role       = aws_iam_role.apprunner_instance_role.name
   policy_arn = aws_iam_policy.ddb-table-policy.arn
+}
+
+resource "time_sleep" "waitrolecreate" {
+depends_on = [aws_iam_role.myrole]
+create_duration = "60s"
 }
 
 /*Don't need full access*/
