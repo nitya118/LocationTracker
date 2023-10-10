@@ -61,7 +61,13 @@ resource "aws_iam_policy" "ddb-table-policy" {
             Sid: "",
             Effect: "Allow",
             Action: "dynamodb:*",
-            Resource: var.ddb_arn
+            Resource: var.ddb_loc_report_arn
+        },
+        {
+            Sid: "",
+            Effect: "Allow",
+            Action: "dynamodb:*",
+            Resource: var.ddb_access_management_arn
         }
     ]
 })
