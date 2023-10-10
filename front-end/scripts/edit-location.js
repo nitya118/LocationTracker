@@ -66,6 +66,8 @@ const searchMap = async (authHelper, map) => {
 
 			// Log location points
 			console.log('location', data.Results[0].Place.Geometry.Point);
+			localStorage.setItem('userLongitude', data.Summary.Position[0]);
+			localStorage.setItem('userLatitude', data.Summary.Position[1]);
 		} catch (error) {
 			console.log('There was an error searching.');
 		}
