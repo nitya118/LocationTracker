@@ -10,7 +10,7 @@ resource "aws_apprunner_service" "apprunner_backend" {
 
   source_configuration {
     authentication_configuration {
-      access_role_arn = aws_iam_role.apprunner_role.arn
+      access_role_arn = aws_iam_role.apprunner_instance_role.arn
     }
 
     image_repository {
@@ -27,6 +27,7 @@ resource "aws_apprunner_service" "apprunner_backend" {
   tags = var.tags
 }
 
+/*
 resource "aws_iam_role" "apprunner_role" {
   name = "${var.service_name}-role"
 
@@ -43,6 +44,8 @@ resource "aws_iam_role" "apprunner_role" {
 }
 EOF
 }
+
+*/
 
 
 
@@ -82,7 +85,7 @@ resource "aws_iam_policy" "ddb-table-policy" {
 # }
 
 
-resource "aws_iam_role" "apprunner-instance-role" {
+resource "aws_iam_role" "apprunner_instance_role" {
   name = "apprunner-instance-role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -94,7 +97,8 @@ resource "aws_iam_role" "apprunner-instance-role" {
         Principal = {
           Service = [
              "ec2.amazonaws.com",
-             "tasks.apprunner.amazonaws.com"
+             "tasks.apprunner.amazonaws.com",
+             "build.apprunner.amazonaws.com"
           ]
         }
       },
