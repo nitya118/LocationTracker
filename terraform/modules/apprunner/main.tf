@@ -89,7 +89,7 @@ resource "aws_iam_policy" "ddb-table-policy" {
 
 
 resource "aws_iam_role" "apprunner_instance_role" {
-  name = "apprunner-instance-role-v2"
+  name = "apprunner-instance-role-v3"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -116,7 +116,7 @@ resource "aws_iam_role_policy_attachment" "attach-ddb-table" {
 }
 
 resource "time_sleep" "waitrolecreate" {
-depends_on = [aws_iam_role.myrole]
+depends_on = [aws_iam_role.apprunner_instance_role]
 create_duration = "60s"
 }
 
