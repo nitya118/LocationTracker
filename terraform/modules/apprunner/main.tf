@@ -6,9 +6,12 @@ resource "aws_apprunner_service" "apprunner_backend" {
 
   service_name    = var.service_name
 
+  auto_scaling_configuration_arn = aws_apprunner_auto_scaling_configuration_version.app_runner_autoscaling.arn
+
   instance_configuration {
     cpu     = 1024
     memory  = 2048
+    instance_role_arn = aws_iam_role.apprunner_instance_role.arn
   }
 
   source_configuration {
@@ -18,42 +21,66 @@ resource "aws_apprunner_service" "apprunner_backend" {
 
     image_repository {
       image_configuration {
-        port = "8000"
+        port = "80"
+        runtime_environment_variables = {
+          ASPNETCORE_ENVIRONMENT = var.asp_core_environment
+          ASPNETCORE_FORWARDEDHEADERS_ENABLED	= true 
+          }
       }
       image_identifier      = var.ecr_image_address
       image_repository_type = "ECR"
     }
     auto_deployments_enabled = true
-
   }
-
   tags = var.tags
 }
 
-/*
-resource "aws_iam_role" "apprunner_role" {
-  name = "${var.service_name}-role"
+resource "aws_apprunner_auto_scaling_configuration_version" "app_runner_autoscaling" {
+  auto_scaling_configuration_name = "MinConfiguration"
+  max_concurrency = 100
+  max_size        = 5
+  min_size        = 1
 
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [{
-    "Action": "sts:AssumeRole",
-    "Effect": "Allow",
-    "Principal": {
-      "Service": "build.apprunner.amazonaws.com"
+  tags = {
+    Name = "location-tracker"
+  }
+}
+
+
+
+data "aws_iam_policy_document" "apprunner_service_assume_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["build.apprunner.amazonaws.com"]
     }
-  }]
-}
-EOF
+  }
 }
 
-*/
+
+resource "aws_iam_role" "apprunner_ecr_service_role" {
+  name = "apprunner-service-role-v1"
+  path               = "/"
+  assume_role_policy = data.aws_iam_policy_document.apprunner_service_assume_policy.json
+}
 
 
 
 
-resource "aws_iam_policy" "ddb-table-policy" {
+data "aws_iam_policy_document" "apprunner_instance_assume_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type = "Service"
+      identifiers = ["tasks.apprunner.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_policy" "ddb_table_policy" {
   name        = "ddb-location-reports"
   path        = "/"
   description = "Policy to access dynamodb"
@@ -79,55 +106,22 @@ resource "aws_iam_policy" "ddb-table-policy" {
 })
 }
 
-# data "aws_iam_policy" "ddb-fullaccess-policy" {
-#   name = "AmazonDynamoDBFullAccess"
-# }
-
-# data "aws_iam_policy" "apprunner-fullaccess-policy" {
-#   name = "AWSAppRunnerFullAccess"
-# }
-
-
 resource "aws_iam_role" "apprunner_instance_role" {
-  name = "apprunner-instance-role-v3"
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Sid    = ""
-        Principal = {
-          Service = [
-             "ec2.amazonaws.com",
-             "tasks.apprunner.amazonaws.com",
-             "build.apprunner.amazonaws.com"
-          ]
-        }
-      },
-    ]
-  })
+  name = "AppRunnerInstanceRole"
+  path = "/"
+  assume_role_policy = data.aws_iam_policy_document.apprunner_instance_assume_policy.json
 }
 
 
-resource "aws_iam_role_policy_attachment" "attach-ddb-table" {
-  role       = aws_iam_role.apprunner_instance_role.name
-  policy_arn = aws_iam_policy.ddb-table-policy.arn
+resource "aws_iam_role_policy_attachment" "apprunner_instance_role_attachment" {
+  role       = aws_iam_role.apprunner_ecr_service_role.name
+  policy_arn = aws_iam_policy.ddb_table_policy.arn
 }
+
 
 resource "time_sleep" "waitrolecreate" {
-depends_on = [aws_iam_role.apprunner_instance_role]
+depends_on = [aws_iam_role.apprunner_instance_role, aws_iam_role.apprunner_ecr_service_role]
 create_duration = "60s"
 }
 
-/*Don't need full access*/
-# resource "aws_iam_role_policy_attachment" "attach-ddb-fullaccess" {
-#   role       = aws_iam_role.apprunner-instance-role.name
-#   policy_arn = data.aws_iam_policy.ddb-fullaccess-policy.arn
-# }
-
-# resource "aws_iam_role_policy_attachment" "attach-apprunner-fullaccess" {
-#   role       = aws_iam_role.apprunner-instance-role.name
-#   policy_arn = data.aws_iam_policy.apprunner-fullaccess-policy.arn
-# }
 

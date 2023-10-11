@@ -20,3 +20,7 @@ variable "service_name" {
 variable "tags" {
   type = map(string)
 }
+
+variable "asp_core_environment" {
+  type = string
+}
