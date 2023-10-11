@@ -81,7 +81,7 @@ data "aws_iam_policy_document" "apprunner_instance_assume_policy" {
 }
 
 resource "aws_iam_policy" "ddb_table_policy" {
-  name        = "ddb-location-reports"
+  name        = "ddb-location-reports-v1"
   path        = "/"
   description = "Policy to access dynamodb"
 
