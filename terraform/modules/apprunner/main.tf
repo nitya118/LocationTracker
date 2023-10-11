@@ -2,7 +2,7 @@
 
 resource "aws_apprunner_service" "apprunner_backend" {
 
-  depends_on = [time_sleep.waitrolecreate, time_sleep.waitrolecreate2]
+  depends_on = [time_sleep.waitrolecreate]
 
   service_name    = var.service_name
 
@@ -11,12 +11,12 @@ resource "aws_apprunner_service" "apprunner_backend" {
   instance_configuration {
     cpu     = 1024
     memory  = 2048
-    instance_role_arn = aws_iam_role.apprunner_instance_role.arn
+    instance_role_arn = aws_iam_role.apprunner_ecr_service_instance_role.arn
   }
 
   source_configuration {
     authentication_configuration {
-      access_role_arn = aws_iam_role.apprunner_instance_role.arn
+      access_role_arn = aws_iam_role.apprunner_ecr_service_instance_role.arn
     }
 
     image_repository {
@@ -48,37 +48,25 @@ resource "aws_apprunner_auto_scaling_configuration_version" "app_runner_autoscal
 
 
 
-data "aws_iam_policy_document" "apprunner_service_assume_policy" {
+data "aws_iam_policy_document" "apprunner_service_instance_assume_policy" {
   statement {
     actions = ["sts:AssumeRole"]
 
     principals {
       type        = "Service"
-      identifiers = ["build.apprunner.amazonaws.com"]
+      identifiers = ["build.apprunner.amazonaws.com",
+      "tasks.apprunner.amazonaws.com"  ]
     }
   }
 }
 
 
-resource "aws_iam_role" "apprunner_ecr_service_role" {
-  name = "apprunner-service-role-v2"
+resource "aws_iam_role" "apprunner_ecr_service_instance_role" {
+  name = "apprunner-service-instance-role"
   path               = "/"
-  assume_role_policy = data.aws_iam_policy_document.apprunner_service_assume_policy.json
+  assume_role_policy = data.aws_iam_policy_document.apprunner_service_instance_assume_policy.json
 }
 
-
-
-
-data "aws_iam_policy_document" "apprunner_instance_assume_policy" {
-  statement {
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type = "Service"
-      identifiers = ["tasks.apprunner.amazonaws.com"]
-    }
-  }
-}
 
 resource "aws_iam_policy" "ddb_table_policy" {
   name        = "ddb-location-reports-v2"
@@ -106,27 +94,17 @@ resource "aws_iam_policy" "ddb_table_policy" {
 })
 }
 
-resource "aws_iam_role" "apprunner_instance_role" {
-  name = "AppRunnerInstanceRole2"
-  path = "/"
-  assume_role_policy = data.aws_iam_policy_document.apprunner_instance_assume_policy.json
-}
-
-
 resource "aws_iam_role_policy_attachment" "apprunner_instance_role_attachment" {
-  role       = aws_iam_role.apprunner_ecr_service_role.name
+  role       = aws_iam_role.apprunner_ecr_service_instance_role.name
   policy_arn = aws_iam_policy.ddb_table_policy.arn
 }
 
 
 resource "time_sleep" "waitrolecreate" {
-depends_on = [aws_iam_role.apprunner_instance_role]
+depends_on = [aws_iam_role.apprunner_ecr_service_instance_role]
 create_duration = "60s"
 }
 
-resource "time_sleep" "waitrolecreate2" {
-  depends_on = [ aws_iam_role.apprunner_ecr_service_role ]
-  create_duration = "60s"
-}
+
 
 
