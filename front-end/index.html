@@ -4,7 +4,8 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Location App</title>
-		<link href="index.css" rel="stylesheet" />
+		<link href="./styles/global.css" rel="stylesheet" />
+		<link href="./styles/index.css" rel="stylesheet" />
 
 		<!-- maplibre -->
 		<link
@@ -15,21 +16,33 @@
 
 	<body>
 		<header>
-			<h1>Location App</h1>
+			<img src="./assets/location-marker.svg" alt="Location marker icon" />
+			<a href="index.html"
+				><h1>
+					Location <br />
+					Application
+				</h1></a
+			>
 		</header>
 		<main>
-			<h2>Click the button below to send us your current location.</h2>
 			<div id="map">
 				<div id="loader-container"><div id="loader"></div></div>
 			</div>
 		</main>
+		<h2>Check and share your location</h2>
 		<footer>
-			<span>
-				If a prompt appears asking for permission to use your location please
-				click "Allow".
-			</span>
-			<button id="submit-button">Send My Location</button>
-			<span id="address"></span>
+			<div id="footer-content">
+				<div id="footer-content__your-location">
+					<img src="./assets/location-marker.svg" alt="Location marker" />
+					Your location
+				</div>
+				<div id="footer-content__edit-location">
+					<a href="./pages/edit-location.html">Edit Location</a>
+				</div>
+				<button id="submit-button" onclick="handleButtonClick()">
+					Share my location
+				</button>
+			</div>
 		</footer>
 
 		<div id="submit-modal">
@@ -54,6 +67,6 @@
 	<script src="https://unpkg.com/@aws/amazon-location-client@1.x/dist/amazonLocationClient.js"></script>
 	<script src="https://unpkg.com/@aws/amazon-location-utilities-auth-helper@1.x/dist/amazonLocationAuthHelper.js"></script>
 
-	<script src="scripts/main.js" type="module"></script>
-	<script src="scripts/submit.js" type="module"></script>
+	<script src="scripts/initialise-map.js" type="module"></script>
+	<script src="scripts/submit-location.js" type="module"></script>
 </html>

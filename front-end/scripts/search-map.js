@@ -1,12 +1,13 @@
 import { getUsersGeoLocation } from './geolocation.js';
+import {
+	identityPoolId,
+	mapName,
+	placesName,
+	region,
+} from '../variables/global-variables.js';
 
-const identityPoolId = 'eu-west-1:8f48143b-721f-4fd4-a0d7-e038f08d32cc';
-const mapName = 'location-tracker';
-const placesName = 'IG50HN';
-const region = 'eu-west-1';
-
+const setButton = document.getElementById('set-location-button');
 const loader = document.getElementById('loader-container');
-export let userLocation;
 let marker;
 
 const initializeMap = async (authHelper, latitude, longitude) => {
@@ -52,35 +53,35 @@ const searchMap = async (authHelper, map) => {
 			MaxResults: '5',
 		};
 
-		userLocation.latitude=e.lngLat.lat;
-		userLocation.longitude= e.lngLat.lng;
-		// // Set up command to search for results around clicked point
-		// const command = new amazonLocationClient.SearchPlaceIndexForPositionCommand(
-		// 	params
-		// );
+		// Set up command to search for results around clicked point
+		const command = new amazonLocationClient.SearchPlaceIndexForPositionCommand(
+			params
+		);
 
-		// try {
-		// 	// Make request to search for results around clicked point
-		// 	const data = await client.send(command);
-		// 	console.log(JSON.stringify(data));
+		try {
+			// Make request to search for results around clicked point
+			const data = await client.send(command);
+			console.log(JSON.stringify(data));
 
-		// 	// Log location points
-		// 	console.log('location', data.Results[0].Place.Geometry.Point);
-
-		// 	// Dispaly address in html
-		// 	const address = JSON.stringify(data.Results[0].Place.Label);
-		// 	document.querySelector('#address').textContent = address.replaceAll(
-		// 		'"',
-		// 		''
-		// 	);
-		// } catch (error) {
-		// 	console.log('There was an error searching.');
-		// }
+			// Log location points and save them to local storage
+			console.log('New location', data.Results[0].Place.Geometry.Point);
+			localStorage.setItem(
+				'userLongitude',
+				data.Results[0].Place.Geometry.Point[0]
+			);
+			localStorage.setItem(
+				'userLatitude',
+				data.Results[0].Place.Geometry.Point[1]
+			);
+		} catch (error) {
+			console.log('There was an error searching.');
+		}
 	});
 };
 
 async function main() {
-	// Show loader
+	// Show loader and disable button
+	setButton.disabled = true;
 	loader.style.display = 'flex';
 
 	//  Authorise with Cognito credentials
@@ -89,17 +90,18 @@ async function main() {
 
 	getUsersGeoLocation()
 		.then(async (location) => {
+			// Get lat and long in global storage
+			const userLatitude = localStorage.getItem('userLatitude');
+			const userLongitude = localStorage.getItem('userLongitude');
+
 			// Initialise map with user's location
-			userLocation = location;
-			return await initializeMap(
-				authHelper,
-				location.latitude,
-				location.longitude
-			);
+			return await initializeMap(authHelper, userLatitude, userLongitude);
 		})
 		.then((map) => {
 			// Hide loader
 			loader.style.display = 'none';
+			setButton.disabled = false;
+
 			// Allow user to search map
 			searchMap(authHelper, map);
 		})

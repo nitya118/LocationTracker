@@ -5,6 +5,10 @@ export const getUsersGeoLocation = () => {
 				(position) => {
 					const latitude = position.coords.latitude;
 					const longitude = position.coords.longitude;
+					// Temporary solution
+					// Save user's coords to local storage
+					localStorage.setItem('userLatitude', latitude);
+					localStorage.setItem('userLongitude', longitude);
 					resolve({ latitude, longitude });
 				},
 				(error) => {
@@ -13,8 +17,8 @@ export const getUsersGeoLocation = () => {
 				}
 			);
 		} else {
-			latitude = 0;
-			longitude = 0;
+			localStorage.setItem('userLatitude', 0);
+			localStorage.setItem('userLongitude', 0);
 			console.log('Geolocation is not supported by this browser.');
 			reject('Geolocation is not supported');
 		}
