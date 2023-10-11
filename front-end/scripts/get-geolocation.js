@@ -10,13 +10,13 @@ export const getUsersGeoLocation = async () => {
 				storedGeolocation = localStorage.getItem('usersGeolocation');
 				usersGeolocation = JSON.parse(storedGeolocation);
 
-				console.log('Users intial coordinates: ', usersGeolocation);
+				console.log("User's coordinates: ", usersGeolocation);
 				resolve(usersGeolocation);
 			});
 		} else {
 			usersGeolocation = JSON.parse(storedGeolocation);
 
-			console.log('Users intial coordinates: ', usersGeolocation);
+			console.log("User's coordinates: ", usersGeolocation);
 			resolve(usersGeolocation);
 		}
 	});
