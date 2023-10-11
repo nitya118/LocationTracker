@@ -34,7 +34,9 @@
 				<div id="footer-content__set-location">
 					Move the map to set your location
 				</div>
-				<button id="set-location-button">Set my location</button>
+				<button id="set-location-button" onclick="handleClick()">
+					Set my location
+				</button>
 			</div>
 		</footer>
 	</body>
@@ -45,5 +47,14 @@
 	<script src="https://unpkg.com/@aws/amazon-location-utilities-auth-helper@1.x/dist/amazonLocationAuthHelper.js"></script>
 
 	<script src="../scripts/search-map.js" type="module"></script>
-	<script src="../scripts/set-location.js" type="module"></script>
+	<script>
+		function handleClick() {
+			alert(
+				'New logitude: ' +
+					localStorage.getItem('userLongitude') +
+					' New latitude: ' +
+					localStorage.getItem('userLatitude')
+			);
+		}
+	</script>
 </html>
