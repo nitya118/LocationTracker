@@ -1,9 +1,9 @@
-import { getUsersGeoLocation } from './get-geolocation.js';
+import { getUsersGeoLocation } from '../geolocation/get-geolocation.js';
 import {
 	identityPoolId,
 	mapName,
 	region,
-} from '../variables/global-variables.js';
+} from '../../variables/global-variables.js';
 
 let marker;
 const loader = document.getElementById('loader-container');

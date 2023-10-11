@@ -1,15 +1,14 @@
-import { getUsersGeoLocation } from './get-geolocation.js';
+import { getUsersGeoLocation } from '../geolocation/get-geolocation.js';
 import { initialiseMap } from './initialise-map.js';
 import {
 	identityPoolId,
 	placesName,
 	region,
-} from '../variables/global-variables.js';
+} from '../../variables/global-variables.js';
 
 const ctaButton = document.getElementById('set-location-button');
 const loader = document.getElementById('loader-container');
 let marker;
-
 export const updatedGeolocation = {
 	latitude: null,
 	longitude: null,
@@ -57,19 +56,6 @@ const searchMap = async (authHelper, map) => {
 			updatedGeolocation.longitude = data.Results[0].Place.Geometry.Point[0];
 
 			console.log('Users new coordinates', updatedGeolocation);
-
-			// localStorage.setItem(
-			// 	'userLongitude',
-			// 	data.Results[0].Place.Geometry.Point[0]
-			// );
-			// localStorage.setItem(
-			// 	'userLatitude',
-			// 	data.Results[0].Place.Geometry.Point[1]
-			// );
-			// console.log(
-			// 	'Users new coordinates',
-			// 	data.Results[0].Place.Geometry.Point
-			// );
 		} catch (error) {
 			console.log('There was an error searching.');
 		}
