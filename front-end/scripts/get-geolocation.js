@@ -1,18 +1,22 @@
 import { initialiseUsersGeolocation } from './initialise-geolocation.js';
-let usersGeolocation;
 
 export const getUsersGeoLocation = async () => {
 	console.log('getting geolocation');
-	usersGeolocation = localStorage.getItem('usersGeolocation');
+	let storedGeolocation = localStorage.getItem('usersGeolocation');
+	let usersGeolocation;
 
-	if (!usersGeolocation) {
+	if (!storedGeolocation) {
 		initialiseUsersGeolocation().then(async () => {
-			usersGeolocation = localStorage.getItem('usersGeolocation');
-			console.log('geting geo:', JSON.parse(usersGeolocation));
+			storedGeolocation = localStorage.getItem('usersGeolocation');
+			usersGeolocation = JSON.parse(storedGeolocation);
+			console.log('geting geo:', usersGeolocation);
 		});
+	} else {
+		storedGeolocation = localStorage.getItem('usersGeolocation');
+		usersGeolocation = JSON.parse(storedGeolocation);
+
+		console.log('geo exists:', usersGeolocation);
 	}
 
-	// return usersGeolocation;
+	return usersGeolocation;
 };
-
-getUsersGeoLocation();
