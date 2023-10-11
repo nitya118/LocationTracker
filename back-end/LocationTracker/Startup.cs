@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+﻿using LocationTrackerLib.Services;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
@@ -40,6 +41,8 @@ namespace LocationTracker
 
 
             services.AddRazorPages();
+
+            services.AddScoped<ILocationReportDataService, DdbLocationReportDataService>();
         }
         public void Configure(WebApplication app, IWebHostEnvironment env)
         {

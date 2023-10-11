@@ -2,6 +2,7 @@
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DocumentModel;
 using LocationTracker.Models;
+using LocationTrackerLib.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Diagnostics;
@@ -12,9 +13,13 @@ namespace LocationTracker.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly ILocationReportDataService _locationReportDataService;
+
+        public HomeController(ILogger<HomeController> logger, ILocationReportDataService locationReportDataService)
         {
             _logger = logger;
+
+            _locationReportDataService = locationReportDataService;
         }
 
         public async Task<IActionResult> Index()
@@ -22,37 +27,22 @@ namespace LocationTracker.Controllers
 
             var locationReports =new List<LocationReport>();
 
-            var client = new AmazonDynamoDBClient(RegionEndpoint.EUWest1);
-
-            Table table = Table.LoadTable(client, "LocationReports");
-
-            
-
-
-            var scanConfig = new ScanOperationConfig()
-            {
-                Select = SelectValues.SpecificAttributes,
-                AttributesToGet = new List<string> { "Id", "DateTimeUTC" }
-            };
-
-            Search search = table.Scan(scanConfig);
-
-
-            while (!search.IsDone)
-            {
-                var matches= await search.GetNextSetAsync();
-                foreach(var match in matches)
-                {
-                    locationReports.Add(new LocationReport()
-                    {
-                        Id = Convert.ToString(match["Id"]),
-                        UTCDateString= Convert.ToString(match["DateTimeUTC"])
-
-                    });
-                }
-            }
+          
 
             return View(locationReports);
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetLocationReports()
+        {
+
+            var fromDate = new DateTime(2023, 10, 1, 0, 0, 0);
+
+            var toDate = new DateTime(2023, 10, 15, 0, 0, 0);
+
+            var reports = await _locationReportDataService.GetRecordsAsync("", fromDate, toDate);
+
+            return Json(reports);
         }
 
       

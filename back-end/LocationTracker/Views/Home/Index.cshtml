@@ -3,32 +3,55 @@
     ViewData["Title"] = "Home Page";
 }
 
+
+
+<link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    @{
-        if (User.IsInRole("Agent"))
-        {
-            <p>Agent</p>
-        }
-        else if(User.IsInRole("Supervisor"))
-        {
-            <p>Supervisor</p>
-        }
-        else
-        {
-            <p>unknown role</p>
-        }
-
-    }
-
-    @{
-        foreach(var item in Model)
-        {
-            {
-                <p>@item.Id</p>
-            }
-        }
-    }
-
+    <button type="button" id="btnClick" onclick="click()">Test Button</button>
+    <div id="wrapper"></div>
 </div>
+<script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
+<script>
+    let grid = new gridjs.Grid({
+        search: true,
+        sort: true,
+        resizable: true,
+        columns: [
+            {id:"Id", name: "Id", hidden: true },
+            {id:"name", name: "Name" },
+            {id:"mobile", name: "Mobile" },
+            {id:"createdBy", name: "Created By" },
+            {id: "createdDateTimeUTC", name: "Created Date" },
+            {id:"status", name: "Status" },
+        ],
+        data: [
+            ["1","John", "0712730623","alice@contoso.com","12-Oct 13:45","Sent"],
+           
+        ]
+    }).render(document.getElementById("wrapper"));
+
+
+    let btnClick = document.getElementById("btnClick");
+
+    btnClick.onclick =async function (e) {
+
+        let dataUrl = '@Url.Action("GetLocationReports","Home")';
+
+        let response=await fetch(dataUrl,{method:'get'});
+
+        let data= await response.json();
+
+        console.log(data);
+
+        grid.config.plugin.remove("search");
+
+        let newConf = Object.assign({}, grid.config);
+
+        newConf.data = data;
+
+        grid.updateConfig(newConf).forceRender();
+    };
+</script>
