@@ -2,7 +2,7 @@
 
 resource "aws_apprunner_service" "apprunner_backend" {
 
-  depends_on = [time_sleep.waitrolecreate]
+  depends_on = [time_sleep.waitrolecreate, time_sleep.waitrolecreate2]
 
   service_name    = var.service_name
 
@@ -61,7 +61,7 @@ data "aws_iam_policy_document" "apprunner_service_assume_policy" {
 
 
 resource "aws_iam_role" "apprunner_ecr_service_role" {
-  name = "apprunner-service-role-v1"
+  name = "apprunner-service-role-v2"
   path               = "/"
   assume_role_policy = data.aws_iam_policy_document.apprunner_service_assume_policy.json
 }
@@ -81,7 +81,7 @@ data "aws_iam_policy_document" "apprunner_instance_assume_policy" {
 }
 
 resource "aws_iam_policy" "ddb_table_policy" {
-  name        = "ddb-location-reports-v1"
+  name        = "ddb-location-reports-v2"
   path        = "/"
   description = "Policy to access dynamodb"
 
@@ -107,7 +107,7 @@ resource "aws_iam_policy" "ddb_table_policy" {
 }
 
 resource "aws_iam_role" "apprunner_instance_role" {
-  name = "AppRunnerInstanceRole"
+  name = "AppRunnerInstanceRole2"
   path = "/"
   assume_role_policy = data.aws_iam_policy_document.apprunner_instance_assume_policy.json
 }
@@ -120,8 +120,13 @@ resource "aws_iam_role_policy_attachment" "apprunner_instance_role_attachment" {
 
 
 resource "time_sleep" "waitrolecreate" {
-depends_on = [aws_iam_role.apprunner_instance_role, aws_iam_role.apprunner_ecr_service_role]
+depends_on = [aws_iam_role.apprunner_instance_role]
 create_duration = "60s"
+}
+
+resource "time_sleep" "waitrolecreate2" {
+  depends_on = [ aws_iam_role.apprunner_ecr_service_role ]
+  create_duration = "60s"
 }
 
 
