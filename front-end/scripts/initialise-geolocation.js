@@ -3,13 +3,11 @@ export const initialiseUsersGeolocation = () => {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(
 				(position) => {
-					console.log('initialising geolocation');
 					const usersGeolocation = {
 						latitude: position.coords.latitude,
 						longitude: position.coords.longitude,
 					};
-					// Temporary solution
-					// Save user's coords to local storage
+					// Temporary solution: save user's coords to local storage
 					localStorage.setItem(
 						'usersGeolocation',
 						JSON.stringify(usersGeolocation)

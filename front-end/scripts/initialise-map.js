@@ -7,9 +7,9 @@ import {
 
 let marker;
 const loader = document.getElementById('loader-container');
-const submitButton = document.getElementById('submit-button');
+const ctaButton = document.getElementById('submit-button');
 
-const initialiseMap = async (authHelper, latitude, longitude) => {
+export const initialiseMap = async (authHelper, latitude, longitude) => {
 	const map = new maplibregl.Map({
 		container: 'map',
 		center: [longitude, latitude],
@@ -21,14 +21,13 @@ const initialiseMap = async (authHelper, latitude, longitude) => {
 	map.addControl(new maplibregl.NavigationControl(), 'top-left');
 	// Set place marker to users current location
 	marker = new maplibregl.Marker().setLngLat([longitude, latitude]).addTo(map);
-	console.log('longitude', longitude, 'latititude', latitude);
 
 	return map;
 };
 
 async function main() {
 	// Show loader and disable submit button
-	submitButton.disabled = true;
+	ctaButton.disabled = true;
 	loader.style.display = 'flex';
 
 	//  Authorise with Cognito credentials
@@ -46,7 +45,7 @@ async function main() {
 		.then(() => {
 			// Hide loader and enable submit button
 			loader.style.display = 'none';
-			submitButton.disabled = false;
+			ctaButton.disabled = false;
 		})
 		.catch((error) => {
 			console.error('Error:', error);

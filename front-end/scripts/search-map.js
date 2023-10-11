@@ -1,30 +1,14 @@
-import { getUsersGeoLocation } from './initialise-geolocation.js';
+import { getUsersGeoLocation } from './get-geolocation.js';
+import { initialiseMap } from './initialise-map.js';
 import {
 	identityPoolId,
-	mapName,
 	placesName,
 	region,
 } from '../variables/global-variables.js';
 
-const setButton = document.getElementById('set-location-button');
+const ctaButton = document.getElementById('set-location-button');
 const loader = document.getElementById('loader-container');
 let marker;
-
-const initializeMap = async (authHelper, latitude, longitude) => {
-	const map = new maplibregl.Map({
-		container: 'map',
-		center: [longitude, latitude],
-		zoom: 16,
-		style: `https://maps.geo.${region}.amazonaws.com/maps/v0/maps/${mapName}/style-descriptor`,
-		...authHelper.getMapAuthenticationOptions(),
-	});
-
-	map.addControl(new maplibregl.NavigationControl(), 'top-left');
-	// Set place marker to users current location
-	marker = new maplibregl.Marker().setLngLat([longitude, latitude]).addTo(map);
-
-	return map;
-};
 
 const searchMap = async (authHelper, map) => {
 	// Initialize Amazon Location SDK client
@@ -64,7 +48,6 @@ const searchMap = async (authHelper, map) => {
 			console.log(JSON.stringify(data));
 
 			// Log location points and save them to local storage
-			console.log('New location', data.Results[0].Place.Geometry.Point);
 			localStorage.setItem(
 				'userLongitude',
 				data.Results[0].Place.Geometry.Point[0]
@@ -72,6 +55,10 @@ const searchMap = async (authHelper, map) => {
 			localStorage.setItem(
 				'userLatitude',
 				data.Results[0].Place.Geometry.Point[1]
+			);
+			console.log(
+				'Users new coordinates',
+				data.Results[0].Place.Geometry.Point
 			);
 		} catch (error) {
 			console.log('There was an error searching.');
@@ -81,26 +68,26 @@ const searchMap = async (authHelper, map) => {
 
 async function main() {
 	// Show loader and disable button
-	setButton.disabled = true;
+	ctaButton.disabled = true;
 	loader.style.display = 'flex';
 
 	//  Authorise with Cognito credentials
 	const authHelper =
 		await amazonLocationAuthHelper.withIdentityPoolId(identityPoolId);
 
-	initialiseUsersGeoLocation()
-		.then(async (location) => {
+	getUsersGeoLocation()
+		.then(async (coordinates) => {
 			// Get lat and long in global storage
-			const userLatitude = localStorage.getItem('userLatitude');
-			const userLongitude = localStorage.getItem('userLongitude');
+			const userLatitude = coordinates.latitude;
+			const userLongitude = coordinates.longitude;
 
 			// Initialise map with user's location
-			return await initializeMap(authHelper, userLatitude, userLongitude);
+			return await initialiseMap(authHelper, userLatitude, userLongitude);
 		})
 		.then((map) => {
 			// Hide loader
 			loader.style.display = 'none';
-			setButton.disabled = false;
+			ctaButton.disabled = false;
 
 			// Allow user to search map
 			searchMap(authHelper, map);
