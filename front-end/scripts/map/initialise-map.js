@@ -1,14 +1,15 @@
-import { getUsersGeoLocation } from './geolocation.js';
+import { getUsersGeoLocation } from '../geolocation/get-geolocation.js';
 import {
 	identityPoolId,
 	mapName,
 	region,
-} from '../variables/global-variables.js';
+} from '../../variables/global-variables.js';
 
+let marker;
 const loader = document.getElementById('loader-container');
-const submitButton = document.getElementById('submit-button');
+const ctaButton = document.getElementById('submit-button');
 
-const initialiseMap = async (authHelper, latitude, longitude) => {
+export const initialiseMap = async (authHelper, latitude, longitude) => {
 	const map = new maplibregl.Map({
 		container: 'map',
 		center: [longitude, latitude],
@@ -19,17 +20,14 @@ const initialiseMap = async (authHelper, latitude, longitude) => {
 
 	map.addControl(new maplibregl.NavigationControl(), 'top-left');
 	// Set place marker to users current location
-	const marker = new maplibregl.Marker()
-		.setLngLat([longitude, latitude])
-		.addTo(map);
-	console.log('longitude', longitude, 'latititude', latitude);
+	marker = new maplibregl.Marker().setLngLat([longitude, latitude]).addTo(map);
 
 	return map;
 };
 
 async function main() {
 	// Show loader and disable submit button
-	submitButton.disabled = true;
+	ctaButton.disabled = true;
 	loader.style.display = 'flex';
 
 	//  Authorise with Cognito credentials
@@ -37,10 +35,9 @@ async function main() {
 		await amazonLocationAuthHelper.withIdentityPoolId(identityPoolId);
 
 	getUsersGeoLocation()
-		.then(async () => {
-			// Get lat and long from local storage
-			const userLatitude = localStorage.getItem('userLatitude');
-			const userLongitude = localStorage.getItem('userLongitude');
+		.then(async (coordinates) => {
+			const userLatitude = coordinates.latitude;
+			const userLongitude = coordinates.longitude;
 
 			// Initialise map with user's location
 			return await initialiseMap(authHelper, userLatitude, userLongitude);
@@ -48,7 +45,7 @@ async function main() {
 		.then(() => {
 			// Hide loader and enable submit button
 			loader.style.display = 'none';
-			submitButton.disabled = false;
+			ctaButton.disabled = false;
 		})
 		.catch((error) => {
 			console.error('Error:', error);
