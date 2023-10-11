@@ -1,10 +1,11 @@
-import { getUsersGeoLocation } from './geolocation.js';
+import { getUsersGeoLocation } from './initialise-geolocation.js';
 import {
 	identityPoolId,
 	mapName,
 	region,
 } from '../variables/global-variables.js';
 
+let marker;
 const loader = document.getElementById('loader-container');
 const submitButton = document.getElementById('submit-button');
 
@@ -19,9 +20,7 @@ const initialiseMap = async (authHelper, latitude, longitude) => {
 
 	map.addControl(new maplibregl.NavigationControl(), 'top-left');
 	// Set place marker to users current location
-	const marker = new maplibregl.Marker()
-		.setLngLat([longitude, latitude])
-		.addTo(map);
+	marker = new maplibregl.Marker().setLngLat([longitude, latitude]).addTo(map);
 	console.log('longitude', longitude, 'latititude', latitude);
 
 	return map;
@@ -36,7 +35,7 @@ async function main() {
 	const authHelper =
 		await amazonLocationAuthHelper.withIdentityPoolId(identityPoolId);
 
-	getUsersGeoLocation()
+	initialiseUsersGeoLocation()
 		.then(async () => {
 			// Get lat and long from local storage
 			const userLatitude = localStorage.getItem('userLatitude');

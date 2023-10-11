@@ -1,4 +1,4 @@
-import { getUsersGeoLocation } from './geolocation.js';
+import { getUsersGeoLocation } from './initialise-geolocation.js';
 import {
 	identityPoolId,
 	mapName,
@@ -88,7 +88,7 @@ async function main() {
 	const authHelper =
 		await amazonLocationAuthHelper.withIdentityPoolId(identityPoolId);
 
-	getUsersGeoLocation()
+	initialiseUsersGeoLocation()
 		.then(async (location) => {
 			// Get lat and long in global storage
 			const userLatitude = localStorage.getItem('userLatitude');
