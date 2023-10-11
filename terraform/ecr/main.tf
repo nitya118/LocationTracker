@@ -45,14 +45,14 @@ resource "null_resource" "docker_packaging" {
 	  }
 	
 	  provisioner "local-exec" {
-		working_dir="${path.module}/../../back-end/LocationTracker/"
+		working_dir="${path.module}/../.."
 		command = <<EOF
 		docker build -t ${aws_ecr_repository.location-tracker.repository_url}:latest .
 		EOF
 	  }
 	
 	provisioner "local-exec" {
-		working_dir="${path.module}/../../back-end/LocationTracker/"
+		working_dir="${path.module}/../.."
 		command = <<EOF
 		docker push ${aws_ecr_repository.location-tracker.repository_url}:latest
 		EOF
