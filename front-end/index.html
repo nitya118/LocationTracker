@@ -92,13 +92,19 @@
 				method: 'GET',
 				mode: 'cors',
 			});
+
+			// Log api test
+			console.log('test async: ', response);
+
+			//  Alert user's shared location
+			const sharedLocation = JSON.parse(
+				localStorage.getItem('usersGeolocation')
+			);
 			alert(
-				'test async ' +
-					response +
-					' lat ' +
-					localStorage.getItem('userLatitude') +
-					' lon ' +
-					localStorage.getItem('userLongitude')
+				'Sharing latitude: ' +
+					sharedLocation.latitude +
+					' Sharing longitude: ' +
+					sharedLocation.longitude
 			);
 		}
 
