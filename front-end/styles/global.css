@@ -35,6 +35,10 @@ header a {
 	color: black;
 }
 
+main .message {
+	padding: 1rem 2rem;
+}
+
 #loader-container {
 	display: flex;
 	height: 100%;
