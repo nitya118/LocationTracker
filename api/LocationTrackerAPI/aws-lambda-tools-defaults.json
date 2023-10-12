@@ -11,6 +11,6 @@
   "function-runtime": "dotnet6",
   "function-memory-size": 256,
   "function-timeout": 30,
-  "function-handler": "LocationTrackerAPI::LocationTrackerAPI.Functions::Get",
+  "function-handler": "LocationTrackerAPI::LocationTrackerAPI.Functions::LocationReport",
   "function-url-enable": true
 }
