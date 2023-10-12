@@ -11,5 +11,5 @@ trigger:
 - task: PublishPipelineArtifact@1
   inputs:
     targetPath: '$(System.DefaultWorkingDirectory)/'
-    artifact: 'infra'
+    artifact: 'api'
     publishLocation: 'pipeline'
