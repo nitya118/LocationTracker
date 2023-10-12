@@ -8,8 +8,8 @@ trigger:
       -  'api/*'
  #package API artifact
   steps:
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: '$(System.DefaultWorkingDirectory)/'
-    artifact: 'api'
-    publishLocation: 'pipeline'
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(System.DefaultWorkingDirectory)/'
+      artifact: 'api'
+      publishLocation: 'pipeline'
