@@ -7,7 +7,7 @@ trigger:
     include:
       -  'api/*'
  #package API artifact
-  steps:
+steps:
   - task: PublishPipelineArtifact@1
     inputs:
       targetPath: '$(System.DefaultWorkingDirectory)/'
