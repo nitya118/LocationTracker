@@ -160,7 +160,9 @@ namespace LocationTrackerLib.Tests.Integration
                 {
                     Id = System.Guid.NewGuid().ToString(),
                     Status = LocationReportStatus.SMS_SENT,
+                    Name = name,
                     CreatedBy = createdBy,
+                    Mobile = mobile,
                     CreatedDateTimeUTC = currentDateTime,
                 };
 
@@ -169,7 +171,7 @@ namespace LocationTrackerLib.Tests.Integration
                 await sut.SaveRecordAsync(ls);
             };
 
-            var createdDate = new DateTime(2023, 10, 7, 0, 0, 0); ;
+            var createdDate = new DateTime(2023, 10, 13, 0, 0, 0); ;
 
             for (int i = 0; i < NumOfRecords; i++)
             {

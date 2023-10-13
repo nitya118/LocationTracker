@@ -1,10 +1,7 @@
-﻿using Amazon;
-using Amazon.DynamoDBv2;
-using Amazon.DynamoDBv2.DocumentModel;
-using LocationTracker.Models;
+﻿using LocationTracker.Models;
 using LocationTrackerLib.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Diagnostics;
 
 namespace LocationTracker.Controllers
@@ -24,18 +21,24 @@ namespace LocationTracker.Controllers
 
         public async Task<IActionResult> Index()
         {
-
-            var locationReports =new List<LocationReport>();
-
-          
+            var locationReports = new List<LocationReport>();
 
             return View(locationReports);
         }
 
         [HttpGet]
+        public async Task<IActionResult> LogOut()
+        {
+            await HttpContext.SignOutAsync("Cookies");
+
+            await HttpContext.SignOutAsync("OpenIdConnect");
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
         public async Task<JsonResult> GetLocationReports()
         {
-
             var fromDate = new DateTime(2023, 10, 1, 0, 0, 0);
 
             var toDate = new DateTime(2023, 10, 15, 0, 0, 0);
@@ -45,7 +48,6 @@ namespace LocationTracker.Controllers
             return Json(reports);
         }
 
-      
         public IActionResult Privacy()
         {
             return View();
@@ -54,8 +56,6 @@ namespace LocationTracker.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            
-
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
