@@ -11,5 +11,6 @@ namespace LocationTrackerLib.Services
         public DateTime GetCurrentUTCDateTime();
 
         public DateTime ConvertUTCToBST(DateTime utc);
+
     }
 }

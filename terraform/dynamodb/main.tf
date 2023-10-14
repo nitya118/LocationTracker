@@ -12,4 +12,9 @@ resource "aws_dynamodb_table" "location_report" {
     type = "S"
   }
 
+  ttl {
+    attribute_name = "TimeToLive"
+    enabled        = true
+  }
+
 }

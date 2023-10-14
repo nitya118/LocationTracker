@@ -1,5 +1,4 @@
 ﻿using Amazon.DynamoDBv2.DataModel;
-using System.Diagnostics.CodeAnalysis;
 
 namespace LocationTrackerLib.Models
 {
@@ -17,7 +16,6 @@ namespace LocationTrackerLib.Models
         public string Id { get; set; }
 
         [DynamoDBProperty]
-        
         public string Name { get; set; }
 
         [DynamoDBProperty]
@@ -40,5 +38,18 @@ namespace LocationTrackerLib.Models
 
         [DynamoDBProperty]
         public DateTime LocationupdatedUTCDatetime { get; set; }
+
+        [DynamoDBProperty]
+        public long TimeToLive
+        {
+            get
+            {
+                var dt = (new DateTime(CreatedDateTimeUTC.Ticks, DateTimeKind.Utc)).AddHours(24);
+
+                var dtOffset = new DateTimeOffset(dt);
+
+                return dtOffset.ToUnixTimeSeconds();
+            }
+        }
     }
 }

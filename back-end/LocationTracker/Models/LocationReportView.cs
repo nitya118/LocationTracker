@@ -12,12 +12,10 @@
 
         public double Lat { get; set; }
 
-        public double Long { get; set; }    
+        public double Long { get; set; }
 
         public double Northings { get; set; }
 
         public double Eastings { get; set; }
-
-
     }
 }
