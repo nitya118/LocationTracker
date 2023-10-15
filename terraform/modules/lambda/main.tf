@@ -50,10 +50,21 @@ resource "aws_iam_role_policy_attachment" "dynamodb_table_policy_attachment" {
 
 
 
+data "archive_file" "lambda_deployment_package" {
+  type        = "zip"
+  output_path = "lambda_function.zip" # Replace with the desired output path
+
+  source_dir = "../../../api/LocationTrackerAPI"  # Replace with the directory containing your lambda function code, e.g., your .NET 6 project
+}
 
 resource "aws_lambda_function" "lambda_function_v1" {
   function_name = var.function_name
-  role           = aws_iam_role.lambda_execution_role.arn # Attach the IAM role here
+  role          = aws_iam_role.lambda_execution_role.arn # Attach the IAM role here
+  runtime       = "dotnet6"
+  handler       = "LocationTrackerAPI::LocationTrackerAPI.Functions::LocationReport"
+
+  filename         = data.archive_file.lambda_deployment_package.output_path
+  source_code_hash = data.archive_file.lambda_deployment_package.output_base64sha256
 
   tags = var.tags 
 
@@ -69,5 +80,7 @@ resource "aws_lambda_function_url" "lambda_function_expose" {
     allow_origins     = ["*"]
   }
 }
+
+
 
 
