@@ -7,7 +7,12 @@ variable "domain_name" {
   type = string
   description = "Name of the domain"
 }
-variable "bucket_name" {
+variable "bucket_name_front_end" {
   type = string
   description = "Name of the bucket."
+}
+
+variable "tags" {
+  type = map(string)
+
 }

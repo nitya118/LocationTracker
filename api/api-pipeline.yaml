@@ -1,0 +1,15 @@
+trigger:
+  branches:
+    include:
+      - infra_*
+      - master
+  paths:
+    include:
+      -  'api/*'
+ #package API artifact
+steps:
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(System.DefaultWorkingDirectory)/'
+      artifact: 'api'
+      publishLocation: 'pipeline'

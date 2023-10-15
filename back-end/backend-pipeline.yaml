@@ -1,0 +1,28 @@
+trigger:
+  branches:
+    include:
+      - infra_*
+  paths:
+    include:
+      -  'backend/*'
+
+  
+# backend pipleine
+steps:
+- task: Docker@2
+  displayName: Build an image
+  inputs:
+    command: build
+    dockerfile: '$(Build.SourcesDirectory)/back-end/LocationTracker/Dockerfile'
+    buildContext: '$(Build.SourcesDirectory)/back-end/LocationTracker/'
+    repository: $(DOCKER_REPOSITORY_NAME)
+
+- task: ECRPushImage@1
+  inputs:
+    awsCredentials: 'AWS_credentials'
+    regionName: $(AWS_REGION)
+    imageSource: 'imagename'
+    sourceImageName: $(DOCKER_REPOSITORY_NAME)
+    sourceImageTag: $(Build.BuildId)
+    pushTag: latest
+    repositoryName: $(DOCKER_REPOSITORY_NAME)
