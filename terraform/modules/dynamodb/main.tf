@@ -13,6 +13,11 @@ resource "aws_dynamodb_table" "ddb_table" {
     type = "S"
   }
 
+  attribute {
+    name = "DateTimeUTC"
+    type = "S"
+  }
+
   ttl {
     attribute_name = "TimeToLive"
     enabled        = true
