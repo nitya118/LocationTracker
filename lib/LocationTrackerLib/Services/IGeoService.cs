@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LocationTrackerLib.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace LocationTrackerLib.Services
 {
     public interface IGeoService
     {
-        
+        public EastingsNorthing ConvertFromLatLon(LatLon latLon);
     }
 }

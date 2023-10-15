@@ -1,34 +1,40 @@
 ﻿@model IList<LocationTracker.Models.LocationReport>
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Location Reports";
 }
 
+
+<link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+<link href="~/css/agent.css" rel="stylesheet" />
+
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    @{
-        if (User.IsInRole("Agent"))
-        {
-            <p>Agent</p>
-        }
-        else if(User.IsInRole("Supervisor"))
-        {
-            <p>Supervisor</p>
-        }
-        else
-        {
-            <p>unknown role</p>
-        }
-
-    }
-
-    @{
-        foreach(var item in Model)
-        {
-            {
-                <p>@item.Id</p>
-            }
-        }
-    }
-
+    <button type="button" id="btnClick" onclick="click()">Test Button</button>
+    <div class="signup-form">
+        <div class="form-field">
+            <label >Send a Location Request</label>
+        </div>
+        <div class="form-field">
+            <label for="name">Name</label>
+            <input type="text" placeholder="John Doe" id="Name">
+        </div>
+        <div class="divider"></div>
+        <div class="form-field">
+            <label for="mobile">Mobile</label>
+            <input type="text" id="mobile" placeholder="07771234567" >
+        </div>
+        <button class="submit">
+           Send SMS
+        </button>
+    </div>
+    <div id="wrapper"></div>
 </div>
+<script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
+<script src="~/js/agent-grid.js" type="module" defer></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script defer>
+
+
+    
+    
+</script>

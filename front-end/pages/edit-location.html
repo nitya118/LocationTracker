@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Location App</title>
+		<link href="../styles/global.css" rel="stylesheet" />
+		<link href="../styles/edit-location.css" rel="stylesheet" />
+
+		<!-- maplibre -->
+		<link
+			href="https://unpkg.com/maplibre-gl@3.x/dist/maplibre-gl.css"
+			rel="stylesheet"
+		/>
+	</head>
+
+	<body>
+		<header>
+			<img src="../assets/location-marker.svg" alt="Location marker icon" />
+			<a href="../index.html"
+				><h1>
+					Location <br />
+					Application
+				</h1></a
+			>
+		</header>
+		<main>
+			<div id="map">
+				<div id="loader-container"><div id="loader"></div></div>
+			</div>
+		</main>
+		<footer>
+			<div id="footer-content">
+				<div id="footer-content__set-location">
+					Move the map to set your location
+				</div>
+				<button id="set-location-button">Set my location</button>
+			</div>
+		</footer>
+	</body>
+
+	<!-- JavaScript dependencies -->
+	<script src="https://unpkg.com/maplibre-gl@3.x/dist/maplibre-gl.js"></script>
+	<script src="https://unpkg.com/@aws/amazon-location-client@1.x/dist/amazonLocationClient.js"></script>
+	<script src="https://unpkg.com/@aws/amazon-location-utilities-auth-helper@1.x/dist/amazonLocationAuthHelper.js"></script>
+
+	<script src="../scripts/map/search-map.js" type="module"></script>
+	<script type="module">
+		import { updatedGeolocation } from '../scripts/map/search-map.js';
+
+		const ctaButton = document.getElementById('set-location-button');
+		ctaButton.onclick = function () {
+			localStorage.setItem(
+				'usersGeolocation',
+				JSON.stringify(updatedGeolocation)
+			);
+			window.location.href = '../index.html';
+		};
+	</script>
+</html>

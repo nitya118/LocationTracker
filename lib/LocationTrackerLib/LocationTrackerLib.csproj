@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.203" />
+    <PackageReference Include="IeuanWalker.GeoUK" Version="1.0.5" />
+  </ItemGroup>
+
 </Project>

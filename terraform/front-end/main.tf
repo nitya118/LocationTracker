@@ -32,14 +32,14 @@ resource "aws_s3_bucket_public_access_block" "example" {
 }
 
 
-
-
+#check https://stackoverflow.com/questions/12358173/correct-s3-cloudfront-cors-configuration
 resource "aws_s3_bucket_cors_configuration" "example" {
   bucket = aws_s3_bucket.location-tracker-front-end.bucket
 cors_rule {
     allowed_headers = ["Authorization", "Content-Length"]
     allowed_methods = ["GET", "POST"]
-    allowed_origins = ["https://www.${var.domain_name}"]
+    #allowed_origins = ["https://www.${var.domain_name}"]
+    allowed_origins=["*"]
     max_age_seconds = 3000
   }
 }
@@ -82,8 +82,7 @@ error_document {
 
 
 
-
-
+#upload the index html
 resource "aws_s3_object" "object-index_html" {
     bucket          = aws_s3_bucket.location-tracker-front-end.id
     key             = "index.html"
@@ -93,67 +92,89 @@ resource "aws_s3_object" "object-index_html" {
   
 }
 
-resource "aws_s3_object" "object-not-found" {
-    bucket          = aws_s3_bucket.location-tracker-front-end.id
-    key             = "pages/not-found.html"
-    source          = "../${var.website_root}/pages/not-found.html"
-    content_type    = "text/html"
-    etag            = filemd5("../${var.website_root}/pages/not-found.html")
-  
+#upload the "pages" folder
+module "pages_folder" {
+  source = "hashicorp/dir/template"
+  base_dir = "../${var.website_root}/pages"
+}
+
+resource "aws_s3_bucket_object" "pages"{
+  for_each=module.pages_folder.files
+  bucket = aws_s3_bucket.location-tracker-front-end.id
+  content_type    = "text/html"
+  key="pages/${each.key}"
+  source="../${var.website_root}/pages/${each.key}"
+  etag   = filemd5("../${var.website_root}/pages/${each.key}")
 }
 
 
-resource "aws_s3_object" "object-submitted" {
-    bucket          = aws_s3_bucket.location-tracker-front-end.id
-    key             = "pages/submitted.html"
-    source          = "../${var.website_root}/pages/submitted.html"
-    content_type    = "text/html"
-    etag            = filemd5("../${var.website_root}/pages/submitted.html")
-  
+#upload the assets folder
+module "assets_folder" {
+  source = "hashicorp/dir/template"
+  base_dir = "../${var.website_root}/assets"
+}
+
+resource "aws_s3_bucket_object" "assets"{
+  for_each=module.assets_folder.files
+  bucket = aws_s3_bucket.location-tracker-front-end.id
+  content_type    =each.value.content_type
+  key="assets/${each.key}"
+  source="../${var.website_root}/assets/${each.key}"
+  etag   = filemd5("../${var.website_root}/assets/${each.key}")
 }
 
 
 
 
-resource "aws_s3_object" "object-index_css" {
-    bucket          = aws_s3_bucket.location-tracker-front-end.id
-    key             = "index.css"
-    source          = "../${var.website_root}/index.css"
-    content_type    = "text/css"
-    etag            = filemd5("../${var.website_root}/index.css")
-  
+
+#upload the "styles" folder
+module "styles_folder" {
+  source = "hashicorp/dir/template"
+  base_dir = "../${var.website_root}/styles"
+}
+
+resource "aws_s3_bucket_object" "styles"{
+  for_each=module.styles_folder.files
+  bucket = aws_s3_bucket.location-tracker-front-end.id
+  content_type    = "text/css"
+  key="styles/${each.key}"
+  source="../${var.website_root}/styles/${each.key}"
+  etag   = filemd5("../${var.website_root}/styles/${each.key}")
 }
 
 
 
-resource "aws_s3_object" "scripts_geolocation" {
-    bucket          = aws_s3_bucket.location-tracker-front-end.id
-    key             = "scripts/geolocation.js"
-    source          = "../${var.website_root}/scripts/geolocation.js"
-    content_type    = "text/javascript"
-    etag            = filemd5("../${var.website_root}/scripts/geolocation.js")
-  
+#upload the "scripts" folder
+module "scripts_folder" {
+  source = "hashicorp/dir/template"
+  base_dir = "../${var.website_root}/scripts"
+}
+
+resource "aws_s3_bucket_object" "scripts"{
+  for_each=module.scripts_folder.files
+  bucket = aws_s3_bucket.location-tracker-front-end.id
+  content_type    = "text/javascript"
+  key="scripts/${each.key}"
+  source="../${var.website_root}/scripts/${each.key}"
+  etag   = filemd5("../${var.website_root}/scripts/${each.key}")
 }
 
 
-resource "aws_s3_object" "scripts_main" {
-    bucket          = aws_s3_bucket.location-tracker-front-end.id
-    key             = "scripts/main.js"
-    source          = "../${var.website_root}/scripts/main.js"
-    content_type    = "text/javascript"
-    etag            = filemd5("../${var.website_root}/scripts/main.js")
-  
+#upload the "variables" folder
+module "variables_folder" {
+  source = "hashicorp/dir/template"
+  base_dir = "../${var.website_root}/variables"
 }
 
-
-resource "aws_s3_object" "scripts_submit" {
-    bucket          = aws_s3_bucket.location-tracker-front-end.id
-    key             = "scripts/submit.js"
-    source          = "../${var.website_root}/scripts/submit.js"
-    content_type    = "text/javascript"
-    etag            = filemd5("../${var.website_root}/scripts/submit.js")
-  
+resource "aws_s3_bucket_object" "variables"{
+  for_each=module.variables_folder.files
+  bucket = aws_s3_bucket.location-tracker-front-end.id
+  content_type    = "text/javascript"
+  key="variables/${each.key}"
+  source="../${var.website_root}/variables/${each.key}"
+  etag   = filemd5("../${var.website_root}/variables/${each.key}")
 }
+
 
 
 //cloudfront

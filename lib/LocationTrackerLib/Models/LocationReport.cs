@@ -1,4 +1,6 @@
-﻿namespace LocationTrackerLib.Models
+﻿using Amazon.DynamoDBv2.DataModel;
+
+namespace LocationTrackerLib.Models
 {
     public enum LocationReportStatus
     {
@@ -7,24 +9,47 @@
         LOCATION_RECEIVED = 3
     }
 
+    [DynamoDBTable("LocationReports")]
     public class LocationReport
     {
+        [DynamoDBHashKey]
         public string Id { get; set; }
 
+        [DynamoDBProperty]
         public string Name { get; set; }
 
+        [DynamoDBProperty]
+        public string CreatedBy { get; set; }
+
+        [DynamoDBProperty]
         public string Mobile { get; set; }
 
-        public DateTime UTCCreateDateTime { get; set; }
+        [DynamoDBProperty]
+        public DateTime CreatedDateTimeUTC { get; set; }
 
+        [DynamoDBProperty]
         public LocationReportStatus Status { get; set; }
 
-        public decimal Lat { get; set; }
+        [DynamoDBProperty]
+        public double Lat { get; set; }
 
-        public decimal Long { get; set; }
+        [DynamoDBProperty]
+        public double Long { get; set; }
 
+        [DynamoDBProperty]
         public DateTime LocationupdatedUTCDatetime { get; set; }
 
-        
+        [DynamoDBProperty]
+        public long TimeToLive
+        {
+            get
+            {
+                var dt = (new DateTime(CreatedDateTimeUTC.Ticks, DateTimeKind.Utc)).AddHours(24);
+
+                var dtOffset = new DateTimeOffset(dt);
+
+                return dtOffset.ToUnixTimeSeconds();
+            }
+        }
     }
 }

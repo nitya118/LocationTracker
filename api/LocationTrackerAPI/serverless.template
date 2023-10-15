@@ -3,12 +3,12 @@
   "Transform": "AWS::Serverless-2016-10-31",
   "Description": "This template is partially managed by Amazon.Lambda.Annotations (v1.0.0.0).",
   "Resources": {
-    "LocationTrackerAPIFunctionsGetGenerated": {
+    "LocationTrackerAPIFunctionsLocationReportGenerated": {
       "Type": "AWS::Serverless::Function",
       "Metadata": {
         "Tool": "Amazon.Lambda.Annotations",
         "SyncedEvents": [
-          "RootGet"
+          "RootAny"
         ]
       },
       "Properties": {
@@ -20,13 +20,13 @@
           "AWSLambdaBasicExecutionRole"
         ],
         "PackageType": "Zip",
-        "Handler": "LocationTrackerAPI::LocationTrackerAPI.Functions_Get_Generated::Get",
+        "Handler": "LocationTrackerAPI::LocationTrackerAPI.Functions_LocationReport_Generated::LocationReport",
         "Events": {
-          "RootGet": {
+          "RootAny": {
             "Type": "Api",
             "Properties": {
               "Path": "/",
-              "Method": "GET"
+              "Method": "ANY"
             }
           }
         }

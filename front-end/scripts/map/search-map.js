@@ -1,28 +1,17 @@
-import { getUsersGeoLocation } from './geolocation.js';
+import { getUsersGeoLocation } from '../geolocation/get-geolocation.js';
+import { initialiseMap } from './initialise-map.js';
+import {
+	identityPoolId,
+	placesName,
+	region,
+} from '../../variables/global-variables.js';
 
-const identityPoolId = 'eu-west-1:8f48143b-721f-4fd4-a0d7-e038f08d32cc';
-const mapName = 'location-tracker';
-const placesName = 'IG50HN';
-const region = 'eu-west-1';
-
+const ctaButton = document.getElementById('set-location-button');
 const loader = document.getElementById('loader-container');
-export let userLocation;
 let marker;
-
-const initializeMap = async (authHelper, latitude, longitude) => {
-	const map = new maplibregl.Map({
-		container: 'map',
-		center: [longitude, latitude],
-		zoom: 16,
-		style: `https://maps.geo.${region}.amazonaws.com/maps/v0/maps/${mapName}/style-descriptor`,
-		...authHelper.getMapAuthenticationOptions(),
-	});
-
-	map.addControl(new maplibregl.NavigationControl(), 'top-left');
-	// Set place marker to users current location
-	marker = new maplibregl.Marker().setLngLat([longitude, latitude]).addTo(map);
-
-	return map;
+export const updatedGeolocation = {
+	latitude: null,
+	longitude: null,
 };
 
 const searchMap = async (authHelper, map) => {
@@ -62,15 +51,11 @@ const searchMap = async (authHelper, map) => {
 			const data = await client.send(command);
 			console.log(JSON.stringify(data));
 
-			// Log location points
-			console.log('location', data.Results[0].Place.Geometry.Point);
+			// Log location points and save them to local storage
+			updatedGeolocation.latitude = data.Results[0].Place.Geometry.Point[1];
+			updatedGeolocation.longitude = data.Results[0].Place.Geometry.Point[0];
 
-			// Dispaly address in html
-			const address = JSON.stringify(data.Results[0].Place.Label);
-			document.querySelector('#address').textContent = address.replaceAll(
-				'"',
-				''
-			);
+			console.log('Users new coordinates', updatedGeolocation);
 		} catch (error) {
 			console.log('There was an error searching.');
 		}
@@ -78,7 +63,8 @@ const searchMap = async (authHelper, map) => {
 };
 
 async function main() {
-	// Show loader
+	// Show loader and disable button
+	ctaButton.disabled = true;
 	loader.style.display = 'flex';
 
 	//  Authorise with Cognito credentials
@@ -86,18 +72,19 @@ async function main() {
 		await amazonLocationAuthHelper.withIdentityPoolId(identityPoolId);
 
 	getUsersGeoLocation()
-		.then(async (location) => {
+		.then(async (coordinates) => {
+			// Get lat and long in global storage
+			const userLatitude = coordinates.latitude;
+			const userLongitude = coordinates.longitude;
+
 			// Initialise map with user's location
-			userLocation = location;
-			return await initializeMap(
-				authHelper,
-				location.latitude,
-				location.longitude
-			);
+			return await initialiseMap(authHelper, userLatitude, userLongitude);
 		})
 		.then((map) => {
 			// Hide loader
 			loader.style.display = 'none';
+			ctaButton.disabled = false;
+
 			// Allow user to search map
 			searchMap(authHelper, map);
 		})
