@@ -27,11 +27,6 @@ resource "aws_s3_bucket" "content_bucket" {
 */
 
 
-resource "aws_s3_bucket" "lambda_bucket" {
-  bucket = var.lambda_bucket_name
-}
-
-
 locals {
   tags = {
       Environment = "Dev"

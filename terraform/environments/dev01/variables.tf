@@ -9,11 +9,6 @@ variable "bucket_name" {
   type        = string
   default     = "locationservice-content"
 }
-variable "lambda_bucket_name" {
-  description = "S3 bucket for lambda deploy"
-  type        = string
-  default     = "eu01-s3-lambda-dev01"
-}
 
 
 /*
