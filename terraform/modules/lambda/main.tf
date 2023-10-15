@@ -55,8 +55,6 @@ resource "aws_lambda_function" "lambda_function_v1" {
   function_name = var.function_name
   role           = aws_iam_role.lambda_execution_role.arn # Attach the IAM role here
 
-  runtime = "dotnet6"
-
   tags = var.tags 
 
 }
