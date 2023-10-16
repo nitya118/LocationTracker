@@ -77,12 +77,12 @@
 
 	<script src="../scripts/map/initialise-map.js" type="module"></script>
 
-	<script
+	<!-- <script
 		src="../scripts/testing-share-location-post-request.js"
 		type="module"
-	></script>
+	></script> -->
 
-	<!-- <script>
+	<script>
 		const modal = document.getElementById('submit-modal');
 
 		function handleClick() {
@@ -90,26 +90,32 @@
 		}
 
 		async function handleModalAllowClick() {
-			let url =
-				'https://u4hdqm5uvkvdthwk54elxlkpbi0wpdef.lambda-url.eu-west-1.on.aws/?id=5';
-			const response = await fetch(url, {
-				method: 'GET',
-				mode: 'cors',
-			});
+			const url =
+				'https://u4hdqm5uvkvdthwk54elxlkpbi0wpdef.lambda-url.eu-west-1.on.aws';
 
-			// Log api test
-			console.log('test async: ', response);
+			const statusOneId = 'lana-test-200';
+			const statusTwoId = 'lana-test-404';
+			const invalidId = '000-abc';
 
 			//  Alert user's shared location
 			const sharedLocation = JSON.parse(
 				localStorage.getItem('usersGeolocation')
 			);
-			alert(
-				'Sharing latitude: ' +
-					sharedLocation.latitude +
-					' Sharing longitude: ' +
-					sharedLocation.longitude
-			);
+
+			const data = {
+				id: statusOneId,
+				lat: sharedLocation.latitude,
+				lon: sharedLocation.langitude,
+			};
+
+			const response = await fetch(url, {
+				method: 'POST',
+				mode: 'cors',
+				body: JSON.stringify(data),
+			});
+
+			console.log('Sharing data: ', data);
+			console.log('response: ', response);
 		}
 
 		// When the user clicks 'cancel' close the modal
@@ -129,5 +135,5 @@
 				console.log('Cleared storage');
 			}
 		};
-	</script> -->
+	</script>
 </html>

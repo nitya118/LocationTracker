@@ -1,12 +1,12 @@
-const url =
-	'https://u4hdqm5uvkvdthwk54elxlkpbi0wpdef.lambda-url.eu-west-1.on.aws';
+//  Returns 200 and changes status to 3.
 
 const okData = {
 	id: 'lana-test-200',
-	lat: 35.630247101947,
-	lon: 139.789580218396,
+	lat: 88,
+	lon: 88,
 };
-
+// lat: 35.630247101947,
+// lon: 139.789580218396,
 const notFoundData = {
 	id: 'lana-test-404',
 	lat: 33.33,
@@ -23,10 +23,6 @@ async function apiCall(url, data) {
 	const response = await fetch(url, {
 		method: 'POST',
 		mode: 'cors',
-		headers: {
-			Accept: 'application/json',
-			'Content-Type': 'application/json',
-		},
 		body: JSON.stringify(data),
 	});
 
