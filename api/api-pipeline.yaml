@@ -9,11 +9,30 @@ trigger:
 variables:
    major: 1
    minor: 1
-name: $(major).$(minor)$(Rev:.r)    
- #package API artifact
-steps:
-  - task: PublishPipelineArtifact@1
-    inputs:
-      targetPath: '$(System.DefaultWorkingDirectory)/'
-      artifact: 'api'
-      publishLocation: 'pipeline'
+name: $(major).$(minor)$(Rev:.r)
+stages:
+#package API artifact
+ - stage:
+   displayName : publish artifacts
+   jobs:
+    - job:
+      displayName : build job
+      steps:
+        - task: PublishPipelineArtifact@1
+          inputs:
+           targetPath: '$(System.DefaultWorkingDirectory)/'
+           artifact: 'api'
+           publish Location: 'pipeline'
+
+ - stage:
+   displayName: Run unit tests
+   jobs:
+    - job: run_unit_tests_job
+      displayName: unit tests
+      steps:
+        - task: DotNetCoreCLI@2
+          displayName: run visual studio
+          inputs:
+             command: test
+             projects: '**/LocationTrackerAPI.Tests/*.csproj'
+             arguments: '--configuration debug'
