@@ -29,7 +29,7 @@ stages:
          inputs:
              command: test
              projects: '**/LocationTrackerAPI.Tests/*.csproj'
-             arguments: '--configuration debug' --collect:"XPlat Code Coverage"
+             arguments: '--configuration debug --collect:"XPlat Code Coverage"'
              codeCoverageEnabled: true
         
        - task: PowerShell@2
