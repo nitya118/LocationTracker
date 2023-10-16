@@ -19,35 +19,35 @@ stages:
       steps:
       
        - task: DotNetCoreCLI@2
-         displayName: 'dotnet build $(buildConfiguration)'
+         displayName: 'build prject'
          inputs:
-         command: 'build'
-         projects: '**/*.csproj'
+          command: 'build'
+          projects: '**/LocationTrackerAPI.Tests/*.csproj'
          
-        - task: DotNetCoreCLI@2
-          displayName: run visual studio
-          inputs:
+       - task: DotNetCoreCLI@2
+         displayName: run visual studio
+         inputs:
              command: test
              projects: '**/LocationTrackerAPI.Tests/*.csproj'
              arguments: '--configuration debug'
              codeCoverageEnabled: true
         
-        - task: PowerShell@2
-          displayName: 'Install ReportGenerator Code Coverage  Tool'
-          inputs:
+       - task: PowerShell@2
+         displayName: 'Install ReportGenerator Code Coverage  Tool'
+         inputs:
             targetType: 'inline'
             script:  dotnet test --collect:"XPlat Code Coverage
                      dotnet tool install --global dotnet-reportgenerator-globaltool
 
-        - task: PowerShell@2
-          displayName: 'Execute ReportGenerator Code Coverage Command'
-          inputs:
+       - task: PowerShell@2
+         displayName: 'Execute ReportGenerator Code Coverage Command'
+         inputs:
             targetType: 'inline'
             script: 'reportgenerator -reports:$(Agent.TempDirectory)/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/coverlet/reports -reporttypes:"Cobertura"'
         
-        - task: PublishCodeCoverageResults@1
-          displayName: 'Public Code Coverage Results'
-          inputs:
+       - task: PublishCodeCoverageResults@1
+         displayName: 'Public Code Coverage Results'
+         inputs:
             codeCoverageTool: 'Cobertura'
             summaryFileLocation: '$(Build.SourcesDirectory)/coverlet/reports/Cobertura.xml' 
 
