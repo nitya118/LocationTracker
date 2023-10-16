@@ -1,7 +1,7 @@
 ﻿
 import {
     Grid,
-    html,h
+    html, h, PluginPosition, useSelector, useConfig, useState
 } from "https://unpkg.com/gridjs?module";
 
 let wrapper = document.getElementById("wrapper");
@@ -13,7 +13,35 @@ export const agentGrid = async (wrapperElement, btnTest) => {
    
 
     function MyPlugin() {
-        return h('h1', {}, 'Hello World!');
+        //const [total, setTotal] = useState(0);
+
+        //const data = useSelector((state) => state.data);
+
+        //useEffect(() => {
+
+        //    console.log(data);
+
+        //}, [data])
+       
+        
+
+
+       
+        return h('select', { id: "timeRange" },
+            [
+                h('option', {}, "All"),
+                h('option', {}, "Last 15m"),
+                h('option', {}, "Last 30m"),
+                h('option', {}, "Last 1h"),
+                h('option', {}, "Last 3h"),
+                h('option', {}, "Last 6h"),
+                h('option', {}, "Last 12h")
+            ]);
+
+
+
+
+       
     }
 
 
@@ -40,8 +68,6 @@ export const agentGrid = async (wrapperElement, btnTest) => {
         search: true,
         sort: true,
         resizable: true,
-        pagination: true,
-        limit:10,
         columns: [
             { id: "Id", name: "Id", hidden: true },
             { id: "name", name: "Name" },
@@ -60,11 +86,29 @@ export const agentGrid = async (wrapperElement, btnTest) => {
     grid.plugin.add({
         id: 'myplugin',
         component: MyPlugin,
-        position: 'header',
+        position: PluginPosition.Header,
     });
 
 
-   
+    grid.on("rowClick", (row, cell) => {
+
+
+        const selectedRows = document.querySelectorAll("tr.selected");
+
+        selectedRows.forEach((r) => {
+            r.classList.remove("selected");
+        });
+
+      
+        let selectedRow = row.srcElement.parentElement;
+
+        selectedRow.classList.add("selected");
+
+        console.log(selectedRow);
+
+    });
+    
+
 
 
 
@@ -77,6 +121,8 @@ export const agentGrid = async (wrapperElement, btnTest) => {
         let data = await response.json();
 
         grid.config.plugin.remove("search");
+
+        grid.config.plugin.remove("pagination");
 
         let newConf = Object.assign({}, grid.config);
 

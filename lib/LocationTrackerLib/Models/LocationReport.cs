@@ -12,6 +12,8 @@ namespace LocationTrackerLib.Models
     [DynamoDBTable("LocationReports")]
     public class LocationReport
     {
+        private DateTime _createdDateTime;
+
         [DynamoDBHashKey]
         public string Id { get; set; }
 
@@ -25,7 +27,20 @@ namespace LocationTrackerLib.Models
         public string Mobile { get; set; }
 
         [DynamoDBProperty]
-        public DateTime CreatedDateTimeUTC { get; set; }
+        public DateTime CreatedDateTimeUTC
+        {
+            get { return _createdDateTime; }
+            set
+            {
+                _createdDateTime = value;
+
+                var dt = (new DateTime(value.Ticks, DateTimeKind.Utc)).AddHours(24);
+
+                var dtOffset = new DateTimeOffset(dt);
+
+                TimeToLive= dtOffset.ToUnixTimeSeconds();
+            }
+        }
 
         [DynamoDBProperty]
         public LocationReportStatus Status { get; set; }
@@ -42,14 +57,7 @@ namespace LocationTrackerLib.Models
         [DynamoDBProperty]
         public long TimeToLive
         {
-            get
-            {
-                var dt = (new DateTime(CreatedDateTimeUTC.Ticks, DateTimeKind.Utc)).AddHours(24);
-
-                var dtOffset = new DateTimeOffset(dt);
-
-                return dtOffset.ToUnixTimeSeconds();
-            }
+            get;set;
         }
     }
 }

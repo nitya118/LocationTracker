@@ -66,3 +66,19 @@ label {
     align-self: stretch;
     margin: .5rem 0;
 }
+
+
+.agent-container{
+    font-size:0.75rem;
+    padding:1rem;
+}
+
+.agent-container-grid{
+    display:grid;
+    gap:1.5rem;
+    grid-template-columns:1fr 1fr;
+
+}
+tr.selected td{
+   background-color: #0000FF;
+}

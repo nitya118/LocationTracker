@@ -12,18 +12,28 @@ namespace LocationTracker.Controllers
 
         private readonly ILocationReportDataService _locationReportDataService;
 
-        public HomeController(ILogger<HomeController> logger, ILocationReportDataService locationReportDataService)
+        private readonly ITimeService _timeService;
+
+        private readonly IGeoService _geoService;
+
+        private readonly ISmsNotifier _smsNotifier;
+
+        public HomeController(ILogger<HomeController> logger, ILocationReportDataService locationReportDataService, ITimeService timeService, IGeoService geoService, ISmsNotifier smsNotifier)
         {
             _logger = logger;
 
             _locationReportDataService = locationReportDataService;
+
+            _timeService = timeService;
+
+            _geoService = geoService;
+
+            _smsNotifier = smsNotifier;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var locationReports = new List<LocationReport>();
-
-            return View(locationReports);
+            return View();
         }
 
         [HttpGet]
@@ -46,6 +56,22 @@ namespace LocationTracker.Controllers
             var reports = await _locationReportDataService.GetRecordsAsync("", fromDate, toDate);
 
             return Json(reports);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateLocationReport(string name, string mobile)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return StatusCode(400, "Name cannot be empty.");
+            }
+
+            if (string.IsNullOrEmpty(mobile))
+            {
+                return StatusCode(400, "Mobile cannot be empty.");
+            }
+
+            return StatusCode(200);
         }
 
         public IActionResult Privacy()
