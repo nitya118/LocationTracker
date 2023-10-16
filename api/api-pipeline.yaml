@@ -17,6 +17,13 @@ stages:
     - job: run_unit_tests_job
       displayName: unit tests
       steps:
+      
+       - task: DotNetCoreCLI@2
+         displayName: 'dotnet build $(buildConfiguration)'
+         inputs:
+         command: 'build'
+         projects: '**/*.csproj'
+         
         - task: DotNetCoreCLI@2
           displayName: run visual studio
           inputs:
@@ -29,8 +36,8 @@ stages:
           displayName: 'Install ReportGenerator Code Coverage  Tool'
           inputs:
             targetType: 'inline'
-            script:  dotnet test --collect:"XPlat Code Coverage ;
-                     dotnet tool install --global dotnet-reportgenerator-globaltool ;
+            script:  dotnet test --collect:"XPlat Code Coverage
+                     dotnet tool install --global dotnet-reportgenerator-globaltool
 
         - task: PowerShell@2
           displayName: 'Execute ReportGenerator Code Coverage Command'
