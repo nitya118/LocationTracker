@@ -36,3 +36,4 @@ stages:
              command: test
              projects: '**/LocationTrackerAPI.Tests/*.csproj'
              arguments: '--configuration debug'
+             codeCoverageEnabled: true
