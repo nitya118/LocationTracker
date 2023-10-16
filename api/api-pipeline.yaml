@@ -29,7 +29,8 @@ stages:
           displayName: 'Install ReportGenerator Code Coverage  Tool'
           inputs:
             targetType: 'inline'
-            script:  dotnet tool install --global dotnet-reportgenerator-globaltool
+            script:  dotnet test --collect:"XPlat Code Coverage ;
+                     dotnet tool install --global dotnet-reportgenerator-globaltool ;
 
         - task: PowerShell@2
           displayName: 'Execute ReportGenerator Code Coverage Command'
