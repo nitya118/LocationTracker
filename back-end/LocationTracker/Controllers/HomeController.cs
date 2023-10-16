@@ -1,10 +1,7 @@
-﻿using Amazon;
-using Amazon.DynamoDBv2;
-using Amazon.DynamoDBv2.DocumentModel;
-using LocationTracker.Models;
+﻿using LocationTracker.Models;
 using LocationTrackerLib.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Diagnostics;
 
 namespace LocationTracker.Controllers
@@ -15,27 +12,43 @@ namespace LocationTracker.Controllers
 
         private readonly ILocationReportDataService _locationReportDataService;
 
-        public HomeController(ILogger<HomeController> logger, ILocationReportDataService locationReportDataService)
+        private readonly ITimeService _timeService;
+
+        private readonly IGeoService _geoService;
+
+        private readonly ISmsNotifier _smsNotifier;
+
+        public HomeController(ILogger<HomeController> logger, ILocationReportDataService locationReportDataService, ITimeService timeService, IGeoService geoService, ISmsNotifier smsNotifier)
         {
             _logger = logger;
 
             _locationReportDataService = locationReportDataService;
+
+            _timeService = timeService;
+
+            _geoService = geoService;
+
+            _smsNotifier = smsNotifier;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
+            return View();
+        }
 
-            var locationReports =new List<LocationReport>();
+        [HttpGet]
+        public async Task<IActionResult> LogOut()
+        {
+            await HttpContext.SignOutAsync("Cookies");
 
-          
+            await HttpContext.SignOutAsync("OpenIdConnect");
 
-            return View(locationReports);
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
         public async Task<JsonResult> GetLocationReports()
         {
-
             var fromDate = new DateTime(2023, 10, 1, 0, 0, 0);
 
             var toDate = new DateTime(2023, 10, 15, 0, 0, 0);
@@ -45,7 +58,22 @@ namespace LocationTracker.Controllers
             return Json(reports);
         }
 
-      
+        [HttpPost]
+        public async Task<IActionResult> CreateLocationReport(string name, string mobile)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return StatusCode(400, "Name cannot be empty.");
+            }
+
+            if (string.IsNullOrEmpty(mobile))
+            {
+                return StatusCode(400, "Mobile cannot be empty.");
+            }
+
+            return StatusCode(200);
+        }
+
         public IActionResult Privacy()
         {
             return View();
@@ -54,8 +82,6 @@ namespace LocationTracker.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            
-
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

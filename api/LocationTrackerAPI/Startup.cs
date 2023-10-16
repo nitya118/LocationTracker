@@ -1,4 +1,5 @@
 using Amazon.Lambda.Annotations;
+using LocationTrackerLib.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LocationTrackerAPI;
@@ -31,5 +32,8 @@ public class Startup
         //// Example of using the AWSSDK.Extensions.NETCore.Setup NuGet package to add
         //// the Amazon S3 service client to the dependency injection container.
         //services.AddAWSService<Amazon.S3.IAmazonS3>();
+
+        services.AddSingleton<ILocationReportDataService,DdbLocationReportDataService>(); 
     }
+       
 }

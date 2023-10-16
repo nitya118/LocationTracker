@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace LocationTrackerLib.Services
 {
-    public  interface ITimeService
+    public interface ISmsNotifier
     {
-        public DateTime GetCurrentUTCDateTime();
-
-        public DateTime ConvertUTCToBST(DateTime utc);
-
+        Task SendReport(string mobile, string message);
     }
 }

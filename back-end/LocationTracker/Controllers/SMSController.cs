@@ -1,28 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-using Amazon.SimpleNotificationService;
+﻿using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
-using Microsoft.Graph;
-using Microsoft.Graph;
 using Azure.Identity;
-using Microsoft.Identity.Client;
-using Azure.Core;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Graph;
 
 namespace LocationTracker.Controllers
 {
     public class SMSController : Controller
     {
-
-
         private string _message = "Hello from the location tracker app." +
             "Please click this url to confirm your location.http://google.co.uk";
 
-
         private AmazonSimpleNotificationServiceClient snsClient = new AmazonSimpleNotificationServiceClient(Amazon.RegionEndpoint.EUWest1);
+
+        private readonly IConfiguration _configuration;
+
+        public SMSController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
         [HttpGet]
         public async Task<IActionResult> IndexAsync()
         {
+            var env = _configuration.GetValue<string>("ASPNETCORE_POOL_ID");
 
             //https://stackoverflow.com/questions/75234868/not-able-to-get-all-users-from-azure-active-directory
 
@@ -34,9 +35,9 @@ namespace LocationTracker.Controllers
 
             var users = await graphClient.Users.GetAsync();
 
-           if (users != null)
+            if (users != null)
             {
-               for(var i=0; i<users.Value.Count; i++)
+                for (var i = 0; i < users.Value.Count; i++)
                 {
                     var user = users.Value[i].UserPrincipalName;
                 }
@@ -47,10 +48,6 @@ namespace LocationTracker.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(string mobileNumber)
         {
-
-           
-
-
             if (string.IsNullOrEmpty(mobileNumber))
             {
                 return View("~/Views/Home/sms.cshtml");
@@ -62,12 +59,9 @@ namespace LocationTracker.Controllers
                 PhoneNumber = mobileNumber
             };
 
-
             await snsClient.PublishAsync(request);
 
             return View("~/Views/Home/sms.cshtml");
         }
-
-
     }
 }

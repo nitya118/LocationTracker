@@ -1,0 +1,84 @@
+﻿
+.signup-form {
+    display: flex;
+    height: 3.75rem;
+    align-items: center;
+    box-shadow: 0 0 40px rgba(0,0,0, .1), 0 4px 8px -4px rgba(0,0,0, .2);
+}
+
+.form-field {
+    margin: 1rem 1.25rem;
+    position: relative;
+    input
+
+{
+    position: relative;
+    background: none;
+    top: .4rem;
+    border: none;
+    &:focus
+
+{
+    outline: none;
+}
+
+}
+
+label {
+    position: absolute;
+    color: rgba(0,0,0, .5);
+    transition: 200ms;
+}
+
+&.is-dirty,
+&.has-focus {
+    label
+
+{
+    top: -.3rem;
+    left: 0rem;
+    font-size: .6rem;
+}
+
+}
+}
+
+.submit {
+    background: #ff0000;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    color: white;
+    padding: 0 2rem;
+    border: none;
+    cursor: pointer;
+    &:focus
+
+{
+    outline: none;
+}
+
+}
+
+.divider {
+    background: rgba(0,0,0, .1);
+    width: 2px;
+    align-self: stretch;
+    margin: .5rem 0;
+}
+
+
+.agent-container{
+    font-size:0.75rem;
+    padding:1rem;
+}
+
+.agent-container-grid{
+    display:grid;
+    gap:1.5rem;
+    grid-template-columns:1fr 1fr;
+
+}
+tr.selected td{
+   background-color: #0000FF;
+}

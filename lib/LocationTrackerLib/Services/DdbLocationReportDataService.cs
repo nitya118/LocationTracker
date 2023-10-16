@@ -57,7 +57,11 @@ namespace LocationTrackerLib.Services
                    (new ScanCondition("CreatedBy", Amazon.DynamoDBv2.DocumentModel.ScanOperator.Equal, createdBy));
                 }
 
+                var unixEpoch = DateTimeOffset.Now.ToUnixTimeSeconds();
+
                 scanCondtions.Add(new ScanCondition("CreatedDateTimeUTC", Amazon.DynamoDBv2.DocumentModel.ScanOperator.Between, from, to));
+
+                scanCondtions.Add(new ScanCondition("TimeToLive", Amazon.DynamoDBv2.DocumentModel.ScanOperator.GreaterThan, unixEpoch));
 
                 var ret = dbContext.ScanAsync<LocationReport>(scanCondtions);
 
@@ -68,7 +72,9 @@ namespace LocationTrackerLib.Services
                     retVal.AddRange(ls);
                 }
 
-                return retVal;
+                var ordered = retVal.OrderByDescending(x => x.CreatedBy);
+
+                return ordered;
             }
         }
     }

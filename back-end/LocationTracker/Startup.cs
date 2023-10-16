@@ -42,7 +42,17 @@ namespace LocationTracker
 
             services.AddRazorPages();
 
-            services.AddScoped<ILocationReportDataService, DdbLocationReportDataService>();
+            services.AddSingleton<ILocationReportDataService, DdbLocationReportDataService>();
+
+            services.AddSingleton<IGeoService, GeoService>();
+
+            services.AddSingleton<ITimeService, TimeService>();
+
+            services.AddSingleton<ISmsNotifier, SmsNotifier>();
+
+            services.AddSingleton<IConfiguration>(provider => configRoot);
+
+
         }
         public void Configure(WebApplication app, IWebHostEnvironment env)
         {
