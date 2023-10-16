@@ -105,7 +105,7 @@
 			const data = {
 				id: statusOneId,
 				lat: sharedLocation.latitude,
-				lon: sharedLocation.langitude,
+				lon: sharedLocation.longitude,
 			};
 
 			const response = await fetch(url, {
@@ -114,8 +114,14 @@
 				body: JSON.stringify(data),
 			});
 
-			console.log('Sharing data: ', data);
-			console.log('response: ', response);
+			if (response.status === 200) {
+				localStorage.clear();
+				window.location.href = './successful-submit.html';
+				localStorage.clear();
+			} else if (response.status === 404) {
+				localStorage.clear();
+				window.location.href = './already-submitted.html';
+			}
 		}
 
 		// When the user clicks 'cancel' close the modal
