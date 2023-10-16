@@ -29,15 +29,14 @@ stages:
          inputs:
              command: test
              projects: '**/LocationTrackerAPI.Tests/*.csproj'
-             arguments: '--configuration debug'
+             arguments: '--configuration debug' --collect:"XPlat Code Coverage"
              codeCoverageEnabled: true
         
        - task: PowerShell@2
          displayName: 'Install ReportGenerator Code Coverage  Tool'
          inputs:
             targetType: 'inline'
-            script:  dotnet test --collect:"XPlat Code Coverage
-                     dotnet tool install --global dotnet-reportgenerator-globaltool
+            script: dotnet tool install --global dotnet-reportgenerator-globaltool
 
        - task: PowerShell@2
          displayName: 'Execute ReportGenerator Code Coverage Command'
