@@ -25,14 +25,24 @@ stages:
              arguments: '--configuration debug'
              codeCoverageEnabled: true
         
-        - task: PublishCodeCoverageResults@1
-          displayName: 'Publish code coverage report'
+        - task: PowerShell@2
+          displayName: 'Install ReportGenerator Code Coverage  Tool'
           inputs:
-             codeCoverageTool: 'Cobertura'
-             summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
-             pathToSources: '$(System.DefaultWorkingDirectory)/api/LocationTrackerAPI.Tests'
-             reportDirectory: '$(System.DefaultWorkingDirectory)/api/**/site/cobertura'
-             
+            targetType: 'inline'
+            script:  dotnet tool install --global dotnet-reportgenerator-globaltool
+
+        - task: PowerShell@2
+          displayName: 'Execute ReportGenerator Code Coverage Command'
+          inputs:
+            targetType: 'inline'
+            script: 'reportgenerator -reports:$(Agent.TempDirectory)/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/coverlet/reports -reporttypes:"Cobertura"'
+        
+        - task: PublishCodeCoverageResults@1
+          displayName: 'Public Code Coverage Results'
+          inputs:
+            codeCoverageTool: 'Cobertura'
+            summaryFileLocation: '$(Build.SourcesDirectory)/coverlet/reports/Cobertura.xml' 
+
 #package API artifact
  - stage:
    displayName : publish artifacts
