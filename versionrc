@@ -1,0 +1,5 @@
+{
+  "releaseCommitMessageFormat": "chore(release): {{currentTag}} [skip ci]",
+  "compareUrlFormat":"{{host}}/https://github.com/nitya118/LocationTracker/tree/infra_v1.0/branchCompare?baseVersion=GT{{previousTag}}&targetVersion=GT{{currentTag}}",
+  "commitUrlFormat": "{{host}}/https://github.com/nitya118/LocationTracker/tree/infra_v1.0/commit/{{hash}}"
+}
