@@ -49,7 +49,7 @@ stages:
          inputs:
             codeCoverageTool: 'Cobertura'
             summaryFileLocation: '$(Build.SourcesDirectory)/coverlet/reports/Cobertura.xml' 
-            
+     
        - script: |
           sudo npm install -g standard-version
           git config --global user.email "azure@bot.com"
@@ -57,9 +57,7 @@ stages:
           standard-version
           git push --follow-tags origin HEAD:$(Build.SourceBranchName)
           condition: 'eq(variables['Build.SourceBranch'], 'refs/heads/infra_v1.0')'
-          
-          name: npm_pump_script
-          displayName: Bump Version    
+             
 
        - script: echo 'Push artifact to artifact repository'
          condition: eq(variables['Build.SourceBranch'], 'refs/heads/infra_v1.0')
