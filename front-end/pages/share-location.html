@@ -84,6 +84,7 @@
 			modal.style.display = 'flex';
 		}
 
+		// POST API call
 		async function apiCall(location) {
 			const statusOneId = 'lana-test-200';
 			const statusTwoId = 'lana-test-404';
@@ -105,6 +106,7 @@
 			return response.status;
 		}
 
+		// Share location
 		async function handleModalAllowClick() {
 			const location = JSON.parse(localStorage.getItem('usersGeolocation'));
 
