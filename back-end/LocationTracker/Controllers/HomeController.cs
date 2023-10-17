@@ -51,7 +51,7 @@ namespace LocationTracker.Controllers
         {
             var fromDate = new DateTime(2023, 10, 1, 0, 0, 0);
 
-            var toDate = new DateTime(2023, 10, 15, 0, 0, 0);
+            var toDate = new DateTime(2023, 10, 31, 0, 0, 0);
 
             var reports = await _locationReportDataService.GetRecordsAsync("", fromDate, toDate);
 

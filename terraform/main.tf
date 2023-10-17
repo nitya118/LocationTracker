@@ -45,14 +45,14 @@ module "apprunner" {
 
 
 module "front-end" {
-  source      = "./front-end"
-  website_root="./front-end"
-  domain_name = "location-tracker.com"
-  bucket_name = "location-tracker.com"
+  source       = "./front-end"
+  website_root = "./front-end"
+  domain_name  = "location-tracker.com"
+  bucket_name  = "location-tracker.com"
 }
 
-output "website-url"{
-  value=module.front-end.website_endpoint
+output "website-url" {
+  value = module.front-end.website_endpoint
 }
 
 
