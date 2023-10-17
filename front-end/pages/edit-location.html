@@ -47,14 +47,14 @@
 	<script src="../scripts/map/search-map.js" type="module"></script>
 	<script type="module">
 		import { updatedGeolocation } from '../scripts/map/search-map.js';
-
 		const ctaButton = document.getElementById('set-location-button');
+
 		ctaButton.onclick = function () {
 			localStorage.setItem(
 				'usersGeolocation',
 				JSON.stringify(updatedGeolocation)
 			);
-			window.location.href = '../index.html';
+			window.location.href = './share-location.html';
 		};
 	</script>
 </html>
