@@ -55,8 +55,8 @@ stages:
           git config --global user.email "azure@bot.com"
           git config --global user.name "azurebot"
           standard-version
-          git push '--follow-tags origin HEAD:$(Build.SourceBranchName)
-          condition: eq(variables['Build.SourceBranch'], 'refs/heads/infra_v1.0')'
+          git push --follow-tags origin HEAD:$(Build.SourceBranchName)
+         condition: eq(variables['Build.SourceBranch'], 'refs/heads/infra_v1.0')
              
 
        - script: echo 'Push artifact to artifact repository'
