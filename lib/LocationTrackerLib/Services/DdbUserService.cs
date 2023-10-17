@@ -40,5 +40,28 @@ namespace LocationTrackerLib.Services
                 await dbContext.SaveAsync(user);
             }
         }
+
+        public async Task<IEnumerable<User>> GetUsers()
+        {
+            using (var dbContext = new DynamoDBContext(_dbClient))
+            {
+                var retVal = new List<User>();
+
+                var scanCondtions = new List<ScanCondition>();
+
+                var ret = dbContext.ScanAsync<User>(scanCondtions);
+
+                while (!ret.IsDone)
+                {
+                    var ls = await ret.GetRemainingAsync();
+
+                    retVal.AddRange(ls);
+                }
+
+                var ordered = retVal.OrderBy(x => x.UserName);
+
+                return ordered;
+            }
+        }
     }
 }
