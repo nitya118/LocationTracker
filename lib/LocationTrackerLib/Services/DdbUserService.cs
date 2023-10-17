@@ -10,6 +10,8 @@ namespace LocationTrackerLib.Services
 
         private const string TABLE_NAME = "LocationReports";
 
+        private const string GLOBAL_USER = "GlobalUser";
+
         public DdbUserService()
         {
             _dbClient = new AmazonDynamoDBClient();
@@ -62,6 +64,38 @@ namespace LocationTrackerLib.Services
 
                 return ordered;
             }
+        }
+
+        public async Task<User> GetGlobalUser()
+        {
+            var user = await LoadUser(GLOBAL_USER);
+
+            if (user == null) return null;
+
+            if (user.IsSystem)
+            { 
+                return user; 
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public async Task SaveGlobalSettings(bool canLogin, bool canSendSms)
+        {
+            var user = new User()
+            {
+                UserName = GLOBAL_USER,
+                IsSystem = true,
+                IsSupervisor = true,
+                CanLogin = canLogin,
+                CanSendSms = canSendSms
+            };
+
+
+            await SaveUser(user);
+
         }
     }
 }

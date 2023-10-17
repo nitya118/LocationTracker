@@ -11,5 +11,10 @@ namespace LocationTrackerLib.Services
         public Task SaveUser(User user);
 
         public Task DeleteUser(User user);
+
+
+        public Task<User> GetGlobalUser();
+
+        public Task SaveGlobalSettings(bool canLogin, bool canSendSms);
     }
 }

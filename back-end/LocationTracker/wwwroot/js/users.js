@@ -34,20 +34,25 @@ let grid = new gridjs.Grid({
     search: true,
     sort: true,
     resizable: true,
+    width:"100%",
     columns: [
-        { id: "userName", name: "User Name", hidden: false },
+        { id: "userName", name: "User Name", hidden: false,"width":"20%" },
         { id: "isSystem", name: "Is System", hidden: true },
-        { id: "isSupervisor", name: "Agent/Supervisor", formatter: (cell) => cell?"Supervisor":"Agent" },
-        { id: "canLogin", name: "Login", formatter: (cell) => cell ? "Login Enabled" : "Login Disabled"  },
-        { id: "canSendSms", name: "SMS", formatter: (cell) => cell ? "SMS Enabled" : "SMS Disabled" },
-        { id: "Edit", formatter: editItem },
-        { id: "Delete", formatter: deleteItem },
+        { id: "isSupervisor", name: "Type", formatter: (cell) => cell ? "Supervisor" : "Agent", "width": "20%" },
+        { id: "canLogin", name: "Login", formatter: (cell) => cell ? "Enabled" : "Disabled", "width": "15%" },
+        { id: "canSendSms", name: "SMS", formatter: (cell) => cell ? "Enabled" : "Disabled", "width": "15%" },
+        { id: "Edit", formatter: editItem, "width": "15%" },
+        { id: "Delete", formatter: deleteItem, "width": "15%" },
     ],
     data: []
 }).render(wrapper);
 
 
+const globalSettingsManager = () => {
 
+
+
+};
 
 
 
@@ -175,3 +180,5 @@ addUser.onclick = () => {
    sub.load("",false,true,true);
 }
 
+
+globalSetter();

@@ -18,7 +18,9 @@ namespace LocationTracker.Controllers
 
         private readonly ISmsNotifier _smsNotifier;
 
-        public HomeController(ILogger<HomeController> logger, ILocationReportDataService locationReportDataService, ITimeService timeService, IGeoService geoService, ISmsNotifier smsNotifier)
+        private readonly IUserDataService _userDataService;
+
+        public HomeController(ILogger<HomeController> logger, ILocationReportDataService locationReportDataService, ITimeService timeService, IGeoService geoService, ISmsNotifier smsNotifier, IUserDataService userDataService)
         {
             _logger = logger;
 
@@ -29,10 +31,22 @@ namespace LocationTracker.Controllers
             _geoService = geoService;
 
             _smsNotifier = smsNotifier;
+
+            _userDataService = userDataService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            //implement user authorization checks here
+
+            var globalUser=await _userDataService.GetGlobalUser();
+            if (globalUser == null)
+            {
+                //create the global user if not already there
+                await _userDataService.SaveGlobalSettings(true, true);
+            }
+
+
             return View();
         }
 

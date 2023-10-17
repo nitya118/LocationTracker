@@ -1,4 +1,13 @@
 ﻿
+html {
+    font-size: 12px;
+}
+
+
+.user-global-setting{
+    margin-top:77px;
+}
+
 .user-header{
     display:flex;
  
