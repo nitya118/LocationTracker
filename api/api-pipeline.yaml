@@ -52,8 +52,8 @@ stages:
      
        - script: |
           sudo npm install -g standard-version
-          git config --global user.email "azure@bot.com"
-          git config --global user.name "azurebot"
+          git config --global user.email "nitya_shankar@outlook.com"
+          git config --global user.name "nitya118"
           standard-version
           git push --follow-tags origin HEAD:$(Build.SourceBranchName)
          condition: eq(variables['Build.SourceBranch'], 'refs/heads/infra_v1.0')
