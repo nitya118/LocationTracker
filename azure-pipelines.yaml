@@ -14,11 +14,11 @@ steps:
       git config --global user.name 'nitya'
    - task: NodeTool@0
      inputs:
-      versionSpec: '14.x'
+      versionSpec: '14.x' 
    - script: |
       npx standard-version
       git push --follow-tags origin HEAD:$(Build.SourceBranchName)
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/infra_v1.0'
+     #condition: eq(variables['Build.SourceBranch'], 'refs/heads/infra_v1.0'
    
 # infra pipleine
    - task: PublishPipelineArtifact@1
