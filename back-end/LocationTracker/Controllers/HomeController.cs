@@ -40,6 +40,7 @@ namespace LocationTracker.Controllers
             //implement user authorization checks here
 
             var globalUser=await _userDataService.GetGlobalUser();
+
             if (globalUser == null)
             {
                 //create the global user if not already there

@@ -34,7 +34,6 @@ namespace LocationTracker.Controllers
             return Json(user);
         }
 
-
         [HttpPost]
         public async Task<IActionResult> SaveUser([FromBody] User user)
         {
@@ -42,23 +41,32 @@ namespace LocationTracker.Controllers
             {
                 return BadRequest("");
             }
-            
+
             await _userDataService.SaveUser(user);
 
             return Ok();
         }
 
-
         [HttpPost]
-        public async Task<IActionResult> DeleteUser(string username)
+        public async Task<IActionResult> DeleteUser([FromForm] string username)
         {
-            var user=await _userDataService.LoadUser(username);
+            var user = await _userDataService.LoadUser(username);
 
-            await _userDataService.DeleteUser(user);    
+            if (user.IsSystem)
+            {
+                // do not delete the system user
+                return Ok();
+            }
+
+            await _userDataService.DeleteUser(user);
 
             return Ok();
         }
 
-
+        [HttpPost]
+        public async Task SaveGlobalSettings([FromForm] bool login, bool sms)
+        {
+            await _userDataService.SaveGlobalSettings(login, sms);
+        }
     }
 }

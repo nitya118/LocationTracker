@@ -4,13 +4,47 @@
 } from "https://unpkg.com/gridjs?module";
 
 
+const confirmationDialog = (title, text, confirmCallback) => {
+
+    const dialog = new bootstrap.Modal(document.getElementById('confirmation'), {
+        keyboard: false
+    });
+
+    const confirmationText = document.getElementById("confirmationText");
+    const confirmationTitle = document.getElementById("confirmationTitle");
+    const btnYes = document.getElementById("btnYes");
+
+    confirmationText.innerText = text;
+    confirmationTitle.innerText = title;
+
+
+    btnYes.onclick =() => {
+        if (typeof confirmCallback === 'function') {
+            confirmCallback();
+            dialog.hide();
+        }
+    };
+
+    return {
+        hide: () => {
+            dialog.hide();
+        },
+        show: async () => {
+            dialog.show();
+        }
+    }
+
+}
+
+
+
 
 let editItem = (cell, row) => {
 
     return h('a', {
         className: '',
         onClick: () => {
-            sub.load(row.cells[0].data, row.cells[1].data, row.cells[2].data, row.cells[3].data)
+            sub.load(row.cells[0].data, row.cells[2].data, row.cells[3].data , row.cells[4].data)
         }
     }, 'Edit');
 
@@ -20,12 +54,19 @@ let deleteItem = (cell, row) => {
 
     return h('a', {
         className: '',
-        onClick: () => alert(`Show Map "${row.cells[0].data}" "${row.cells[1].data}"`)
+        onClick: () => {
+           let confirmer = confirmationDialog("Delete user", `Do you want to delete ${ row.cells[0].data} ?`, () => {
+
+               sub.delete(row.cells[0].data);
+               
+            })
+
+            confirmer.show();
+        },
+
     }, 'Delete');
 
 };
-
-
 
 
 
@@ -48,8 +89,76 @@ let grid = new gridjs.Grid({
 }).render(wrapper);
 
 
-const globalSettingsManager = () => {
+const globalSettingsManager =async () => {
 
+    const chkLogin = document.getElementById("chkGlobalLogin");
+    const chkSms = document.getElementById("chkGlobalSms");
+
+    const dvAlertLogin = document.getElementById("dvLoginAlert")
+    const dvAlertSms = document.getElementById("dvSmsAlert")
+
+    //load settings
+    let getUrl = "/User/GetUser?username=GlobalUser";
+
+
+    let response = await fetch(getUrl, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    let user = await response.json();
+
+    console.log(user);
+
+    chkLogin.checked = user.canLogin;
+    chkSms.checked = user.canSendSms;
+
+    if (chkLogin.checked) {
+        dvAlertLogin.classList.add("d-none");
+
+    } else {
+        dvAlertLogin.classList.remove("d-none");
+    }
+
+    if (chkSms.checked) {
+        dvAlertSms.classList.add("d-none");
+    } else {
+        dvAlertSms.classList.remove("d-none");
+    }
+
+
+    let fnChange = async () => {
+        if (chkLogin.checked) {
+            dvAlertLogin.classList.add("d-none");
+
+        } else {
+            dvAlertLogin.classList.remove("d-none");
+        }
+
+        if (chkSms.checked) {
+            dvAlertSms.classList.add("d-none");
+        } else {
+            dvAlertSms.classList.remove("d-none");
+        }
+
+        //save settings
+        let postUrl = "/User/SaveGlobalSettings";
+
+        let response = await fetch(postUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `login=${chkLogin.checked}&sms=${chkSms.checked}`
+
+        })
+
+    };
+
+    chkLogin.onchange = fnChange;
+    chkSms.onchange = fnChange;
 
 
 };
@@ -58,33 +167,64 @@ const globalSettingsManager = () => {
 
 
 
+
+
+
 const submitter = (updateCallback) => {
 
-    const wrapper = document.getElementById("wrapper");
-    const overlay = document.getElementById("overlay")
-    const dataEntryForm = document.getElementById("dataentry");
-    const closeButton = document.getElementsByClassName("user-close")[0];
+    
+    const closeButton = document.getElementsByClassName("btn-close")[0];
 
     const _username = document.getElementById("username");
     const _isSupervisor = document.getElementById("is-supervisor");
     const _canLogin = document.getElementById("can-login");
     const _canSendSMS = document.getElementById("can-send-sms");
 
+    const addUserForm = new bootstrap.Modal(document.getElementById('addUserModal'), {
+        keyboard: false
+    });
+
     const submitButton = document.getElementById("submit");
 
 
     closeButton.onclick = () => {
-        overlay.style.display = "none";
+        addUserForm.hide();
     }
 
 
     _username.onchange = () => _username.classList.remove("invalid");
 
 
-   
+
+    const getData = async () => {
+        let dataUrl = '/User/GetUsers';
+
+        let response = await fetch(dataUrl, { method: 'get' });
+
+        let data = await response.json();
+
+        if (typeof updateCallback === 'function') {
+            updateCallback(data);
+        }
+    };
 
 
-     submitButton.onclick = () => {
+    const deleteUser = async (username) => {
+        let deleteUrl ="/User/DeleteUser"
+
+        let response = await fetch(deleteUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `username=${username}`
+
+        });
+    };
+
+
+
+     submitButton.onclick =async  () => {
         //do validations
 
          if (!_username.checkValidity()) {
@@ -94,7 +234,7 @@ const submitter = (updateCallback) => {
 
         const postUrl = "/User/SaveUser";
 
-        let response = fetch(postUrl,
+        let response =await fetch(postUrl,
             {
                 method: 'POST',
                 headers: {
@@ -111,27 +251,18 @@ const submitter = (updateCallback) => {
             }
         );
 
-         response.then((resp) => {
-             console.log(resp);
-             if (resp.status===200) {
-                 overlay.style.display = "none";
-             }
-         })
+        
+         if (response.status === 200) {
+             addUserForm.hide();
+             await getData();
+         }
+
+        
         
     }
 
 
-    const getData =async () => {
-        let dataUrl = '/User/GetUsers';
-
-        let response = await fetch(dataUrl, { method: 'get' });
-
-        let data = await response.json();
-
-        if (typeof updateCallback === 'function') {
-            updateCallback(data);
-        }
-    };
+ 
 
 
     return {
@@ -140,7 +271,7 @@ const submitter = (updateCallback) => {
             _canLogin.checked = false;
             _canSendSMS.checked = false;
             _isSupervisor.checked = false;
-            overlay.style.display = "block";
+            addUserForm.show();
         },
          refresh:async () => {
 
@@ -152,7 +283,13 @@ const submitter = (updateCallback) => {
             _canLogin.checked = canLogin;
             _canSendSMS.checked = canSendSms;
             _isSupervisor.checked = isSupervisor;
-            overlay.style.display = "block";
+            addUserForm.show();
+        },
+        delete:async (username) => {
+
+            await deleteUser(username);
+
+            await getData();
         }
     }
 
@@ -163,8 +300,6 @@ let sub = submitter((data) => {
     let newConf = Object.assign({}, grid.config);
 
     newConf.data = data;
-
-    console.log(data);
 
     grid.config.plugin.remove("search");
 
@@ -181,4 +316,6 @@ addUser.onclick = () => {
 }
 
 
-globalSetter();
+await globalSettingsManager();
+
+
