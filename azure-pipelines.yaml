@@ -8,15 +8,17 @@ trigger:
       -  'api/*'
 steps:
    - checkout: self
-    persistCredentials: true
+     persistCredentials: true
    - script: |
       git config --global user.email 'nitya_shankar@outlook.com'
       git config --global user.name 'nitya'
-   - task: NodeTool@0 |
-      npx standard-version
-      git pus     inputs:
+   - task: NodeTool@0
+     inputs:
       versionSpec: '14.x'
-   - scripth --follow-tags origin infra_v1.0
+   - script: |
+      npx standard-version
+      git push --follow-tags origin infra_v1.0
+   
 # infra pipleine
 steps:
 - task: PublishPipelineArtifact@1
