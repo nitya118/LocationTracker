@@ -20,9 +20,8 @@ steps:
       git push --follow-tags origin infra_v1.0
    
 # infra pipleine
-steps:
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: '$(System.DefaultWorkingDirectory)/'
-    artifact: 'infra'
-    publishLocation: 'pipeline'
+   - task: PublishPipelineArtifact@1
+     inputs:
+       targetPath: '$(System.DefaultWorkingDirectory)/'
+       artifact: 'infra'
+       publishLocation: 'pipeline'
