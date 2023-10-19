@@ -12,13 +12,14 @@ steps:
    - script: |
       git config --global user.email 'nitya_shankar@outlook.com'
       git config --global user.name 'nitya'
-   - task: NodeTool@0
+   - task: UsePythonVersion@0
      inputs:
-      versionSpec: '14.x' 
+      versionSpec: '3.9' 
    - script: |
-      npx standard-version
+      cz bump --annotated-tag --check-consistency
       git push --follow-tags origin HEAD:$(Build.SourceBranchName)
      condition: eq(variables['Build.SourceBranch'], 'refs/heads/infra_v1.0')
+     displayName: 'Bump package version number'
      
 # infra pipleine
    - task: PublishPipelineArtifact@1
