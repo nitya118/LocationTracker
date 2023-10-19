@@ -18,10 +18,8 @@ steps:
    - script: |
       npx standard-version
       git push --follow-tags origin HEAD:$(Build.SourceBranchName)
-      condition: eq(variables['Build.SourceBranch'], 'refs/heads/infra_v1.0')
-   
-   
-  
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/infra_v1.0')
+     
 # infra pipleine
    - task: PublishPipelineArtifact@1
      inputs:
