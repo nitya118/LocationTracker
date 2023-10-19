@@ -64,7 +64,7 @@ output "dynamodb_instance2"{
     value=module.dynamodb_access_management.instance
 }
 
-
+#call apprunner module 
 module "apprunner" {
   source  = "../../modules/apprunner"
   ddb_loc_report_arn = module.dynamodb_loc_report.instance.arn
