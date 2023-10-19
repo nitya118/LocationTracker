@@ -10,6 +10,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### 1.0.1 (2023-10-19)
 
+### 1.0.1 (2023-10-19)
+
 ### 1.0.1 (2023-10-18)
 
 ### 1.0.1 (2023-10-18)
