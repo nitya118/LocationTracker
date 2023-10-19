@@ -82,45 +82,7 @@
 
 		function handleClick() {
 			modal.style.display = 'flex';
-		}
-
-		// POST API call
-		async function apiCall(location) {
-			const callerId = localStorage.getItem('callerId');
-
-			const url =
-				'https://u4hdqm5uvkvdthwk54elxlkpbi0wpdef.lambda-url.eu-west-1.on.aws';
-
-			const data = {
-				id: callerId,
-				lat: location.latitude,
-				lon: location.longitude,
-			};
-
-			const response = await fetch(url, {
-				method: 'POST',
-				mode: 'cors',
-				body: JSON.stringify(data),
-			});
-
-			console.log(response.status);
-
-			return response.status;
-		}
-
-		// Share location
-		async function handleModalAllowClick() {
-			const location = JSON.parse(localStorage.getItem('usersGeolocation'));
-
-			const status = await apiCall(location);
-
-			if (status === 200) {
-				localStorage.clear();
-				window.location.href = './successful-submit.html';
-			} else if (status === 404) {
-				localStorage.clear();
-				window.location.href = './already-submitted.html';
-			}
+			console.log("clique'd");
 		}
 
 		// When the user clicks 'cancel' close the modal
