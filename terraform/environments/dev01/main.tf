@@ -45,7 +45,7 @@ module "ecr_repo" {
   tags = local.tags
 }
 
-
+#dynamo db module
 module "dynamodb_loc_report" {
   source = "../../modules/dynamodb"
   ddb_name = "eu01-dev01-ddb01"
