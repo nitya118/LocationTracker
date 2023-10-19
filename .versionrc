@@ -1,5 +1,23 @@
 {
-  "releaseCommitMessageFormat": "chore(release): {{currentTag}} [skip ci]",
+  "types": [
+
+    { "type": "feat", "section": "Features" },
+
+    { "type": "fix", "section": "Bug Fixes" },
+
+    { "type": "chore", "hidden": true },
+
+    { "type": "docs", "hidden": true },
+
+    { "type": "style", "hidden": true },
+
+    { "type": "refactor", "hidden": true },
+
+    { "type": "perf", "hidden": true },
+
+    { "type": "test", "hidden": true }
+
+  ],
   "compareUrlFormat":"{{host}}/https://github.com/nitya118/LocationTracker.git/branchCompare?baseVersion=GT{{previousTag}}&targetVersion=GT{{currentTag}}",
   "commitUrlFormat": "{{host}}/https://github.com/nitya118/LocationTracker.git/commit/{{hash}}"
 }
