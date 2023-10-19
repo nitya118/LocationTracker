@@ -22,7 +22,7 @@ stages:
          displayName: 'build prject'
          inputs:
           command: 'build'
-          projects: '**/LocationTrackerAPI.Tests/*.csproj'
+          projects: '**/LocationTrackerAPI/*.csproj'
          
        - task: DotNetCoreCLI@2
          displayName: run visual studio
