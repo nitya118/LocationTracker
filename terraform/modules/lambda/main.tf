@@ -65,7 +65,7 @@ resource "aws_lambda_function" "lambda_function_v1" {
 
   filename         = data.archive_file.lambda_deployment_package.output_path
   source_code_hash = data.archive_file.lambda_deployment_package.output_base64sha256
-
+  #adding resource tags
   tags = var.tags 
 
 }
