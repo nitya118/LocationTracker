@@ -64,9 +64,9 @@ namespace LocationTracker.Controllers
         [HttpGet]
         public async Task<JsonResult> GetLocationReports()
         {
-            var fromDate = new DateTime(2023, 10, 1, 0, 0, 0);
+            var fromDate = _timeService.GetCurrentUTCDateTime();
 
-            var toDate = new DateTime(2023, 10, 31, 0, 0, 0);
+            var toDate = fromDate.AddHours(24);
 
             var reports = await _locationReportDataService.GetRecordsAsync("", fromDate, toDate);
 

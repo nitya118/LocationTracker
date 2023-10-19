@@ -3,43 +3,80 @@
     ViewData["Title"] = "Location Reports";
 }
 
-
 <link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+<link href="https://unpkg.com/maplibre-gl@3.x/dist/maplibre-gl.css" rel="stylesheet" />
 <link href="~/css/agent.css" rel="stylesheet" />
 
-<div class="agent-container-grid">
-    <div class="text-center">
-        <button type="button" id="btnClick" onclick="click()">Test Button</button>
-        <div class="signup-form">
-            <div class="form-field">
-                <label>Send a Location Request</label>
+<div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="col-auto px-0">
+            <div id="sidebar" class="collapse collapse-horizontal show border-end vh-100 shadow-sm bg-dark">
+                <div id="sidebar-nav" class="list-group border-0 rounded-0">
+                    <div class="p-2">
+                        <h4 class="bg-dark">Send Location Request</h4>
+                    </div>
+                    <ul class="list-group ">
+                        <li class="list-group-item bg-dark">
+
+                            <input class="form-control me-2" type="text" id="txtName" placeholder="Name" aria-label="Name">
+                        </li>
+                        <li class="list-group-item bg-dark">
+                            <input class="form-control me-2" type="text" id="txtMobile" placeholder="Mobile" aria-label="Mobile">
+                        </li>
+                        <li class="list-group-item bg-dark">
+                            <button class="btn btn-primary" type="submit">Send</button>
+                        </li>
+                        
+                    </ul>
+                </div>
             </div>
-            <div class="form-field">
-                <label for="name">Name</label>
-                <input type="text" placeholder="John Doe" id="name">
-            </div>
-            <div class="divider"></div>
-            <div class="form-field">
-                <label for="mobile">Mobile</label>
-                <input type="text" id="mobile" placeholder="07771234567">
-            </div>
-            <button class="submit">
-                Send SMS
-            </button>
         </div>
-        <div id="wrapper"></div>
+        <div class="col ps-md-2 pt-2">
+            <a href="#" data-bs-target="#sidebar" data-bs-toggle="collapse"
+               class="border rounded-3 p-1 text-decoration-none"><i class="bi bi-list"></i></a>
+            <div class="page-header pt-3">
+                <h2>Location Reports</h2>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card shadow">
+                        <div class="card-body text-start">
+                            <h5 class="card-title">Select Time Range</h5>
+                            <select>
+                                <option>All</option>
+                            </select>
+                            <button id="btnTest">Test</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5">
+                <div id="wrapper"></div>
+               
+            </div>
+        </div>
     </div>
-    <div id="map">The map goes here</div>
+    <div id="mapModal" class="modal">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>Map Title</h5>
+                    <button type="button"  data-bs-dismiss="modal">close</button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div id="map" style="height:800px"/>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 </div>
-
-
 <script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
-<script src="~/js/agent-grid.js" type="module" defer></script>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-
-<script defer>
-
-
-    
-    
-</script>
+<script src="~/js/agent.js" type="module" defer></script>
+<script src="https://unpkg.com/maplibre-gl@3.x/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/@@aws/amazon-location-utilities-auth-helper@1.x/dist/amazonLocationAuthHelper.js"></script>
