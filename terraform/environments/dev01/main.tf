@@ -1,3 +1,5 @@
+#terraform config for dev environment
+
 terraform {
   required_providers {
     aws = {
