@@ -51,7 +51,7 @@ footer {
 }
 
 /* The Modal (background) */
-#submit-modal {
+#modal {
 	display: none;
 	justify-content: center;
 	align-items: center;

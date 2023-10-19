@@ -1,4 +1,4 @@
-import { getUsersGeoLocation } from '../geolocation/get-geolocation.js';
+import { getCallersGeoLocation } from '../geolocation/get-geolocation.js';
 import { initialiseMap } from './initialise-map.js';
 import {
 	identityPoolId,
@@ -8,6 +8,7 @@ import {
 
 const ctaButton = document.getElementById('set-location-button');
 const loader = document.getElementById('loader-container');
+
 let marker;
 export const updatedGeolocation = {
 	latitude: null,
@@ -55,7 +56,7 @@ const searchMap = async (authHelper, map) => {
 			updatedGeolocation.latitude = data.Results[0].Place.Geometry.Point[1];
 			updatedGeolocation.longitude = data.Results[0].Place.Geometry.Point[0];
 
-			console.log('Users new coordinates', updatedGeolocation);
+			console.log('Callers new coordinates', updatedGeolocation);
 		} catch (error) {
 			console.log('There was an error searching.');
 		}
@@ -71,7 +72,7 @@ async function main() {
 	const authHelper =
 		await amazonLocationAuthHelper.withIdentityPoolId(identityPoolId);
 
-	getUsersGeoLocation()
+	getCallersGeoLocation()
 		.then(async (coordinates) => {
 			// Get lat and long in global storage
 			const userLatitude = coordinates.latitude;

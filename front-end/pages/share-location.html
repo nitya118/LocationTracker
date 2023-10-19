@@ -39,13 +39,11 @@
 				<div id="footer-content__edit-location">
 					<a href="../pages/edit-location.html">Edit Location</a>
 				</div>
-				<button id="submit-button" onclick="handleClick()">
-					Share my location
-				</button>
+				<button id="show-modal-button">Share my location</button>
 			</div>
 		</footer>
 
-		<div id="submit-modal">
+		<div id="modal">
 			<div id="modal-content">
 				<div id="modal-content__text">
 					<p>Please confirm that you want to share your location.</p>
@@ -58,11 +56,7 @@
 					>
 						Cancel
 					</button>
-					<button
-						id="modal_content__buttons--allow"
-						class="modal-button"
-						onclick="handleModalAllowClick()"
-					>
+					<button id="modal_content__buttons--allow" class="modal-button">
 						Allow
 					</button>
 				</div>
@@ -75,64 +69,7 @@
 	<script src="https://unpkg.com/@aws/amazon-location-client@1.x/dist/amazonLocationClient.js"></script>
 	<script src="https://unpkg.com/@aws/amazon-location-utilities-auth-helper@1.x/dist/amazonLocationAuthHelper.js"></script>
 
+	<!-- Scripts -->
 	<script src="../scripts/map/initialise-map.js" type="module"></script>
-
-	<script>
-		const modal = document.getElementById('submit-modal');
-
-		function handleClick() {
-			modal.style.display = 'flex';
-		}
-
-		// POST API call
-		async function apiCall(location) {
-			const callerId = localStorage.getItem('callerId');
-
-			const url =
-				'https://u4hdqm5uvkvdthwk54elxlkpbi0wpdef.lambda-url.eu-west-1.on.aws';
-
-			const data = {
-				id: callerId,
-				lat: location.latitude,
-				lon: location.longitude,
-			};
-
-			const response = await fetch(url, {
-				method: 'POST',
-				mode: 'cors',
-				body: JSON.stringify(data),
-			});
-
-			console.log(response.status);
-
-			return response.status;
-		}
-
-		// Share location
-		async function handleModalAllowClick() {
-			const location = JSON.parse(localStorage.getItem('usersGeolocation'));
-
-			const status = await apiCall(location);
-
-			if (status === 200) {
-				localStorage.clear();
-				window.location.href = './successful-submit.html';
-			} else if (status === 404) {
-				localStorage.clear();
-				window.location.href = './already-submitted.html';
-			}
-		}
-
-		// When the user clicks 'cancel' close the modal
-		function handleModalCancelClick() {
-			modal.style.display = 'none';
-		}
-
-		// When the user clicks anywhere outside of the modal, close it
-		window.onclick = function (event) {
-			if (event.target == modal) {
-				modal.style.display = 'none';
-			}
-		};
-	</script>
+	<script src="../scripts/modal/share-location-modal.js" type="module"></script>
 </html>
