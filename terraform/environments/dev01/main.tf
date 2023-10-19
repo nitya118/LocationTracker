@@ -36,7 +36,7 @@ locals {
       Cost_Center = 9999
     }
 }
-
+# ecr repo for backend docker image
 module "ecr_repo" {
   source             = "../../modules/ecr"
   aws_region         = var.aws_region
