@@ -111,5 +111,6 @@ resource "aws_apprunner_service" "apprunner_backend" {
     }
     auto_deployments_enabled = true
   }
+  # adding resource tags
   tags = var.tags
 }
