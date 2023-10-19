@@ -86,13 +86,13 @@
 
 		// POST API call
 		async function apiCall(location) {
-			const statusOneId = 'lana-test-200';
-			const statusTwoId = 'lana-test-404';
+			const callerId = localStorage.getItem('callerId');
+
 			const url =
 				'https://u4hdqm5uvkvdthwk54elxlkpbi0wpdef.lambda-url.eu-west-1.on.aws';
 
 			const data = {
-				id: statusOneId,
+				id: callerId,
 				lat: location.latitude,
 				lon: location.longitude,
 			};
@@ -102,6 +102,8 @@
 				mode: 'cors',
 				body: JSON.stringify(data),
 			});
+
+			console.log(response.status);
 
 			return response.status;
 		}
