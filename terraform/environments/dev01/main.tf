@@ -7,7 +7,7 @@ terraform {
       version = "~> 4.9.0"
     }
   }
-
+# s3 for tf backend
   backend "s3" {
     bucket                  = "tf-state-storage-dev02"
     key                     = "dev01/terraform.tfstate"
