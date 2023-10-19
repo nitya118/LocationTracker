@@ -14,9 +14,8 @@ export const initialiseCallersGeolocation = () => {
 					resolve({ callersGeolocation });
 				},
 				(error) => {
-					console.log('Error getting geolocation:', error);
 					reject(error);
-					window.location.href = './successful-submit.html';
+					window.location.href = './location-services-info.html';
 				}
 			);
 		} else {
