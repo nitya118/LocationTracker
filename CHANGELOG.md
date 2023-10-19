@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 1.0.1 (2023-10-19)
+
+
+### Bug Fixes
+
+* tags added to dynamodb module ([c793ac6](https://github.com/https://github.com/nitya118/LocationTracker.git/commit/c793ac63cf927f0082f31a7d3ab5a2b90b3d593d))
+
 ## 1.1.0 (2023-10-19)
 
 
