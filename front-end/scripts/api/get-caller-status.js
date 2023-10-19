@@ -22,7 +22,6 @@ async function main() {
 
 	// Get caller id from url and store
 	const callerId = new URL(location.href).searchParams.get('id');
-	console.log(callerId);
 	localStorage.setItem('callerId', callerId);
 
 	const apiUrl = `https://u4hdqm5uvkvdthwk54elxlkpbi0wpdef.lambda-url.eu-west-1.on.aws?id=${callerId}`;

@@ -1,8 +1,8 @@
 import { shareGeolocation } from '../api/post-caller-geolocation.js';
 
 // Elements
-const showModalButton = document.getElementById('show-modal-button');
 const modal = document.getElementById('modal');
+const showModalButton = document.getElementById('show-modal-button');
 const modalAllowButton = document.getElementById(
 	'modal_content__buttons--allow'
 );

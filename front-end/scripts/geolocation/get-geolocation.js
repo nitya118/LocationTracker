@@ -1,23 +1,23 @@
-import { initialiseUsersGeolocation } from './initialise-geolocation.js';
+import { initialiseCallersGeolocation } from './initialise-geolocation.js';
 
-export const getUsersGeoLocation = async () => {
+export const getCallersGeoLocation = async () => {
 	return new Promise((resolve, reject) => {
-		let storedGeolocation = localStorage.getItem('usersGeolocation');
-		let usersGeolocation;
+		let storedGeolocation = localStorage.getItem('callersGeolocation');
+		let callersGeolocation;
 
 		if (!storedGeolocation) {
-			initialiseUsersGeolocation().then(async () => {
-				storedGeolocation = localStorage.getItem('usersGeolocation');
-				usersGeolocation = JSON.parse(storedGeolocation);
+			initialiseCallersGeolocation().then(async () => {
+				storedGeolocation = localStorage.getItem('callersGeolocation');
+				callersGeolocation = JSON.parse(storedGeolocation);
 
-				console.log("User's coordinates: ", usersGeolocation);
-				resolve(usersGeolocation);
+				console.log("User's coordinates: ", callersGeolocation);
+				resolve(callersGeolocation);
 			});
 		} else {
-			usersGeolocation = JSON.parse(storedGeolocation);
+			callersGeolocation = JSON.parse(storedGeolocation);
 
-			console.log("User's coordinates: ", usersGeolocation);
-			resolve(usersGeolocation);
+			console.log("User's coordinates: ", callersGeolocation);
+			resolve(callersGeolocation);
 		}
 	});
 };

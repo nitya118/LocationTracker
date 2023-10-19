@@ -72,36 +72,4 @@
 	<!-- Scripts -->
 	<script src="../scripts/map/initialise-map.js" type="module"></script>
 	<script src="../scripts/modal/share-location-modal.js" type="module"></script>
-
-	<!-- Modal Pop Up -->
-	<!-- <script type="module">
-		import { shareGeolocation } from '../scripts/api/post-caller-geolocation.js';
-
-		const submitButton = document.getElementById('submit-button');
-		const modal = document.getElementById('submit-modal');
-		const modalAllowButton = document.getElementById(
-			'modal_content__buttons--allow'
-		);
-
-		submitButton.onclick = function () {
-			console.log("clique'd");
-			modal.style.display = 'flex';
-		};
-
-		modalAllowButton.onclick = function () {
-			shareGeolocation();
-		};
-
-		// When the user clicks 'cancel' close the modal
-		function handleModalCancelClick() {
-			modal.style.display = 'none';
-		}
-
-		// When the user clicks anywhere outside of the modal, close it
-		window.onclick = function (event) {
-			if (event.target == modal) {
-				modal.style.display = 'none';
-			}
-		};
-	</script> -->
 </html>

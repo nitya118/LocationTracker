@@ -44,17 +44,10 @@
 	<script src="https://unpkg.com/@aws/amazon-location-client@1.x/dist/amazonLocationClient.js"></script>
 	<script src="https://unpkg.com/@aws/amazon-location-utilities-auth-helper@1.x/dist/amazonLocationAuthHelper.js"></script>
 
+	<!-- Scripts -->
 	<script src="../scripts/map/search-map.js" type="module"></script>
-	<script type="module">
-		import { updatedGeolocation } from '../scripts/map/search-map.js';
-		const ctaButton = document.getElementById('set-location-button');
-
-		ctaButton.onclick = function () {
-			localStorage.setItem(
-				'usersGeolocation',
-				JSON.stringify(updatedGeolocation)
-			);
-			window.location.href = './share-location.html';
-		};
-	</script>
+	<script
+		src="../scripts/geolocation/edit-geolocation.js"
+		type="module"
+	></script>
 </html>

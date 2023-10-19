@@ -20,10 +20,8 @@ async function apiCall(location) {
 }
 
 export async function shareGeolocation() {
-	console.log('sharing');
-
 	const callersGeolocation = JSON.parse(
-		localStorage.getItem('usersGeolocation')
+		localStorage.getItem('callersGeolocation')
 	);
 	const status = await apiCall(callersGeolocation);
 
