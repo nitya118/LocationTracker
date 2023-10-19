@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.1.0 (2023-10-19)
+
+
+### Features
+
+* test version ([3cf7fde](https://github.com/https://github.com/nitya118/LocationTracker.git/commit/3cf7fdecf49cb62cefb5f4e6161ca413cece8cb3))
+
 ### 1.0.1 (2023-10-19)
 
 ### 1.0.1 (2023-10-19)
