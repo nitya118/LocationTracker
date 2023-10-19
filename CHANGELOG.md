@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 1.0.1 (2023-10-19)
+
+
+### Bug Fixes
+
+* added description on dev tf ([5b725c7](https://github.com/https://github.com/nitya118/LocationTracker.git/commit/5b725c7d982f954251825543d4d3f0a6297f5690))
+
 ## 1.1.0 (2023-10-19)
 
 
