@@ -22,6 +22,6 @@ resource "aws_dynamodb_table" "ddb_table" {
     attribute_name = "TimeToLive"
     enabled        = true
   }
-
+ # adding resource tags
   tags = var.tags
 }
