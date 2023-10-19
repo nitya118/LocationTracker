@@ -16,30 +16,22 @@ async function apiCall(location) {
 		body: JSON.stringify(data),
 	});
 
-	console.log('response', response);
 	return response.status;
 }
 
-async function shareLocation(location) {
-	const status = await apiCall(location);
+export async function shareGeolocation() {
+	console.log('sharing');
 
-	if (status === 200) {
-		window.location.href = './successful-submit.html';
-	} else if (status === 404) {
-		window.location.href = './already-submitted.html';
-	}
-
-	console.log('clearing storage');
-	localStorage.clear();
-}
-
-function main() {
-	console.log('posting');
 	const callersGeolocation = JSON.parse(
 		localStorage.getItem('usersGeolocation')
 	);
+	const status = await apiCall(callersGeolocation);
 
-	shareLocation(callersGeolocation);
+	if (status === 200) {
+		localStorage.clear();
+		window.location.href = './successful-submit.html';
+	} else if (status === 404) {
+		localStorage.clear();
+		window.location.href = './already-submitted.html';
+	}
 }
-
-main();
