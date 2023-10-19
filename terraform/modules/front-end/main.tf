@@ -3,7 +3,7 @@ resource "aws_s3_bucket" "bucket_front_end" {
   bucket = "www.${var.bucket_name_front_end}"
   force_destroy=true
   
-
+  # adding resource tags
   tags = var.tags
 }
 
