@@ -4,8 +4,9 @@ import {
     html, h, PluginPosition, useSelector, useConfig, useState
 } from "https://unpkg.com/gridjs?module";
 
-let wrapper = document.getElementById("wrapper");
-let btnTest = document.getElementById("btnTest");
+const wrapper = document.getElementById("wrapper");
+const btnTest = document.getElementById("btnTest");
+const btnSubmit = document.getElementById("btnSubmit");
 
 
 const identityPoolId = "eu-west-1:478a32d0-58df-414f-a4f2-e2e58c300742"
@@ -14,6 +15,7 @@ const region = "eu-west-1";
 let lat = 51.584856 ;
 let long = 0.059955;
 const authHelper = await amazonLocationAuthHelper.withIdentityPoolId(identityPoolId);
+
 const map = new maplibregl.Map({
     container: "map",
     center: [long, lat],
@@ -27,12 +29,7 @@ const marker = new maplibregl.Marker()
     .setLngLat([long, lat])
     .addTo(map);
 
-
-
-
-
-
-export const displayMap =  (lat,long) => {
+ const displayMap =  (lat,long,title) => {
 
     map.setCenter([long, lat]);
     marker.setLngLat([long, lat]);;
@@ -42,33 +39,76 @@ export const displayMap =  (lat,long) => {
         keyboard: false
     });
 
+    let mapTitle = document.getElementById("mapTitle");
+
+    mapTitle.innerText = title;
+
     mapModal.show();
+}
+
+
+const submitter = async () => {
+
+    const mobile = document.getElementById("txtMobile");
+    const name = document.getElementById("txtName");
+   
+
+    mobile.onchange = () => { mobile.classList.remove("invalid") };
+    name.onchange = () => { name.classList.remove("invalid") }
+
+    if (!mobile.checkValidity()) {
+        mobile.classList.add("invalid");
+        return;
+    }
+
+    if (!name.checkValidity()) {
+        name.classList.add("invalid");
+        return;
+    }
+
+
+    //save settings
+    let postUrl = "/Home/CreateLocationReport";
+
+    let response = await fetch(postUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `mobile=${mobile.value}&name=${name.value}`
+
+    });
+
+    console.log(response);
+
+
 }
 
 
 
 
-export const gridManager = async (wrapperElement, btnTest) => {
+ const gridManager = async (wrapperElement, btnTest) => {
 
 
-    let statusFormatter = (cell, row) => {
+    let locationFormatter = (cell, row) => {
 
-        if (cell == "3") {
 
-            return h('button', {
-                className: '',
-                onClick: () => {
-                   // alert(`Show Map "${row.cells[0].data}" "${row.cells[1].data}"`);
-                    displayMap(0,0);
-                }
-            }, 'View Map');
-
-            
+        if (row.cells[2].data == "3") {
+            return h('div', { "className":"flex-parent-element"}, [
+                h("a", {
+                    "href": "#",
+                    "className":"flex-child-element"
+                }, cell),
+                h("button", {
+                    className:"btn btn-primary",
+                    onclick: () => {
+                        displayMap(row.cells[0].data, row.cells[1].data, `${row.cells[3].data}  ${row.cells[4].data}`);
+                    }
+                }, "View Map")
+            ])
         }
 
-        if (cell == "1") {
-            return "SMS Sent"
-        }
+        
     }
 
 
@@ -78,12 +118,16 @@ export const gridManager = async (wrapperElement, btnTest) => {
         sort: true,
         resizable: true,
         columns: [
-            { id: "Id", name: "Id", hidden: true },
-            { id: "name", name: "Name" },
-            { id: "mobile", name: "Mobile" },
-            { id: "createdBy", name: "Created By" },
-            { id: "createdDateTimeUTC", name: "Created Date" },
-            { id: "status", name: "Status", formatter: statusFormatter },
+            { id: "lat", name: "lat", hidden: true },
+            { id: "long", name: "long", hidden: true },
+            { id: "status", name: "status", hidden: true },
+            { id: "name", name: "Name", width:"15%" },
+            { id: "mobile", name: "Mobile", width: "10%" },
+            { id: "createdBy", name: "Created By", width: "15%" },
+            { id: "createdDateTime", name: "Timestamp", width: "10%" },
+            { id: "statusString", name: "Status", width: "15%" },
+            { id: "eastingsNorthings", name: "Location", width: "35%", formatter: locationFormatter },
+           
         ],
         data: [
             ["1", "John", "0712730623", "alice@contoso.com", "12-Oct 13:45", "3"],
@@ -93,11 +137,7 @@ export const gridManager = async (wrapperElement, btnTest) => {
 
 
  
-
-
-
-
-    btnTest.onclick = async function (e) {
+    const getData= async ()=>{
 
         let dataUrl = '/Home/GetLocationReports';
 
@@ -105,17 +145,42 @@ export const gridManager = async (wrapperElement, btnTest) => {
 
         let data = await response.json();
 
+        return data;
+    }
+
+
+
+    btnTest.onclick = async function (e) {
+
         grid.config.plugin.remove("search");
 
         grid.config.plugin.remove("pagination");
 
         let newConf = Object.assign({}, grid.config);
 
-        newConf.data = data;
+        newConf.data =await getData();
 
         grid.updateConfig(newConf).forceRender();
-    };
+     };
+
+     btnSubmit.onclick = async (e) => {
+         await submitter();
+
+
+         grid.config.plugin.remove("search");
+
+         grid.config.plugin.remove("pagination");
+
+         let newConf = Object.assign({}, grid.config);
+
+         newConf.data = await getData();
+
+         grid.updateConfig(newConf).forceRender();
+     }
+
 }
+
+
 
 
 

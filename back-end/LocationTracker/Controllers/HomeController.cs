@@ -1,4 +1,5 @@
 ﻿using LocationTracker.Models;
+using LocationTracker.Utils;
 using LocationTrackerLib.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
@@ -39,14 +40,13 @@ namespace LocationTracker.Controllers
         {
             //implement user authorization checks here
 
-            var globalUser=await _userDataService.GetGlobalUser();
+            var globalUser = await _userDataService.GetGlobalUser();
 
             if (globalUser == null)
             {
                 //create the global user if not already there
                 await _userDataService.SaveGlobalSettings(true, true);
             }
-
 
             return View();
         }
@@ -64,13 +64,25 @@ namespace LocationTracker.Controllers
         [HttpGet]
         public async Task<JsonResult> GetLocationReports()
         {
-            var fromDate = _timeService.GetCurrentUTCDateTime();
+            var fromDate = new DateTime(2023, 10, 1);
 
-            var toDate = fromDate.AddHours(24);
+            var toDate = fromDate.AddDays(35);
 
             var reports = await _locationReportDataService.GetRecordsAsync("", fromDate, toDate);
 
-            return Json(reports);
+            var lrv = reports.Select(x => new LocationReportView()
+            {
+                CreatedDateTime = string.Format("{0:dd/MMM HH:mm}", _timeService.ConvertUTCToBST(x.CreatedDateTimeUTC)),
+                CreatedBy = x.CreatedBy,
+                Name = x.Name,
+                Mobile = x.Mobile,
+                Status = x.Status,
+                Lat = x.Lat,
+                Long = x.Long,
+                EastingsNorthings = string.Format("X={0},\r\nY={1}", _geoService.ConvertFromLatLon(new LocationTrackerLib.Models.LatLon(x.Lat, x.Long)).X, _geoService.ConvertFromLatLon(new LocationTrackerLib.Models.LatLon(x.Lat, x.Long)).Y)
+            });
+
+            return Json(lrv);
         }
 
         [HttpPost]
@@ -85,6 +97,31 @@ namespace LocationTracker.Controllers
             {
                 return StatusCode(400, "Mobile cannot be empty.");
             }
+
+            if (!Utility.IsValidateUKMobileNumber(mobile))
+            {
+                return StatusCode(400, "Incorrect mobile number format.");
+            }
+
+
+            mobile=Utility.ConvertUkMobileToInternational(mobile);
+
+
+            var lr = new LocationTrackerLib.Models.LocationReport()
+            {
+                Id = System.Guid.NewGuid().ToString(),
+                CreatedBy = User.Identity.Name,
+                Name = name,
+                Mobile = mobile,
+                CreatedDateTimeUTC = _timeService.GetCurrentUTCDateTime(),
+                Status = LocationTrackerLib.Models.LocationReportStatus.SMS_SENT
+            };
+
+            var message = $"Hello from the Location Track App. Please enter your location here.https://d2rqqna7prrzjd.cloudfront.net/?id={lr.Id}";
+
+            await _smsNotifier.SendReport(mobile, message);
+
+            await _locationReportDataService.SaveRecordAsync(lr);
 
             return StatusCode(200);
         }

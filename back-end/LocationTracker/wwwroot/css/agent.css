@@ -12,3 +12,18 @@ tr.selected td{
 .agent-map {
     height: 100%;
 }
+
+
+.flex-parent-element {
+    display: flex;
+   
+}
+
+.flex-child-element {
+    flex: 1;
+   
+}
+
+    .flex-child-element:first-child {
+        margin-right: 20px;
+    }

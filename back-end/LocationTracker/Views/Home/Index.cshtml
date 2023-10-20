@@ -18,13 +18,13 @@
                     <ul class="list-group ">
                         <li class="list-group-item bg-dark">
 
-                            <input class="form-control me-2" type="text" id="txtName" placeholder="Name" aria-label="Name">
+                            <input class="form-control me-2" required type="text" id="txtName" placeholder="Name" aria-label="Name">
                         </li>
                         <li class="list-group-item bg-dark">
-                            <input class="form-control me-2" type="text" id="txtMobile" placeholder="Mobile" aria-label="Mobile">
+                            <input class="form-control me-2" required type="text" id="txtMobile" placeholder="Mobile" aria-label="Mobile">
                         </li>
                         <li class="list-group-item bg-dark">
-                            <button class="btn btn-primary" type="submit">Send</button>
+                            <button id="btnSubmit" class="btn btn-primary" type="submit">Send</button>
                         </li>
                         
                     </ul>
@@ -61,8 +61,8 @@
         <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5>Map Title</h5>
-                    <button type="button"  data-bs-dismiss="modal">close</button>
+                    <h5 id="mapTitle">Map Title</h5>
+                    <button type="button" class="btn btn-primary"  data-bs-dismiss="modal">close</button>
                 </div>
                 <div class="modal-body">
                     <div>
