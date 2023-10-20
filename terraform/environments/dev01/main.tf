@@ -26,7 +26,7 @@ locals {
   tags = {
       Environment = "Dev"
       Owner       = "Platform"
-      Cost_Center = 9999
+      Cost_Center = 0000
     }
 }
 # ecr repo for backend docker image
