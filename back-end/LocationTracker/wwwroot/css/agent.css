@@ -19,6 +19,10 @@ tr.selected td{
    
 }
 
+input:invalid {
+    border: 2px solid red;
+}
+
 .flex-child-element {
     flex: 1;
    

@@ -12,7 +12,7 @@ namespace LocationTrackerLib.Services
         {
             var BritishZone = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
 
-            DateTime dt = DateTime.SpecifyKind(utc, DateTimeKind.Unspecified);
+            DateTime dt = DateTime.SpecifyKind(utc, DateTimeKind.Utc);
 
             var bst= TimeZoneInfo.ConvertTime(dt, TimeZoneInfo.Utc, BritishZone);
 

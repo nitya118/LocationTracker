@@ -79,6 +79,9 @@ const submitter = async () => {
 
     });
 
+    mobile.value = "";
+    name.value = "";
+
     console.log(response);
 
 
@@ -129,10 +132,7 @@ const submitter = async () => {
             { id: "eastingsNorthings", name: "Location", width: "35%", formatter: locationFormatter },
            
         ],
-        data: [
-            ["1", "John", "0712730623", "alice@contoso.com", "12-Oct 13:45", "3"],
-
-        ]
+        data: []
     }).render(wrapperElement);
 
 
@@ -166,7 +166,6 @@ const submitter = async () => {
      btnSubmit.onclick = async (e) => {
          await submitter();
 
-
          grid.config.plugin.remove("search");
 
          grid.config.plugin.remove("pagination");
@@ -177,6 +176,26 @@ const submitter = async () => {
 
          grid.updateConfig(newConf).forceRender();
      }
+
+
+     setInterval(() => {
+
+         grid.config.plugin.remove("search");
+
+         grid.config.plugin.remove("pagination");
+
+         let newConf = Object.assign({}, grid.config);
+
+         let promise = getData();
+
+         promise.then((data) => {
+             newConf.data = data;
+
+             grid.updateConfig(newConf).forceRender();
+
+         });
+
+     },15000)
 
 }
 

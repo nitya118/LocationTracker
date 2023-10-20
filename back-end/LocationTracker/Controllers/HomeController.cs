@@ -72,7 +72,7 @@ namespace LocationTracker.Controllers
 
             var lrv = reports.Select(x => new LocationReportView()
             {
-                CreatedDateTime = string.Format("{0:dd/MMM HH:mm}", _timeService.ConvertUTCToBST(x.CreatedDateTimeUTC)),
+                CreatedDateTime = string.Format("{0:dd MMM HH:mm}", x.CreatedDateTimeUTC), //dynamoDB automatically does conversion to local
                 CreatedBy = x.CreatedBy,
                 Name = x.Name,
                 Mobile = x.Mobile,
@@ -110,7 +110,7 @@ namespace LocationTracker.Controllers
             var lr = new LocationTrackerLib.Models.LocationReport()
             {
                 Id = System.Guid.NewGuid().ToString(),
-                CreatedBy = User.Identity.Name,
+                CreatedBy = User.Identity.Name.Split("@")[0],
                 Name = name,
                 Mobile = mobile,
                 CreatedDateTimeUTC = _timeService.GetCurrentUTCDateTime(),
