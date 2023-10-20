@@ -22,13 +22,6 @@ provider "aws" {
   region = var.aws_region
 }
 
-/*
-resource "aws_s3_bucket" "content_bucket" {
-  bucket = var.bucket_name
-}
-*/
-
-
 locals {
   tags = {
       Environment = "Dev"
@@ -66,7 +59,7 @@ output "dynamodb_instance2"{
     value=module.dynamodb_access_management.instance
 }
 
-#call apprunner module 
+#create apprunner deployment 
 module "apprunner" {
   source  = "../../modules/apprunner"
   ddb_loc_report_arn = module.dynamodb_loc_report.instance.arn

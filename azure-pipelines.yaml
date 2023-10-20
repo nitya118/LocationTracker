@@ -4,8 +4,8 @@ trigger:
       - infra_*
   paths:
     include:
-      -  'terraform/*'
-      -  'api/*'
+      -  '*'
+      -  #'api/*'
 steps:
    - checkout: self
      persistCredentials: true
@@ -14,13 +14,9 @@ steps:
       git config --global user.name 'nitya'
    - task: NodeTool@0
      inputs:
-      versionSpec: '14.x'    
-   - task: UsePythonVersion@0
-     inputs:
-      versionSpec: '3.9' 
+      versionSpec: '14.x' 
    - script: |
-      npm install -g commitizen
-      cz bump
+      npx standard-version
       git push --follow-tags origin HEAD:$(Build.SourceBranchName)
      condition: eq(variables['Build.SourceBranch'], 'refs/heads/infra_v1.0')
      displayName: 'Bump package version number'
