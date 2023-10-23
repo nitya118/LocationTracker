@@ -7,19 +7,13 @@ trigger:
       -  '*'
       -  #'api/*'
 steps:
-   - checkout: self
-     persistCredentials: true
-   - script: |
-      git config --global user.email 'nitya_shankar@outlook.com'
-      git config --global user.name 'nitya'
-   - task: NodeTool@0
+   - task: gitversion/setup@0
      inputs:
-      versionSpec: '14.x' 
-   - script: |
-      npx standard-version
-      git push --follow-tags origin HEAD:$(Build.SourceBranchName)
-     condition: eq(variables['Build.SourceBranch'], 'refs/heads/infra_v1.0')
-     displayName: 'Bump package version number'
+       versionSpec: '5.x'
+   - task: gitversion/execute@0
+     inputs:
+       useConfigFile: true
+       configFilePath: 'GitVersion.yml'
      
 # infra pipleine
    - task: PublishPipelineArtifact@1
