@@ -16,6 +16,13 @@ steps:
      inputs:
        useConfigFile: true
        configFilePath: 'GitVersion.yml'
+   - task: Bash@3
+     displayName: 'Set version number in package.json'
+     inputs:
+        targetType: 'inline'
+        script: sed -i "s/0.0.1/$GITVERSIONNUMBER/g" package.json
+     env:
+      GITVERSIONNUMBER: $(GitVersion.SemVer)
      
 # infra pipleine
    - task: PublishPipelineArtifact@1
