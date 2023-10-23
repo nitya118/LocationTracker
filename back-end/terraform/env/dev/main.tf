@@ -36,7 +36,7 @@ module "apprunner" {
   ddb_access_management_arn = data.aws_dynamodb_table.dynamodb_users_arn.arn
   asp_core_environment = "development"
   service_name = "eu01-dev01-app01"
-  ecr_image_address = "${data.aws_ecr_repository.ecr_repo_arn.arn}/eu01-dev01-ecr01:latest"
+  ecr_image_address = "${data.aws_ecr_repository.ecr_repo_arn.repository_url}/:latest"
 
   tags = local.tags
 }
