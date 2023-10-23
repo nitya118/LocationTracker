@@ -42,12 +42,24 @@ module "ecr_repo" {
 module "dynamodb_loc_report" {
   source = "../../modules/dynamodb"
   ddb_name = "eu01-dev01-ddb01"
+  hash_key = "Id"
+
+  ddb_attribute_name = "Id"
+  ddb_attribute_type = "S"
+
+  enable_ttl = true
+
   tags = local.tags
 }
+
 #dynamodb_access_management
-module "dynamodb_access_management" {
+module "dynamodb_users" {
   source = "../../modules/dynamodb"
   ddb_name = "eu01-dev01-ddb02"
+  hash_key = "UserName"
+
+  ddb_attribute_name = "UserName"
+  ddb_attribute_type = "S"
   tags = local.tags
 }
 
@@ -56,14 +68,14 @@ output "dynamodb_instance" {
 }
 
 output "dynamodb_instance2"{
-    value=module.dynamodb_access_management.instance
+    value=module.dynamodb_users.instance
 }
 
 #create apprunner deployment 
 module "apprunner" {
   source  = "../../modules/apprunner"
   ddb_loc_report_arn = module.dynamodb_loc_report.instance.arn
-  ddb_access_management_arn = module.dynamodb_access_management.instance.arn
+  ddb_access_management_arn = module.dynamodb_users.instance.arn
   asp_core_environment = "development"
   service_name = "eu01-dev01-app01"
   ecr_image_address = "007060634107.dkr.ecr.eu-west-1.amazonaws.com/eu01-dev01-ecr01:latest"
