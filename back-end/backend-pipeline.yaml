@@ -4,7 +4,7 @@ trigger:
       - infra_*
   paths:
     include:
-      -  'backend/*'
+      -  '*'
 
   
 # backend pipleine
@@ -13,8 +13,8 @@ steps:
   displayName: Build an image
   inputs:
     command: build
-    dockerfile: '$(Build.SourcesDirectory)/back-end/LocationTracker/Dockerfile'
-    buildContext: '$(Build.SourcesDirectory)/back-end/LocationTracker/'
+    dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+    buildContext: '$(Build.SourcesDirectory)'
     repository: $(DOCKER_REPOSITORY_NAME)
 
 - task: ECRPushImage@1
