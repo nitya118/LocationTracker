@@ -5,24 +5,20 @@ trigger:
   paths:
     include:
       -  '*'
-      -  #'api/*'
 steps:
    - checkout: self
-     fetchDepth: 0
-   - task: gitversion/setup@0
+     persistCredentials: true
+   - script: |
+      git config --global user.email 'nitya_shankar@outlook.com'
+      git config --global user.name 'nitya'
+   - task: NodeTool@0
      inputs:
-       versionSpec: '5.x'
-   - task: gitversion/execute@0
-     inputs:
-       useConfigFile: true
-       configFilePath: 'GitVersion.yml'
-   - task: Bash@3
-     displayName: 'Set version number in package.json'
-     inputs:
-        targetType: 'inline'
-        script: sed -i "s/0.0.1/$GITVERSIONNUMBER/g" package.json
-     env:
-      GITVERSIONNUMBER: $(GitVersion.SemVer)
+      versionSpec: '14.x' 
+   - script: |
+      npx standard-version
+      git push --follow-tags origin HEAD:$(Build.SourceBranchName)
+     condition: eq(variables['Build.SourceBranch'], 'refs/heads/infra_v1.0')
+     displayName: 'Bump package version number'
      
 # infra pipleine
    - task: PublishPipelineArtifact@1
