@@ -1,4 +1,4 @@
-#terraform config for dev environment
+#terraform config for staging environment
 
 terraform {
   required_providers {
