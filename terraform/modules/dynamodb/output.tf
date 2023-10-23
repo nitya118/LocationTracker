@@ -1,3 +1,3 @@
 output "instance"{
-    value=aws_dynamodb_table.ddb_table
+    value=aws_dynamodb_table.this_dynamo_table
 }
