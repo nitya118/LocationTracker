@@ -71,6 +71,7 @@ output "dynamodb_instance2"{
     value=module.dynamodb_users.instance
 }
 
+/*
 #create apprunner deployment 
 module "apprunner" {
   source  = "../../modules/apprunner"
@@ -81,7 +82,7 @@ module "apprunner" {
   ecr_image_address = "007060634107.dkr.ecr.eu-west-1.amazonaws.com/eu01-dev01-ecr01:latest"
   tags = local.tags
 }
-
+ */
 
 
 module "front-end" {
