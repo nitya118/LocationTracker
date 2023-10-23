@@ -42,9 +42,9 @@ namespace LocationTrackerLib.Tests.Integration
 
             DateTime from = new DateTime(2023, 10, 10, 0, 0, 0);
 
-            DateTime to = new DateTime(2023, 10, 10, 19, 0, 0);
+            DateTime to = new DateTime(2023, 10, 31, 0, 0, 0);
 
-            var ls = await sut.GetRecordsAsync("alice@contoso.com", from, to);
+            var ls = await sut.GetRecordsAsync("mallory@contoso.com", from, to);
 
             Assert.NotNull(ls);
         }
@@ -171,7 +171,7 @@ namespace LocationTrackerLib.Tests.Integration
                 await sut.SaveRecordAsync(ls);
             };
 
-            var createdDate = new DateTime(2023, 10, 14, 7, 0, 0); ;
+            var createdDate = new DateTime(2023, 10, 16, 7, 0, 0); ;
 
             for (int i = 0; i < NumOfRecords; i++)
             {

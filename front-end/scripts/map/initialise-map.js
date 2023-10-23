@@ -1,4 +1,4 @@
-import { getUsersGeoLocation } from '../geolocation/get-geolocation.js';
+import { getCallersGeoLocation } from '../geolocation/get-geolocation.js';
 import {
 	identityPoolId,
 	mapName,
@@ -7,7 +7,7 @@ import {
 
 let marker;
 const loader = document.getElementById('loader-container');
-const ctaButton = document.getElementById('submit-button');
+const ctaButton = document.getElementById('show-modal-button');
 
 export const initialiseMap = async (authHelper, latitude, longitude) => {
 	const map = new maplibregl.Map({
@@ -34,7 +34,7 @@ async function main() {
 	const authHelper =
 		await amazonLocationAuthHelper.withIdentityPoolId(identityPoolId);
 
-	getUsersGeoLocation()
+	getCallersGeoLocation()
 		.then(async (coordinates) => {
 			const userLatitude = coordinates.latitude;
 			const userLongitude = coordinates.longitude;

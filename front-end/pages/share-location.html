@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Location App</title>
 		<link href="../styles/global.css" rel="stylesheet" />
-		<link href="../styles/edit-location.css" rel="stylesheet" />
+		<link href="../styles/share-location.css" rel="stylesheet" />
 
 		<!-- maplibre -->
 		<link
@@ -29,14 +29,39 @@
 				<div id="loader-container"><div id="loader"></div></div>
 			</div>
 		</main>
+		<h2>Check and share your location</h2>
 		<footer>
 			<div id="footer-content">
-				<div id="footer-content__set-location">
-					Move the map to set your location
+				<div id="footer-content__your-location">
+					<img src="../assets/location-marker.svg" alt="Location marker" />
+					Your location
 				</div>
-				<button id="set-location-button">Set my location</button>
+				<div id="footer-content__edit-location">
+					<a href="../pages/edit-location.html">Edit Location</a>
+				</div>
+				<button id="show-modal-button">Share my location</button>
 			</div>
 		</footer>
+
+		<div id="modal">
+			<div id="modal-content">
+				<div id="modal-content__text">
+					<p>Please confirm that you want to share your location.</p>
+				</div>
+				<div id="modal-content__buttons">
+					<button
+						id="modal_content__buttons--cancel"
+						class="modal-button"
+						onclick="handleModalCancelClick()"
+					>
+						Cancel
+					</button>
+					<button id="modal_content__buttons--allow" class="modal-button">
+						Allow
+					</button>
+				</div>
+			</div>
+		</div>
 	</body>
 
 	<!-- JavaScript dependencies -->
@@ -45,9 +70,6 @@
 	<script src="https://unpkg.com/@aws/amazon-location-utilities-auth-helper@1.x/dist/amazonLocationAuthHelper.js"></script>
 
 	<!-- Scripts -->
-	<script src="../scripts/map/search-map.js" type="module"></script>
-	<script
-		src="../scripts/geolocation/edit-geolocation.js"
-		type="module"
-	></script>
+	<script src="../scripts/map/initialise-map.js" type="module"></script>
+	<script src="../scripts/modal/share-location-modal.js" type="module"></script>
 </html>

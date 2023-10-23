@@ -1,0 +1,28 @@
+﻿
+html {
+    font-size: 12px;
+}
+
+
+.user-global-setting{
+    margin-top:97px;
+}
+
+
+input:invalid {
+    border: 2px solid red;
+}
+
+
+.user-data-item {
+   padding:5px;
+}
+
+.user-data-item input[type=text] {
+        width: 80%
+ }
+
+
+td a{
+    cursor:pointer;
+}
