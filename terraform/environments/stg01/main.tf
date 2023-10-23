@@ -44,7 +44,7 @@ module "dynamodb_loc_report" {
   ddb_name = "eu01-stg01-ddb01"
   tags = local.tags
 }
-
+#dynamodb access management
 module "dynamodb_access_management" {
   source = "../../modules/dynamodb"
   ddb_name = "eu01-stg01-ddb02"
@@ -85,7 +85,7 @@ output "website-url"{
   value=module.front-end.website_endpoint
 }
 
-
+#lambda module for front end
 module "api_lambda" {
   source = "../../modules/lambda"
   ddb_loc_report_arn = module.dynamodb_loc_report.instance.arn

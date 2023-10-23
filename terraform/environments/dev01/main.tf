@@ -44,7 +44,7 @@ module "dynamodb_loc_report" {
   ddb_name = "eu01-dev01-ddb01"
   tags = local.tags
 }
-
+#dynamodb_access_management
 module "dynamodb_access_management" {
   source = "../../modules/dynamodb"
   ddb_name = "eu01-dev01-ddb02"
