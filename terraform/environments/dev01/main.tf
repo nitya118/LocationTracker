@@ -41,7 +41,7 @@ module "ecr_repo" {
 #dynamo db module
 module "dynamodb_loc_report" {
   source = "../../modules/dynamodb"
-  ddb_name = "eu01-dev01-ddb01"
+  ddb_name = "LocationReports"
   hash_key = "Id"
 
   ddb_attribute_name = "Id"
@@ -55,7 +55,7 @@ module "dynamodb_loc_report" {
 #dynamodb_access_management
 module "dynamodb_users" {
   source = "../../modules/dynamodb"
-  ddb_name = "eu01-dev01-ddb02"
+  ddb_name = "Users"
   hash_key = "UserName"
 
   ddb_attribute_name = "UserName"
