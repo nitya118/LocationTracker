@@ -1,3 +1,31 @@
+data "aws_caller_identity" "current" {}
+
+
+
+resource "aws_iam_policy" "sns-publish-policy" {
+  name        = "sns-publish-policy"
+  path        = "/"
+  description = "Policy to allow sms publishing for the current account"
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "",
+            "Effect": "Allow",
+            "Action": "sns:Publish",
+            "Resource": "*"
+        }
+    ]
+})
+}
+
+
+
+
+
 resource "aws_iam_policy" "ddb-location-reports-policy" {
   name        = "ddb-location-reports-policy"
   path        = "/"
@@ -43,6 +71,8 @@ resource "aws_iam_policy" "ddb-users-policy" {
 data "aws_iam_policy" "AppRunnerECRAcessPolicy" {
   name = "AWSAppRunnerServicePolicyForECRAccess"
 }
+
+
 
 
 resource "aws_iam_role" "apprunner-instance-role" {
@@ -97,6 +127,14 @@ resource "aws_iam_role_policy_attachment" "attach-policy-ddb-users" {
   role       = aws_iam_role.apprunner-instance-role.name
   policy_arn = aws_iam_policy.ddb-users-policy.arn
 }
+
+
+resource "aws_iam_role_policy_attachment" "attach-policy-sns-publish" {
+  role       = aws_iam_role.apprunner-instance-role.name
+  policy_arn = aws_iam_policy.sns-publish-policy.arn
+}
+
+
 
 
 resource "aws_apprunner_service" "location-tracker" {
