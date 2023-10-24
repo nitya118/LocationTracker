@@ -74,12 +74,12 @@ resource "aws_iam_policy" "ddb_table_users_policy" {
 }
 
 
-resource "aws_iam_role_policy_attachment" "apprunner_instance_role_attachment" {
+resource "aws_iam_role_policy_attachment" "apprunner_locreports_role_attachment" {
   role       = aws_iam_role.apprunner_ecr_service_instance_role.name
   policy_arn = aws_iam_policy.ddb_table_policy.arn
 }
 
-resource "aws_iam_role_policy_attachment" "apprunner_instance_role_attachment" {
+resource "aws_iam_role_policy_attachment" "apprunner_users_role_attachment" {
   role       = aws_iam_role.apprunner_ecr_service_instance_role.name
   policy_arn = aws_iam_policy.ddb_table_users_policy.arn
 }
