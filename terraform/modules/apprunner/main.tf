@@ -53,7 +53,28 @@ resource "aws_iam_policy" "ddb_table_policy" {
             Sid: "",
             Effect: "Allow",
             Action: "dynamodb:*",
-            Resource: var.ddb_users_arn
+            Resource: var.ddb_access_management_arn
+        }
+    ]
+})
+
+}
+
+resource "aws_iam_policy" "ddb_table_users_policy" {
+  name        = "ddb-users-policy"
+  path        = "/"
+  description = "Policy to access dynamodb"
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    Version: "2012-10-17",
+    Statement: [
+        {
+            Sid: "",
+            Effect: "Allow",
+            Action: "dynamodb:*",
+            Resource: var.ddb_access_management_arn
         }
     ]
 })
@@ -63,6 +84,11 @@ resource "aws_iam_policy" "ddb_table_policy" {
 resource "aws_iam_role_policy_attachment" "apprunner_instance_role_attachment" {
   role       = aws_iam_role.apprunner_ecr_service_instance_role.name
   policy_arn = aws_iam_policy.ddb_table_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "apprunner_instance_role_attachment" {
+  role       = aws_iam_role.apprunner_ecr_service_instance_role.name
+  policy_arn = aws_iam_policy.ddb_table_users_policy.arn
 }
 
 
