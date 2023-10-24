@@ -48,16 +48,9 @@ resource "aws_iam_policy" "ddb_table_policy" {
             Effect: "Allow",
             Action: "dynamodb:*",
             Resource: var.ddb_loc_report_arn
-        },
-        {
-            Sid: "",
-            Effect: "Allow",
-            Action: "dynamodb:*",
-            Resource: var.ddb_access_management_arn
         }
     ]
 })
-
 }
 
 resource "aws_iam_policy" "ddb_table_users_policy" {
