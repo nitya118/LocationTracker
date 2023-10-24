@@ -53,7 +53,7 @@ resource "aws_iam_policy" "ddb_table_policy" {
             Sid: "",
             Effect: "Allow",
             Action: "dynamodb:*",
-            Resource: var.ddb_access_management_arn
+            Resource: var.ddb_users_arn
         }
     ]
 })
