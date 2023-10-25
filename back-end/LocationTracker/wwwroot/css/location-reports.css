@@ -1,0 +1,29 @@
+﻿html {
+    font-size: 12px;
+}
+
+
+.agent-map {
+    height: 100%;
+}
+
+.agent-map {
+    height: 100%;
+}
+
+
+.flex-parent-element {
+    display: flex;
+}
+
+input:invalid {
+    border: 2px solid red;
+}
+
+.flex-child-element {
+    flex: 1;
+}
+
+    .flex-child-element:first-child {
+        margin-right: 20px;
+    }

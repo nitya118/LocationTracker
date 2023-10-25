@@ -1,8 +1,86 @@
 ﻿@model LocationReportConfigModel
-<h1>
-    Location Reports
-</h1>
+<link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+<link href="https://unpkg.com/maplibre-gl@3.x/dist/maplibre-gl.css" rel="stylesheet" />
+<link href="~/css/location-reports.css" rel="stylesheet" />
+<div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="col-auto px-0">
+            <div id="sidebar" class="collapse collapse-horizontal show border-end vh-100 shadow-sm bg-dark">
+                <div id="sidebar-nav" class="list-group border-0 rounded-0">
+                    <div class="p-2">
+                        <h4 class="bg-dark">Send Location Request</h4>
+                    </div>
+                    <ul class="list-group ">
+                        <li class="list-group-item bg-dark">
 
-<h2>@Model.MapName</h2>
-<h2>@Model.PoolId</h2>
-<h2>@Model.Region</h2>
+                            <input class="form-control me-2" required type="text" id="txtName" placeholder="Name" aria-label="Name">
+                        </li>
+                        <li class="list-group-item bg-dark">
+                            <input class="form-control me-2" required type="text" id="txtMobile" placeholder="Mobile" aria-label="Mobile">
+                        </li>
+                        <li class="list-group-item bg-dark">
+                            <button id="btnSubmit" class="btn btn-primary" type="submit">Send</button>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col ps-md-2 pt-2">
+            <a href="#" data-bs-target="#sidebar" data-bs-toggle="collapse"
+               class="border rounded-3 p-1 text-decoration-none"><i class="bi bi-list"></i></a>
+            <div class="page-header pt-3">
+                <h2>Location Reports</h2>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card shadow">
+                        <div class="card-body text-start">
+                            <h5 class="card-title">Select Time Range</h5>
+                            <select>
+                                <option>All</option>
+                            </select>
+                            <button id="btnTest">Test</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5">
+                <div id="wrapper"></div>
+
+            </div>
+        </div>
+    </div>
+    <div id="mapModal" class="modal">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 id="mapTitle">Map Title</h5>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">close</button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div id="map" style="height:800px" />
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script type="module">
+   var mapSettings={
+        PoolId:'@Model.PoolId',
+        Name:'@Model.MapName',
+        Region:'@Model.Region'
+    };
+</script>
+<script src="~/js/location-report.js" type="module"></script>
+<script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
+<script src="https://unpkg.com/maplibre-gl@3.x/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/@@aws/amazon-location-utilities-auth-helper@1.x/dist/amazonLocationAuthHelper.js"></script>
