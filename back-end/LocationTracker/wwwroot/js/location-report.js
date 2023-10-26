@@ -4,65 +4,60 @@ import {
     html, h, PluginPosition, useSelector, useConfig, useState
 } from "https://unpkg.com/gridjs?module";
 
-const wrapper = document.getElementById("wrapper");
-const btnTest = document.getElementById("btnTest");
-const btnSubmit = document.getElementById("btnSubmit");
 
 
-const identityPoolId = "eu-west-1:478a32d0-58df-414f-a4f2-e2e58c300742"
-const mapName = "quick-start-using-cognito-example"
-const region = "eu-west-1";
-let lat = 51.584856;
-let long = 0.059955;
-const authHelper = await amazonLocationAuthHelper.withIdentityPoolId(identityPoolId);
+export const mapManager =async (mapSettings,modalEle,titleEle) => {
 
-const map = new maplibregl.Map({
-    container: "map",
-    center: [long, lat],
-    zoom: 10,
-    style: `https://maps.geo.${region}.amazonaws.com/maps/v0/maps/${mapName}/style-descriptor`,
-    ...authHelper.getMapAuthenticationOptions(),
-});
-map.addControl(new maplibregl.NavigationControl(), "top-left");
+    let lat = 51.584856;
+    let long = 0.059955;
 
-const marker = new maplibregl.Marker()
-    .setLngLat([long, lat])
-    .addTo(map);
+    const authHelper = await amazonLocationAuthHelper.withIdentityPoolId(mapSettings.PoolId);
 
-const displayMap = (lat, long, title) => {
-
-    map.setCenter([long, lat]);
-    marker.setLngLat([long, lat]);;
-    marker.addTo(map);
-
-    let mapModal = new bootstrap.Modal(document.getElementById('mapModal'), {
-        keyboard: false
+    const map = new maplibregl.Map({
+        container: "map",
+        center: [long, lat],
+        zoom: 10,
+        style: `https://maps.geo.${mapSettings.Region}.amazonaws.com/maps/v0/maps/${mapSettings.MapName}/style-descriptor`,
+        ...authHelper.getMapAuthenticationOptions(),
     });
+    map.addControl(new maplibregl.NavigationControl(), "top-left");
 
-    let mapTitle = document.getElementById("mapTitle");
+    const marker = new maplibregl.Marker()
+        .setLngLat([long, lat])
+        .addTo(map);
 
-    mapTitle.innerText = title;
 
-    mapModal.show();
+    return {
+        displayMap: (lat, long, title) => {
+
+            map.setCenter([long, lat]);
+            marker.setLngLat([long, lat]);;
+            marker.addTo(map);
+
+            let mapModal = new bootstrap.Modal(modalEle, {
+                keyboard: false
+            });
+            titleEle.innerText = title;
+            mapModal.show();
+        }
+    }
 }
 
 
-const submitter = async () => {
+export const submitLocationReport = async (mobileEle,nameEle) => {
 
-    const mobile = document.getElementById("txtMobile");
-    const name = document.getElementById("txtName");
+   
 
+    mobileEle.onchange = () => { mobileEle.classList.remove("invalid") };
+    nameEle.onchange = () => { nameEle.classList.remove("invalid") }
 
-    mobile.onchange = () => { mobile.classList.remove("invalid") };
-    name.onchange = () => { name.classList.remove("invalid") }
-
-    if (!mobile.checkValidity()) {
-        mobile.classList.add("invalid");
+    if (!mobileEle.checkValidity()) {
+        mobileEle.classList.add("invalid");
         return;
     }
 
-    if (!name.checkValidity()) {
-        name.classList.add("invalid");
+    if (!nameEle.checkValidity()) {
+        nameEle.classList.add("invalid");
         return;
     }
 
@@ -75,12 +70,12 @@ const submitter = async () => {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: `mobile=${mobile.value}&name=${name.value}`
+        body: `mobile=${mobileEle.value}&name=${nameEle.value}`
 
     });
 
-    mobile.value = "";
-    name.value = "";
+    mobileEle.value = "";
+    nameEle.value = "";
 
     console.log(response);
 
@@ -90,7 +85,7 @@ const submitter = async () => {
 
 
 
-const gridManager = async (wrapperElement, btnTest) => {
+export const gridManager = async (wrapperElement, btnTest,mapDisplayObj) => {
 
 
     let locationFormatter = (cell, row) => {
@@ -105,7 +100,7 @@ const gridManager = async (wrapperElement, btnTest) => {
                 h("button", {
                     className: "btn btn-primary",
                     onclick: () => {
-                        displayMap(row.cells[0].data, row.cells[1].data, `${row.cells[3].data}  ${row.cells[4].data}`);
+                        mapDisplayObj.displayMap(row.cells[0].data, row.cells[1].data, `${row.cells[3].data}  ${row.cells[4].data}`);
                     }
                 }, "View Map")
             ])
@@ -150,8 +145,7 @@ const gridManager = async (wrapperElement, btnTest) => {
 
 
 
-    btnTest.onclick = async function (e) {
-
+    const refreshGrid = async () => {
         grid.config.plugin.remove("search");
 
         grid.config.plugin.remove("pagination");
@@ -161,21 +155,16 @@ const gridManager = async (wrapperElement, btnTest) => {
         newConf.data = await getData();
 
         grid.updateConfig(newConf).forceRender();
+
+    }
+
+
+
+    btnTest.onclick = async function (e) {
+       await refreshGrid()
     };
 
-    btnSubmit.onclick = async (e) => {
-        await submitter();
-
-        grid.config.plugin.remove("search");
-
-        grid.config.plugin.remove("pagination");
-
-        let newConf = Object.assign({}, grid.config);
-
-        newConf.data = await getData();
-
-        grid.updateConfig(newConf).forceRender();
-    }
+    
 
 
     setInterval(() => {
@@ -197,10 +186,7 @@ const gridManager = async (wrapperElement, btnTest) => {
 
     }, 15000)
 
+    await refreshGrid();
+
 }
 
-
-
-
-
-await gridManager(wrapper, btnTest);

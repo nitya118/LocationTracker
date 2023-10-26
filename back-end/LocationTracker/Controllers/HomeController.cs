@@ -48,7 +48,10 @@ namespace LocationTracker.Controllers
                 await _userDataService.SaveGlobalSettings(true, true);
             }
 
-            return View();
+
+
+            //check permissions and redirect
+            return RedirectToAction("Index","LocationReports");
         }
 
         [HttpGet]

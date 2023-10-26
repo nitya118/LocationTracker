@@ -73,14 +73,35 @@
 </div>
 
 
-<script type="module">
-   var mapSettings={
-        PoolId:'@Model.PoolId',
-        Name:'@Model.MapName',
-        Region:'@Model.Region'
-    };
-</script>
-<script src="~/js/location-report.js" type="module"></script>
+
+<!--<script src="~/js/location-report.js" type="module"></script>-->
 <script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
 <script src="https://unpkg.com/maplibre-gl@3.x/dist/maplibre-gl.js"></script>
 <script src="https://unpkg.com/@@aws/amazon-location-utilities-auth-helper@1.x/dist/amazonLocationAuthHelper.js"></script>
+<script type="module">
+
+    import { submitLocationReport, mapManager,gridManager } from "../js/location-report.js";
+
+    let mapSettings = {
+        PoolId: '@Model.PoolId',
+        MapName: '@Model.MapName',
+        Region: '@Model.Region'
+    };
+
+    const mapModal=document.getElementById("mapModal");
+    const mapTitle=document.getElementById("mapTitle");
+    const mapObj =await mapManager(mapSettings,mapModal,mapTitle);
+
+    const btnSubmit=document.getElementById("btnSubmit");
+    btnSubmit.onclick=async ()=>{
+        const mobile = document.getElementById("txtMobile");
+        const name = document.getElementById("txtName");
+        await submitLocationReport(mobile,name);
+    }
+
+    const wrapper = document.getElementById("wrapper");
+    const btnTest = document.getElementById("btnTest");
+    await gridManager(wrapper, btnTest, mapObj);
+
+
+</script>
