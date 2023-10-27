@@ -3,6 +3,11 @@
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
+	{
+		"scripts": {
+		  "build": "webpack --config webpack.config.js"
+		}
+	}
 	"scripts": {
 		"start": "http-server --cors",
 		"test": "echo \"Error: no test specified\" && exit 1"
