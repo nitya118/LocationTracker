@@ -2,7 +2,7 @@
 trigger:
   branches:
     include:
-      - infra_*
+      - 'infra_*'
   paths:
     include:
       - 'front-end/*'
