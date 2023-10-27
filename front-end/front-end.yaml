@@ -5,7 +5,7 @@ trigger:
       - infra_*
   paths:
     include:
-      -  'front-end'
+      -  'front-end/*'
 
 pool:
   vmImage: ubuntu-latest
