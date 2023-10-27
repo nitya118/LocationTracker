@@ -16,6 +16,8 @@ steps:
         versionSpec: '18.x'
       displayName: 'Install Node.js'
     - script: | 
+        pwd
+        ls -la
         npm install
         npm run build
         npm run test
