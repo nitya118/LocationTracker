@@ -4,7 +4,9 @@ trigger:
       - infra_*
   paths:
     include:
-      -  '*'
+      -  './*'
+      - '../lib'
+      - '../Dockerfile'
 
   
 # backend pipleine
