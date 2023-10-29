@@ -31,6 +31,6 @@ steps:
 
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(System.DefaultWorkingDirectory)/back-end/terraform'
+    targetPath: '$(System.DefaultWorkingDirectory)/back-end/'
     artifact: 'backend'
     publishLocation: 'pipeline'
