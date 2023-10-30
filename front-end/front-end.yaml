@@ -18,8 +18,9 @@ steps:
     - script: | 
         cd front-end
         npm install
-    - script: set CI=true&&npm test
-          cd front-end
+    - script: 
+        cd front-end
+        set CI=true&&npm test
       displayName: Test
     - task: PublishPipelineArtifact@0
       inputs:
