@@ -20,7 +20,7 @@ steps:
         npm install
     - script: | 
         cd front-end
-        npm run test
+        npm test --exit
       displayName: 'npm install,start and test'
     - task: ArchiveFiles@2
       inputs:
