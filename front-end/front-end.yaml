@@ -18,10 +18,8 @@ steps:
     - script: | 
         cd front-end
         npm install
-    - script: | 
-        cd front-end
-        npm test
-      displayName: 'npm install,start and test'
+    - script: set CI=true&&npm test
+      displayName: Test
     - task: ArchiveFiles@2
       inputs:
         rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
