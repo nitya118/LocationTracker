@@ -8,7 +8,7 @@
 	"type": "module",
 	"scripts": {
 		"start": "http-server --cors",
-		"test": "jest --watchAll=false --detectOpenHandles --forceExit"
+		"test": "jest --watchAll"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.23.2",
