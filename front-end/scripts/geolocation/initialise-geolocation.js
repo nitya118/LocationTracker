@@ -1,9 +1,10 @@
-export const initialiseCallersGeolocation = () => {
+export const initialiseCallersGeolocation = async () => {
 	return new Promise((resolve, reject) => {
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(
-				(position) => {
-					const callersGeolocation = {
+		try {
+			if (navigator.geolocation) {
+				let callersGeolocation;
+				navigator.geolocation.getCurrentPosition((position) => {
+					callersGeolocation = {
 						latitude: position.coords.latitude,
 						longitude: position.coords.longitude,
 					};
@@ -11,25 +12,13 @@ export const initialiseCallersGeolocation = () => {
 						'callersGeolocation',
 						JSON.stringify(callersGeolocation)
 					);
-					resolve({ callersGeolocation });
-				},
-				(error) => {
-					reject(error);
-					window.location.href = './location-services-info.html';
-				}
-			);
-		} else {
-			const callersGeolocation = {
-				latitude: 0,
-				longitude: 0,
-			};
-
-			localStorage.setItem(
-				'callersGeolocation',
-				JSON.stringify(callersGeolocation)
-			);
-			console.log('Geolocation is not supported by this browser.');
-			reject('Geolocation is not supported');
+					resolve(callersGeolocation);
+				});
+			} else {
+				window.location.href = './location-services-info.html';
+			}
+		} catch (error) {
+			reject('Geolocation is not supported by this browser.');
 		}
 	});
 };

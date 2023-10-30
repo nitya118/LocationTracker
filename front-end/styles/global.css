@@ -7,11 +7,14 @@ body {
 	--light-grey: #ebebeb;
 	--blue: #0c62fb;
 	--dark-blue: #004dd6;
+	width: 100vw;
 	height: 100vh;
 	margin: 0 auto;
 	padding: 0;
 	font-family: 'Roboto', sans-serif;
 	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
 }
 
 header {

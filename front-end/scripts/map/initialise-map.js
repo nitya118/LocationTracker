@@ -7,7 +7,7 @@ import {
 
 let marker;
 const loader = document.getElementById('loader-container');
-const ctaButton = document.getElementById('show-modal-button');
+// const ctaButton = document.getElementById('show-modal-button');
 
 export const initialiseMap = async (authHelper, latitude, longitude) => {
 	const map = new maplibregl.Map({
