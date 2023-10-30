@@ -18,7 +18,7 @@ steps:
     - script: | 
         cd front-end
         npm install
-    - script: 
+    - script: | 
         cd front-end
         set CI=true&&npm test
       displayName: Test
