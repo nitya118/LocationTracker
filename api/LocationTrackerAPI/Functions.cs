@@ -17,19 +17,23 @@ public class Functions
 
     private readonly ITimeService _timeService;
 
+    private readonly IParameterStoreService _parameterStoreService;
+
     /// <summary>
     /// Default constructor that Lambda will invoke.
     /// </summary>
     ///
-    public Functions() : this(null, null)
+    public Functions() : this(null, null, null)
     {
     }
 
-    public Functions(ILocationReportDataService locationReportDataService, ITimeService timeService)
+    public Functions(ILocationReportDataService locationReportDataService, ITimeService timeService, IParameterStoreService parameterStoreService)
     {
         _locationReportDataService = _locationReportDataService ?? new DdbLocationReportDataService();
 
         _timeService = timeService ?? new TimeService();
+
+        _parameterStoreService = parameterStoreService ?? new ParameterStoreService();
     }
 
     private APIGatewayProxyResponse CreateNotFoundResponse()
@@ -40,11 +44,12 @@ public class Functions
         };
     }
 
-    private APIGatewayProxyResponse CreateOkResponse()
+    private APIGatewayProxyResponse CreateOkResponse(ResponseData body)
     {
         return new APIGatewayProxyResponse()
         {
             StatusCode = 200,
+            Body = JsonSerializer.Serialize(body)
         };
     }
 
@@ -85,7 +90,16 @@ public class Functions
                 return CreateNotFoundResponse();
             }
 
-            return CreateOkResponse();
+            var pm = await _parameterStoreService.GetParameterStoreModel();
+
+            var responseDataModel = new ResponseData()
+            {
+                MapName = pm.MapName,
+                PoolId = pm.MapPoolId,
+                Region = pm.MapRegion
+            };
+
+            return CreateOkResponse(responseDataModel);
         }
         else
         {
@@ -126,7 +140,7 @@ public class Functions
 
             await _locationReportDataService.SaveRecordAsync(ls);
 
-            return CreateOkResponse();
+            return CreateOkResponse(null);
         }
     }
 }

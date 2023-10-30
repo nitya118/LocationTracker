@@ -38,6 +38,12 @@ output "test" {
 }
 
 
+module "policies"{
+  source="./policies"
+}
+
+
+
 module "apprunner" {
   source  = "./apprunner"
   ddb_location-reports-arn = module.dynamodb.instance_location_report.arn
