@@ -1,14 +1,3 @@
-variable "ddb_location-reports-arn"{
-    type=string
-    description="arn to the location reports dynamo db table"
-    default=""
-}
-
-variable "ddb_users-arn"{
-    type=string
-    description="arn to the location reports dynamo db table"
-    default=""
-}
 
 variable "image-path"{
     type=string
@@ -16,3 +5,14 @@ variable "image-path"{
     default=""
 }
 
+variable "apprunner-instance-role-arn"{
+    type=string
+    description="arn of the instance role"
+    default=""
+}
+
+variable "apprunner-ecr-access-role-arn"{
+    type=string
+    description="arn of the instance role"
+    default=""
+}

@@ -22,3 +22,71 @@ resource "aws_iam_policy" "paramemterstore-access-policy" {
     ]
 })
 }
+
+
+
+
+resource "aws_iam_policy" "sns_publish_policy" {
+  name        = "sns_publish_policy"
+  path        = "/"
+  description = "Policy to allow sms publishing for the current account"
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "",
+            "Effect": "Allow",
+            "Action": "sns:Publish",
+            "Resource": "*"
+        }
+    ]
+})
+}
+
+
+
+
+resource "aws_iam_policy" "ddb-location-reports-policy" {
+  name        = "ddb-location-reports-policy"
+  path        = "/"
+  description = "Policy to access dynamodb"
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    Version: "2012-10-17",
+    Statement: [
+        {
+            Sid: "",
+            Effect: "Allow",
+            Action: "dynamodb:*",
+            Resource: var.ddb_location-reports-arn
+        }
+    ]
+})
+}
+
+resource "aws_iam_policy" "ddb-users-policy" {
+  name        = "ddb-users-policy"
+  path        = "/"
+  description = "Policy to access dynamodb"
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    Version: "2012-10-17",
+    Statement: [
+        {
+            Sid: "",
+            Effect: "Allow",
+            Action: "dynamodb:*",
+            Resource: var.ddb_users-arn
+        }
+    ]
+})
+}
+
+

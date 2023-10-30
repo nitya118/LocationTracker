@@ -33,21 +33,31 @@ module "dynamodb" {
   source = "./dynamodb"
 }
 
-output "test" {
-  value = module.dynamodb.instance_location_report
-}
-
 
 module "policies"{
   source="./policies"
+  ddb_location-reports-arn = module.dynamodb.instance_location_report.arn
+  ddb_users-arn=module.dynamodb.instance_users.arn
 }
 
+output "test" {
+  value = module.policies.instance_parameter_store_access_policy
+}
+
+module "roles"{
+  source="./roles"
+  parameterstore-access-policy-arn=module.policies.instance_parameter_store_access_policy.arn
+  location-reports-table-access-policy-arn=module.policies.instance_location_reports_table_access_policy.arn
+  users-table-access-policy-arn=module.policies.instance_users_table_access_policy.arn
+  sns-access-policy-arn=module.policies.instance_sns_access_policy.arn
+
+}
 
 
 module "apprunner" {
   source  = "./apprunner"
-  ddb_location-reports-arn = module.dynamodb.instance_location_report.arn
-  ddb_users-arn=module.dynamodb.instance_users.arn
+  apprunner-instance-role-arn=module.roles.instance_apprunner_instance_role.arn
+  apprunner-ecr-access-role-arn=module.roles.instance_apprunner_ecr_access_role.arn
   image-path=module.ecr_repo.instance.repository_url
 }
 
