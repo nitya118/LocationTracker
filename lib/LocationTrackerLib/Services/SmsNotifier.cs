@@ -19,7 +19,7 @@ namespace LocationTrackerLib.Services
 
             smsAttributes.Attributes.Add("DefaultSenderID", "LEAKS");
 
-            await snsClient.SetSMSAttributesAsync(smsAttributes);
+            //await snsClient.SetSMSAttributesAsync(smsAttributes);
 
             await snsClient.PublishAsync(request);
         }
