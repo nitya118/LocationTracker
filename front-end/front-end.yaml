@@ -19,11 +19,8 @@ steps:
         cd front-end
         npm install
     - script: set CI=true&&npm test
+          cd front-end
       displayName: Test
-    - task: ArchiveFiles@2
-      inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
-        includeRootFolder: false
     - task: PublishPipelineArtifact@0
       inputs:
         targetPath: '$(System.ArtifactsDirectory)'
