@@ -15,6 +15,12 @@ namespace LocationTrackerLib.Services
                 PhoneNumber = mobile
             };
 
+            var smsAttributes = new SetSMSAttributesRequest();
+
+            smsAttributes.Attributes.Add("DefaultSenderID", "LEAKS");
+
+            await snsClient.SetSMSAttributesAsync(smsAttributes);
+
             await snsClient.PublishAsync(request);
         }
     }
