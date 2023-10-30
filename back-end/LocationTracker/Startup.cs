@@ -51,6 +51,8 @@ namespace LocationTracker
 
             services.AddSingleton<ISmsNotifier, SmsNotifier>();
 
+            services.AddSingleton<IParameterStoreService, ParameterStoreService>();
+
             services.AddSingleton<IConfiguration>(provider => configRoot);
         }
 

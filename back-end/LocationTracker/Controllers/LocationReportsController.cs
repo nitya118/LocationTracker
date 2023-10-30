@@ -17,7 +17,9 @@ namespace LocationTracker.Controllers
 
         private readonly ISmsNotifier _smsNotifier;
 
-        public LocationReportsController(IConfiguration configuration, ILocationReportDataService locationReportDataService,IGeoService geoService,ITimeService timeService, ISmsNotifier smsNotifier)
+        private readonly IParameterStoreService _parameterStoreService;
+
+        public LocationReportsController(IConfiguration configuration, ILocationReportDataService locationReportDataService, IGeoService geoService, ITimeService timeService, ISmsNotifier smsNotifier, IParameterStoreService parameterStoreService)
         {
             _configuration = configuration;
 
@@ -29,20 +31,22 @@ namespace LocationTracker.Controllers
 
             _smsNotifier = smsNotifier;
 
+            _parameterStoreService = parameterStoreService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var pm = await _parameterStoreService.GetParameterStoreModel();
+
             var lrConfigModel = new LocationReportConfigModel()
             {
-                PoolId = _configuration.GetValue<string>("ASPNETCORE_POOL_ID"),
-                MapName = _configuration.GetValue<string>("ASPNETCORE_MAP_NAME"),
-                Region = _configuration.GetValue<string>("ASPNETCORE_REGION"),
+                PoolId = pm.MapPoolId,
+                MapName = pm.MapName,
+                Region = pm.MapRegion
             };
 
             return View("~/Views/Home/LocationReports.cshtml", lrConfigModel);
         }
-
 
         [HttpGet]
         public async Task<JsonResult> GetLocationReports()
@@ -86,9 +90,7 @@ namespace LocationTracker.Controllers
                 return StatusCode(400, "Incorrect mobile number format.");
             }
 
-
             mobile = Utility.ConvertUkMobileToInternational(mobile);
-
 
             var lr = new LocationTrackerLib.Models.LocationReport()
             {
@@ -108,8 +110,5 @@ namespace LocationTracker.Controllers
 
             return StatusCode(200);
         }
-
-
-
     }
 }
