@@ -193,10 +193,7 @@ export const gridManager = async (wrapperElement, btnTest,mapDisplayObj) => {
 
 
 
-    //btnTest.onclick = async function (e) {
-    //   await refreshGrid()
-    //};
-
+    
     
 
 

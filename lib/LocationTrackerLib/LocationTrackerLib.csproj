@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.203" />
     <PackageReference Include="AWSSDK.SimpleNotificationService" Version="3.7.200.48" />
+    <PackageReference Include="AWSSDK.SimpleSystemsManagement" Version="3.7.202.4" />
     <PackageReference Include="IeuanWalker.GeoUK" Version="1.0.5" />
   </ItemGroup>
 

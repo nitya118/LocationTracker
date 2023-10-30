@@ -12,11 +12,11 @@ terraform {
 provider "aws" {
   region = var.aws_region
 }
-/*
-resource "aws_s3_bucket" "content_bucket" {
-  bucket = var.bucket_name
+
+
+module "parameterstore"{
+  source="./parameterstore"
 }
-*/
 
 
 module "ecr_repo" {
