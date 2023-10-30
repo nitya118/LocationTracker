@@ -1,7 +1,7 @@
 ﻿
 import {
     Grid,
-    html, h, PluginPosition, useSelector, useConfig, useState
+    html, h, PluginPosition
 } from "https://unpkg.com/gridjs?module";
 
 
@@ -87,6 +87,7 @@ export const submitLocationReport = async (mobileEle,nameEle) => {
 
 export const gridManager = async (wrapperElement, btnTest,mapDisplayObj) => {
 
+    let timeRangeSelection = 0;
 
     let locationFormatter = (cell, row) => {
 
@@ -107,6 +108,25 @@ export const gridManager = async (wrapperElement, btnTest,mapDisplayObj) => {
         }
 
 
+    }
+
+
+    function TimeFilterSelectionPlugin() {
+
+        return h('span', {style:"padding:5px"}, [
+            h('label', { style: "padding:5px" }, "Time Range"),
+            h('select', { value: timeRangeSelection, onchange: timeRangeSelectionChanged }, [
+                h('option', { value: 0 }, "All"),
+                h('option', { value: 1 }, "Last 15m"),
+                h('option', { value: 2 }, "Last 30m"),
+                h('option', { value: 2 }, "Last 1h"),
+                h('option', { value: 2 }, "Last 3h"),
+                h('option', { value: 2 }, "Last 6h"),
+                h('option', { value: 2 }, "Last 12h"),
+            ])
+        ]);
+
+       
     }
 
 
@@ -146,6 +166,15 @@ export const gridManager = async (wrapperElement, btnTest,mapDisplayObj) => {
 
 
     const refreshGrid = async () => {
+
+        grid.plugin.remove("timeFilter");
+
+        grid.plugin.add({
+            id: 'timeFilter',
+            component: TimeFilterSelectionPlugin,
+            position: PluginPosition.Header
+        })
+
         grid.config.plugin.remove("search");
 
         grid.config.plugin.remove("pagination");
@@ -158,11 +187,15 @@ export const gridManager = async (wrapperElement, btnTest,mapDisplayObj) => {
 
     }
 
+    const timeRangeSelectionChanged = (e) => {
+        console.log(e.target.value)
+    }
 
 
-    btnTest.onclick = async function (e) {
-       await refreshGrid()
-    };
+
+    //btnTest.onclick = async function (e) {
+    //   await refreshGrid()
+    //};
 
     
 
