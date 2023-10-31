@@ -36,7 +36,7 @@ resource "aws_iam_role" "apprunner-instance-role" {
 }
 
 resource "aws_iam_role" "apprunner-ecr-access-role" {
-  name = "  "
+  name = "apprunner-ecr-access-role"
   assume_role_policy = jsonencode({
     "Version": "2012-10-17",
     "Statement": [
