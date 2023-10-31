@@ -58,6 +58,17 @@ data "aws_iam_policy" "AppRunnerECRAcessPolicy" {
 }
 
 
+resource "aws_iam_role_policy_attachment" "lambda-attach-policy-parameter-store" {
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = var.parameterstore-access-policy-arn
+}
+
+resource "aws_iam_role_policy_attachment" "lambda-attach-policy-ddb-location-reports" {
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = var.location-reports-table-access-policy-arn
+}
+
+
 
 resource "aws_iam_role_policy_attachment" "attach-policy-apprunner-ecr-access" {
   role       = aws_iam_role.apprunner-ecr-access-role.name
