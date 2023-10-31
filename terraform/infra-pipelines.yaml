@@ -9,6 +9,6 @@ steps:
 # infra pipleine
    - task: PublishPipelineArtifact@1
      inputs:
-       targetPath: '$(System.DefaultWorkingDirectory)/terraform'
+       targetPath: '$(System.DefaultWorkingDirectory)'
        artifact: 'infra'
        publishLocation: 'pipeline'
