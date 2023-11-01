@@ -1,0 +1,61 @@
+trigger:
+  branches:
+    include:
+      - infra_*
+      - master
+  paths:
+    include:
+      -  'api/*'
+
+stages:
+ - stage:
+   displayName: Run unit tests
+   jobs:
+    - job: run_unit_tests_job
+      displayName: unit tests
+      steps:
+      
+       - task: DotNetCoreCLI@2
+         displayName: 'build prject'
+         inputs:
+          command: 'build'
+          projects: '**/LocationTrackerAPI/*.csproj'
+         
+       - task: DotNetCoreCLI@2
+         displayName: run visual studio
+         inputs:
+             command: test
+             projects: '**/LocationTrackerAPI.Tests/*.csproj'
+             arguments: '--configuration debug --collect:"XPlat Code Coverage"'
+             codeCoverageEnabled: true
+        
+       - task: PowerShell@2
+         displayName: 'Install ReportGenerator Code Coverage  Tool'
+         inputs:
+            targetType: 'inline'
+            script: dotnet tool install --global dotnet-reportgenerator-globaltool
+
+       - task: PowerShell@2
+         displayName: 'Execute ReportGenerator Code Coverage Command'
+         inputs:
+            targetType: 'inline'
+            script: 'reportgenerator -reports:$(Agent.TempDirectory)/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/coverlet/reports -reporttypes:"Cobertura"'
+        
+       - task: PublishCodeCoverageResults@1
+         displayName: 'Public Code Coverage Results'
+         inputs:
+            codeCoverageTool: 'Cobertura'
+            summaryFileLocation: '$(Build.SourcesDirectory)/coverlet/reports/Cobertura.xml' 
+
+#package API artifact
+ - stage:
+   displayName : publish artifacts
+   jobs:
+    - job:
+      displayName : build job
+      steps:
+        - task: PublishPipelineArtifact@1
+          inputs:
+           targetPath: '$(System.DefaultWorkingDirectory)/'
+           artifact: 'api'
+           publish Location: 'pipeline'
