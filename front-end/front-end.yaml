@@ -33,6 +33,7 @@ steps:
         regionName: 'eu-west-1'
         bucketName: 'www.dev01.location-tracker.com'
         sourceFolder: 'front-end'
+        globExpressions: '**'
     - task: AmazonWebServices.aws-vsts-tools.AWSCLI.AWSCLI@1
       displayName: 'AWS CLI: cloudfront'
       inputs:
