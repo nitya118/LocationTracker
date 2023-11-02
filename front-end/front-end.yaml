@@ -24,7 +24,7 @@ steps:
     #  displayName: 'npm install,start and test'
     - task: PublishPipelineArtifact@0
       inputs:
-        targetPath: '$(System.ArtifactsDirectory)'
+        targetPath: '$(System.ArtifactsDirectory)/front-end'
 
     - task: AmazonWebServices.aws-vsts-tools.S3Upload.S3Upload@1
       displayName: 'S3 Upload: www.dev01.location-tracker.com'
