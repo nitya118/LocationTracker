@@ -7,30 +7,73 @@ trigger:
       - 'back-end/*'
       - 'lib/*'
       - 'Dockerfile'
+stages:
+ - stage:
+   displayName: Run unit tests
+   jobs:
+    - job: run_unit_tests_job
+      displayName: unit tests
+      steps:
+      
+       - task: DotNetCoreCLI@2
+         displayName: 'build prject'
+         inputs:
+          command: 'build'
+          projects: '**/LocationTracker/*.csproj'
+         
+       - task: DotNetCoreCLI@2
+         displayName: run visual studio
+         inputs:
+             command: test
+             projects: '**/LocationTracker.Tests/*.csproj'
+             arguments: '--configuration debug --collect:"XPlat Code Coverage"'
+             codeCoverageEnabled: true
+        
+       - task: PowerShell@2
+         displayName: 'Install ReportGenerator Code Coverage  Tool'
+         inputs:
+            targetType: 'inline'
+            script: dotnet tool install --global dotnet-reportgenerator-globaltool
 
+       - task: PowerShell@2
+         displayName: 'Execute ReportGenerator Code Coverage Command'
+         inputs:
+            targetType: 'inline'
+            script: 'reportgenerator -reports:$(Agent.TempDirectory)/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/coverlet/reports -reporttypes:"Cobertura"'
+        
+       - task: PublishCodeCoverageResults@1
+         displayName: 'Public Code Coverage Results'
+         inputs:
+            codeCoverageTool: 'Cobertura'
+            summaryFileLocation: '$(Build.SourcesDirectory)/coverlet/reports/Cobertura.xml'  
   
 # backend pipleine
-steps:
-- task: Docker@2
-  displayName: Build an image
-  inputs:
-    command: build
-    dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
-    buildContext: '$(Build.SourcesDirectory)'
-    repository: $(DOCKER_REPOSITORY_NAME)
+ - stage:
+   displayName : Docker build and push
+   jobs:
+    - job:
+      displayName : Docker image build
+      steps:
+      - task: Docker@2
+        displayName: Build an image
+        inputs:
+          command: build
+          dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+          buildContext: '$(Build.SourcesDirectory)'
+          repository: $(DOCKER_REPOSITORY_NAME)
 
-- task: ECRPushImage@1
-  inputs:
-    awsCredentials: 'AWS_credentials'
-    regionName: $(AWS_REGION)
-    imageSource: 'imagename'
-    sourceImageName: $(DOCKER_REPOSITORY_NAME)
-    sourceImageTag: $(Build.BuildId)
-    pushTag: latest
-    repositoryName: $(DOCKER_REPOSITORY_NAME)
+      - task: ECRPushImage@1
+        inputs:
+         awsCredentials: 'AWS_credentials'
+         regionName: $(AWS_REGION)
+         imageSource: 'imagename'
+         sourceImageName: $(DOCKER_REPOSITORY_NAME)
+         sourceImageTag: $(Build.BuildId)
+         pushTag: latest
+         repositoryName: $(DOCKER_REPOSITORY_NAME)
 
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: '$(System.DefaultWorkingDirectory)/'
-    artifact: 'backend'
-    publishLocation: 'pipeline'
+      - task: PublishPipelineArtifact@1
+        inputs:
+          targetPath: '$(System.DefaultWorkingDirectory)/'
+          artifact: 'backend'
+          publishLocation: 'pipeline'
