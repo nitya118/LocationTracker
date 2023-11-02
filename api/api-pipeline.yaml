@@ -56,7 +56,7 @@ stages:
       steps:
         - task: PublishPipelineArtifact@1
           inputs:
-           targetPath: '$(System.DefaultWorkingDirectory)/api'
+           targetPath: '$(System.DefaultWorkingDirectory)'
            artifact: 'api'
            publish Location: 'pipeline'
           
