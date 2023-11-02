@@ -33,3 +33,12 @@ steps:
         regionName: 'eu-west-1'
         bucketName: 'www.dev01.location-tracker.com'
         sourceFolder: 'front-end'
+    - task: AmazonWebServices.aws-vsts-tools.AWSCLI.AWSCLI@1
+      displayName: 'AWS CLI: cloudfront'
+      inputs:
+       awsCredentials: 'AWS_credentials'
+       regionName: 'eu-west-1'
+       awsCommand: cloudfront
+       awsSubCommand: 'create-invalidation'
+       awsArguments: '--distribution-id EMV7B0J71SL6M --paths /*'
+       failOnStandardError: false
