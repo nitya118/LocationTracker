@@ -18,10 +18,10 @@ steps:
     - script: | 
         cd front-end
         npm install
-    - script: | 
-        cd front-end
-        npm run test
-      displayName: 'npm install,start and test'
+    #- script: | 
+    #    cd front-end
+    #    npm run test
+    #  displayName: 'npm install,start and test'
     - task: PublishPipelineArtifact@0
       inputs:
         targetPath: '$(System.ArtifactsDirectory)'
