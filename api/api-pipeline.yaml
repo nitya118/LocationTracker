@@ -60,11 +60,11 @@ stages:
            artifact: 'api'
            publish Location: 'pipeline'
           
-         - task: AmazonWebServices.aws-vsts-tools.LambdaNETCoreDeploy.LambdaNETCoreDeploy@1
-           displayName: 'Deploy .NET Core to Lambda: arn:aws:lambda:eu-west-1:007060634107:function:loc_report_lambda_function '
-           inputs:
-             awsCredentials: 'AWS_credentials'
-             regionName: 'eu-west-1'
+        - task: AmazonWebServices.aws-vsts-tools.LambdaNETCoreDeploy.LambdaNETCoreDeploy@1
+          displayName: 'Deploy .NET Core to Lambda: arn:aws:lambda:eu-west-1:007060634107:function:loc_report_lambda_function '
+          inputs:
+            awsCredentials: 'AWS_credentials'
+            regionName: 'eu-west-1'
             lambdaProjectPath: '$(System.DefaultWorkingDirectory)/_api_build_ci/api/api/LocationTrackerAPI'
             functionName: 'arn:aws:lambda:eu-west-1:007060634107:function:loc_report_lambda_function'
             functionHandler: 'LocationTrackerAPI::LocationTrackerAPI.Functions::LocationReport'
