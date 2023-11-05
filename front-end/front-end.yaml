@@ -24,4 +24,4 @@ steps:
     #  displayName: 'npm install,start and test'
     - task: PublishPipelineArtifact@0
       inputs:
-        targetPath: '$(System.ArtifactsDirectory)/front-end'
+        targetPath: '$(System.DefaultWorkingDirectory)/front-end'
